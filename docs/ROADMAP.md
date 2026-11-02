@@ -5,7 +5,7 @@ Built in small sessions. Each step should be finishable in one sitting.
 ## Milestone 1 — MVP
 - [x] **1. Setup** — repo, Vite + React + TS, Tailwind theme, folder structure
 - [x] **2. Design system** — Button, Card, ProgressBar, Badge, XP/streak chips
-- [ ] **3. Layout + routing** — sidebar (desktop), bottom nav (mobile), page stubs
+- [x] **3. Layout + routing** — sidebar (desktop), bottom nav (mobile), page stubs
 - [ ] **4. Landing page** — hero, features, how it works, footer
 - [ ] **5. Types + data** — interfaces, Lisboa & Porto curriculum (pt-PT)
 - [ ] **6. Progress service** — localStorage persistence, XP, streak
