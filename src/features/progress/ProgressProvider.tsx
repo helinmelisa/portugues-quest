@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { questForDay } from '../../data/quests'
 import { storage } from '../../services/storage'
 import type { Lesson } from '../../types'
 import { completeLesson as applyLesson, emptyProgress, statsFor } from './progress'
@@ -13,7 +14,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const completeLesson = useCallback(
     (lesson: Lesson) => {
-      const result = applyLesson(progress, lesson)
+      const result = applyLesson(progress, lesson, questForDay())
       setProgress(result.progress)
       return result.xpEarned
     },

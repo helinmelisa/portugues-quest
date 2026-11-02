@@ -81,6 +81,8 @@ export interface LearningProgress {
   learnedWords: string[]
   difficultWords: string[]
   activeDays: string[] // YYYY-MM-DD
+  minutesByDay: Record<string, number>
+  questDays: string[] // days the daily quest bonus was claimed
   achievements: string[]
 }
 

@@ -1,4 +1,4 @@
-import type { LearningProgress, Lesson, UserStatistics } from '../../types'
+import type { DailyQuest, LearningProgress, Lesson, UserStatistics } from '../../types'
 import { addDays, dayKey } from '../../utils/date'
 
 export const emptyProgress: LearningProgress = {
@@ -7,6 +7,8 @@ export const emptyProgress: LearningProgress = {
   learnedWords: [],
   difficultWords: [],
   activeDays: [],
+  minutesByDay: {},
+  questDays: [],
   achievements: [],
 }
 
@@ -38,10 +40,15 @@ export function computeStreak(activeDays: string[], today = new Date()) {
   return streak
 }
 
-export function completeLesson(progress: LearningProgress, lesson: Lesson): { progress: LearningProgress; xpEarned: number } {
-  const repeat = lesson.id in progress.completedLessons
-  const xpEarned = repeat ? Math.round(lesson.xp * XP.repeatLessonFactor) : lesson.xp
+export function completeLesson(
+  progress: LearningProgress,
+  lesson: Lesson,
+  quest?: DailyQuest,
+): { progress: LearningProgress; xpEarned: number } {
   const today = dayKey()
+  const repeat = lesson.id in progress.completedLessons
+  const questBonus = quest?.lessonId === lesson.id && !progress.questDays.includes(today) ? quest.bonusXp : 0
+  const xpEarned = (repeat ? Math.round(lesson.xp * XP.repeatLessonFactor) : lesson.xp) + questBonus
 
   return {
     xpEarned,
@@ -51,6 +58,8 @@ export function completeLesson(progress: LearningProgress, lesson: Lesson): { pr
       completedLessons: { ...progress.completedLessons, [lesson.id]: progress.completedLessons[lesson.id] ?? today },
       learnedWords: [...new Set([...progress.learnedWords, ...lesson.vocabulary.map((v) => v.id)])],
       activeDays: progress.activeDays.includes(today) ? progress.activeDays : [...progress.activeDays, today],
+      minutesByDay: { ...progress.minutesByDay, [today]: (progress.minutesByDay[today] ?? 0) + lesson.minutes },
+      questDays: questBonus ? [...progress.questDays, today] : progress.questDays,
     },
   }
 }
