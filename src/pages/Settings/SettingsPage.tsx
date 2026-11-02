@@ -6,6 +6,7 @@ import { speech } from '../../services/speech'
 import type { CefrLevel, UserProfile } from '../../types'
 import { cn } from '../../utils/cn'
 import { dayKey } from '../../utils/date'
+import { AccountCard } from './AccountCard'
 import { ResetProgress } from './ResetProgress'
 
 const goals: UserProfile['dailyGoalMinutes'][] = [5, 10, 15, 20]
@@ -67,6 +68,8 @@ export default function SettingsPage() {
     <div className="mx-auto max-w-2xl space-y-5">
       <h1 className="font-display text-3xl md:text-4xl">Settings</h1>
 
+      <AccountCard />
+
       <Card className="space-y-5">
         <h2 className="font-display text-xl">Learning</h2>
         <div className="space-y-2">
@@ -94,7 +97,7 @@ export default function SettingsPage() {
 
       <Card className="space-y-3">
         <h2 className="font-display text-xl">Your data</h2>
-        <p className="text-sm opacity-75">Progress is saved in this browser only. Export a backup to move it to another device.</p>
+        <p className="text-sm opacity-75">Progress is always saved in this browser. You can also export a backup file.</p>
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" onClick={exportData}><Download className="size-4" aria-hidden /> Export progress</Button>
           <Button variant="secondary" onClick={() => fileRef.current?.click()}><Upload className="size-4" aria-hidden /> Import progress</Button>

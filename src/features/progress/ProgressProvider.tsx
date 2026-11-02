@@ -4,6 +4,7 @@ import { questForDay } from '../../data/quests'
 import { speech } from '../../services/speech'
 import { storage } from '../../services/storage'
 import type { LearningProgress, Lesson, UserProfile } from '../../types'
+import { useCloudSync } from '../sync/useCloudSync'
 import { applyReview } from '../vocabulary/srs'
 import { newlyUnlocked } from '../achievements/achievements'
 import { isDestinationUnlocked } from './destinationProgress'
@@ -59,6 +60,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setProfile({ ...defaultProfile, ...data.profile })
   }, [])
 
+  const syncData = useMemo(() => ({ progress, profile }), [progress, profile])
+  const cloud = useCloudSync(syncData, replaceAll)
+
   const value = useMemo(
     () => ({
       progress,
@@ -69,12 +73,13 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       toggleDifficult,
       reviewWord,
       replaceAll,
+      cloud,
       reset: () => {
         setProgress(emptyProgress)
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, updateProfile, toggleDifficult, reviewWord, replaceAll],
+    [progress, profile, completeLesson, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

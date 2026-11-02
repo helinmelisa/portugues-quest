@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import type { CloudSync } from '../sync/useCloudSync'
 import type { Achievement, LearningProgress, Lesson, UserProfile, UserStatistics } from '../../types'
 
 export interface LessonResult {
@@ -18,6 +19,7 @@ export interface ProgressContextValue {
   reviewWord: (wordId: string, correct: boolean) => void
   replaceAll: (data: { progress: LearningProgress; profile: UserProfile }) => void
   reset: () => void
+  cloud: CloudSync
 }
 
 export const ProgressContext = createContext<ProgressContextValue | null>(null)

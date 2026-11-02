@@ -18,7 +18,7 @@ export function ResetProgress() {
 
   return (
     <div role="alert" className="flex flex-wrap items-center justify-center gap-3 text-sm">
-      <span>This clears all XP, progress and settings on this device.</span>
+      <span>This clears all XP, progress and settings — on this device and in your synced account.</span>
       <Button size="sm" onClick={() => { reset(); navigate('/') }}>Yes, start over</Button>
       <Button size="sm" variant="secondary" onClick={() => setConfirming(false)}>Cancel</Button>
     </div>
