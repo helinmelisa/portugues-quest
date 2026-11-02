@@ -72,6 +72,7 @@ export interface Destination {
   description: string
   level: CefrLevel
   unlocked: boolean
+  unlockRule?: { destinationId: string; lessonsCompleted: number }
   map: { x: number; y: number }
   lessonIds: string[]
 }

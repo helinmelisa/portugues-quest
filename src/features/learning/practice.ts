@@ -1,6 +1,8 @@
 import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
 import type { Exercise, LearningProgress, Lesson, ListeningExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
 import { shuffle } from '../../utils/shuffle'
+import { destinations } from '../../data/destinations'
+import { isDestinationUnlocked } from '../progress/destinationProgress'
 
 const modes = {
   quick: { title: 'Quick Challenge', minutes: 2 },
@@ -10,7 +12,11 @@ const modes = {
 }
 export type PracticeMode = keyof typeof modes
 
-const availableLessons = () => lessons.filter(isLessonAvailable)
+const availableLessons = (progress?: LearningProgress) =>
+  lessons.filter((l) => {
+    const destination = destinations.find((d) => d.id === l.destinationId)
+    return isLessonAvailable(l) && (!progress || (destination !== undefined && isDestinationUnlocked(destination, progress)))
+  })
 export const allVocabulary = () => availableLessons().flatMap((l) => l.vocabulary)
 export const spoken = (v: VocabularyItem) => v.pt.split(' / ')[0]
 
@@ -35,8 +41,8 @@ function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
   })
 }
 
-function sentenceExercises(): SentenceBuildExercise[] {
-  const fromLessons = availableLessons()
+function sentenceExercises(progress: LearningProgress): SentenceBuildExercise[] {
+  const fromLessons = availableLessons(progress)
     .flatMap((l) => l.exercises)
     .filter((e): e is SentenceBuildExercise => e.type === 'sentence-build')
   const fromExamples = allVocabulary().flatMap((v): SentenceBuildExercise[] => {
@@ -60,13 +66,13 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
   let exercises: Exercise[]
   switch (mode) {
     case 'quick':
-      exercises = shuffle(availableLessons().flatMap((l) => l.exercises).filter((e) => e.type !== 'matching')).slice(0, 5)
+      exercises = shuffle(availableLessons(progress).flatMap((l) => l.exercises).filter((e) => e.type !== 'matching')).slice(0, 5)
       break
     case 'listening':
       exercises = listeningExercises(shuffle(wordPool(progress)).slice(0, 5))
       break
     case 'sentences':
-      exercises = shuffle(sentenceExercises()).slice(0, 5)
+      exercises = shuffle(sentenceExercises(progress)).slice(0, 5)
       break
     case 'difficult': {
       const hard = allVocabulary().filter((v) => progress.difficultWords.includes(v.id))

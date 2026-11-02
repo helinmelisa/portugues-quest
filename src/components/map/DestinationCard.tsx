@@ -1,6 +1,6 @@
 import { Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { destinationCompletion } from '../../features/progress/destinationProgress'
+import { destinationCompletion, isDestinationUnlocked, unlockHint } from '../../features/progress/destinationProgress'
 import { useProgress } from '../../hooks/useProgress'
 import type { Destination } from '../../types'
 import { Badge, Button, Card, ProgressBar } from '../common'
@@ -20,7 +20,7 @@ export function DestinationCard({ destination }: { destination: Destination }) {
         <h2 className="font-display text-3xl">{destination.name}</h2>
         <p className="mt-2 opacity-80">{destination.description}</p>
       </div>
-      {destination.unlocked ? (
+      {isDestinationUnlocked(destination, progress) ? (
         <>
           <div>
             <div className="mb-1.5 flex justify-between text-sm"><span>Progress</span><span>{completion}%</span></div>
@@ -30,7 +30,7 @@ export function DestinationCard({ destination }: { destination: Destination }) {
         </>
       ) : (
         <p className="flex items-center gap-2 rounded-2xl bg-line/60 p-3 text-sm">
-          <Lock className="size-4 shrink-0" aria-hidden /> This destination is still being prepared. Keep exploring to unlock it!
+          <Lock className="size-4 shrink-0" aria-hidden /> {unlockHint(destination)}
         </p>
       )}
     </Card>

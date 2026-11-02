@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
 import { isLessonAvailable } from '../../data/curriculum'
 import { destinations } from '../../data/destinations'
-import { destinationLessons } from '../../features/progress/destinationProgress'
+import { destinationLessons, isDestinationUnlocked } from '../../features/progress/destinationProgress'
 import { useProgress } from '../../hooks/useProgress'
 import { cn } from '../../utils/cn'
 
@@ -12,7 +12,7 @@ export default function DestinationPage() {
   const { progress } = useProgress()
   const destination = destinations.find((d) => d.id === destinationId)
 
-  if (!destination || !destination.unlocked) return <Navigate to="/app/explore" replace />
+  if (!destination || !isDestinationUnlocked(destination, progress)) return <Navigate to="/app/explore" replace />
 
   return (
     <div className="mx-auto max-w-3xl">

@@ -1,4 +1,6 @@
 import { Lock, MapPin } from 'lucide-react'
+import { isDestinationUnlocked } from '../../features/progress/destinationProgress'
+import { useProgress } from '../../hooks/useProgress'
 import type { Destination } from '../../types'
 import { cn } from '../../utils/cn'
 
@@ -12,6 +14,7 @@ interface Props {
 }
 
 export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
+  const { progress } = useProgress()
   return (
     <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-line bg-sky/25">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full" aria-hidden>
@@ -24,13 +27,14 @@ export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
 
       {destinations.map((d) => {
         const selected = d.id === selectedId
+        const unlocked = isDestinationUnlocked(d, progress)
         return (
           <button
             key={d.id}
             type="button"
             onClick={() => onSelect(d.id)}
             aria-pressed={selected}
-            aria-label={`${d.name}${d.unlocked ? '' : ' (locked)'}`}
+            aria-label={`${d.name}${unlocked ? '' : ' (locked)'}`}
             style={{ left: `${d.map.x}%`, top: `${d.map.y}%` }}
             className="group absolute -translate-x-1/2 -translate-y-full"
           >
@@ -39,7 +43,7 @@ export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
                 className={cn(
                   'mb-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium shadow-soft transition',
                   selected ? 'bg-ink text-cream' : 'bg-card',
-                  !d.unlocked && 'opacity-70',
+                  !unlocked && 'opacity-70',
                 )}
               >
                 {d.name}
@@ -47,11 +51,11 @@ export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
               <span
                 className={cn(
                   'grid size-9 place-items-center rounded-full border-2 border-card shadow-soft transition group-hover:scale-110',
-                  d.unlocked ? 'bg-terracotta text-white' : 'bg-line text-ink/60',
+                  unlocked ? 'bg-terracotta text-white' : 'bg-line text-ink/60',
                   selected && 'scale-110 ring-4 ring-sun',
                 )}
               >
-                {d.unlocked ? <MapPin className="size-4" aria-hidden /> : <Lock className="size-3.5" aria-hidden />}
+                {unlocked ? <MapPin className="size-4" aria-hidden /> : <Lock className="size-3.5" aria-hidden />}
               </span>
             </span>
           </button>

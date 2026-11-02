@@ -5,6 +5,7 @@ export interface LessonResult {
   xpEarned: number
   achievements: Achievement[]
   newRank?: string
+  unlockedDestinations: string[]
 }
 
 export interface ProgressContextValue {

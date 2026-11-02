@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { destinations } from '../../data/destinations'
 import { questForDay } from '../../data/quests'
 import { storage } from '../../services/storage'
 import type { Lesson, UserProfile } from '../../types'
 import { newlyUnlocked } from '../achievements/achievements'
+import { isDestinationUnlocked } from './destinationProgress'
 import { completeLesson as applyLesson, defaultProfile, emptyProgress, rankFor, statsFor } from './progress'
 import { ProgressContext } from './progressContext'
 
@@ -22,7 +24,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
       const before = rankFor(progress.xp).current.name
       const after = rankFor(next.xp).current.name
-      return { xpEarned: result.xpEarned, achievements: unlocked, newRank: after !== before ? after : undefined }
+      const unlockedDestinations = destinations
+        .filter((d) => !isDestinationUnlocked(d, progress) && isDestinationUnlocked(d, next))
+        .map((d) => d.name)
+      return { xpEarned: result.xpEarned, achievements: unlocked, newRank: after !== before ? after : undefined, unlockedDestinations }
     },
     [progress],
   )

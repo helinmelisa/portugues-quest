@@ -35,6 +35,12 @@ export function LessonComplete({ result, correctFirstTry, total, onDone }: Props
         </motion.p>
       )}
 
+      {result.unlockedDestinations.map((name) => (
+        <motion.p key={name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-3 font-medium">
+          🗺️ New destination unlocked: {name}!
+        </motion.p>
+      ))}
+
       {result.achievements.length > 0 && (
         <section aria-label="New achievements" className="mx-auto mt-6 max-w-sm space-y-2">
           {result.achievements.map((a, i) => (
