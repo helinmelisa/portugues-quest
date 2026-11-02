@@ -1,0 +1,93 @@
+export type CefrLevel = 'A0' | 'A1' | 'A2' | 'B1'
+export type Skill = 'vocabulary' | 'listening' | 'speaking' | 'reading' | 'grammar' | 'culture'
+
+export interface VocabularyItem {
+  id: string
+  pt: string
+  en: string
+  example?: { pt: string; en: string }
+  pronunciation?: string
+  context?: string
+  audioUrl?: string
+}
+
+interface BaseExercise {
+  id: string
+  prompt: string
+  explanation: string
+}
+
+export interface MultipleChoiceExercise extends BaseExercise {
+  type: 'multiple-choice'
+  options: string[]
+  answer: number
+}
+
+// More exercise types (matching, sentence building, ...) join this union later.
+export type Exercise = MultipleChoiceExercise
+
+export interface Lesson {
+  id: string
+  destinationId: string
+  title: string
+  objective: string
+  intro: string
+  minutes: number
+  xp: number
+  skills: Skill[]
+  vocabulary: VocabularyItem[]
+  exercises: Exercise[]
+}
+
+export interface Destination {
+  id: string
+  name: string
+  theme: string
+  description: string
+  level: CefrLevel
+  unlocked: boolean
+  map: { x: number; y: number }
+  lessonIds: string[]
+}
+
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon: string
+}
+
+export interface DailyQuest {
+  id: string
+  lessonId: string
+  title: string
+  description: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  bonusXp: number
+}
+
+export interface UserProfile {
+  name?: string
+  interfaceLanguage: 'en'
+  level: CefrLevel
+  motivation?: string
+  dailyGoalMinutes: 5 | 10 | 15 | 20
+  onboarded: boolean
+}
+
+export interface LearningProgress {
+  xp: number
+  completedLessons: Record<string, string> // lessonId -> ISO date
+  learnedWords: string[]
+  difficultWords: string[]
+  activeDays: string[] // YYYY-MM-DD
+  achievements: string[]
+}
+
+export interface UserStatistics {
+  totalXp: number
+  streak: number
+  lessonsCompleted: number
+  wordsLearned: number
+  rank: string
+}
