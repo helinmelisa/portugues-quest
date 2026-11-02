@@ -20,6 +20,32 @@ Built in small sessions. Each step should be finishable in one sitting.
 - [x] **15. Tutor demo UI** (Inês, scripted, clearly labelled as demo)
 - [x] **16. Polish** — responsive pass, accessibility, README
 
-## Later
-Supabase auth & sync · full A0–A1 curriculum · audio & pronunciation · AI tutor ·
-spaced repetition · more destinations.
+## Milestone 2 — Make it a real daily habit
+
+Goal: enough content for ~2 weeks of daily use, usable on a phone, and words that stick.
+Ordered by value per effort; everything except step 12 is free to run.
+
+### A. Stabilise and ship
+- [ ] **1. Playtest and fix**: click through every flow on desktop and mobile, fix bugs
+- [ ] **2. Deploy**: Vercel (free), SPA rewrites, so the app works on a phone
+- [ ] **3. Installable app (PWA)**: manifest, icon, offline cache, "Add to Home Screen"
+
+### B. Content (the biggest gap)
+- [ ] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
+- [ ] **5. Finish Porto**: café menu, pastries, paying (numbers 1–20, prices)
+- [ ] **6. Unlock Coimbra**: numbers, days, times, daily routine. Unlock rule: finish 3 Porto lessons
+- [ ] **7. Pt-PT vs pt-BR notes**: short "In Portugal…" cards (você, autocarro, pequeno-almoço, …)
+
+### C. Learning that sticks
+- [ ] **8. Spaced repetition**: a review schedule for each word (simple SM-2), and "Words to review today" on the dashboard
+- [ ] **9. Translation exercise**: type the answer, tolerant matching (accents, punctuation)
+- [ ] **10. Settings page**: daily goal, audio speed, reset, export/import progress (JSON)
+
+### D. Accounts and AI (optional, only if time allows)
+- [ ] **11. Supabase**: auth (magic link), sync progress across devices, keep localStorage as an offline cache
+- [ ] **12. Inês with AI**: a Supabase Edge Function plus an LLM behind the `TutorSession` interface,
+  with level-aware prompts and a daily message cap. **This costs money for each message.**
+
+### Later
+Speaking practice with voice recording and pronunciation feedback · recorded native audio · A2/B1 paths ·
+Braga, Aveiro, Sintra, Algarve and Madeira · weekly challenges · more interface languages.
