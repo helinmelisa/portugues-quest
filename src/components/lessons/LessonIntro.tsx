@@ -1,6 +1,6 @@
 import { Clock, Sparkles } from 'lucide-react'
 import type { Lesson } from '../../types'
-import { Badge, Button, Card } from '../common'
+import { Badge, Button, Card, SpeakButton } from '../common'
 
 export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) {
   return (
@@ -20,10 +20,19 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
         <div className="grid gap-3 sm:grid-cols-2">
           {lesson.vocabulary.map((v) => (
             <Card key={v.id} className="p-4 md:p-4">
-              <p className="font-display text-xl">{v.pt}</p>
+              <div className="flex items-start justify-between gap-2">
+                <p className="font-display text-xl">{v.pt}</p>
+                <SpeakButton text={v.pt.split(' / ')[0]} />
+              </div>
               <p className="opacity-80">{v.en}</p>
               {v.pronunciation && <p className="mt-1 text-sm italic opacity-60">/{v.pronunciation}/</p>}
               {v.context && <p className="mt-2 text-sm">{v.context}</p>}
+              {v.example && (
+                <p className="mt-2 flex items-center gap-2 text-sm">
+                  <SpeakButton text={v.example.pt} className="size-7" />
+                  <span><span className="font-medium">{v.example.pt}</span> <span className="opacity-70">— {v.example.en}</span></span>
+                </p>
+              )}
             </Card>
           ))}
         </div>

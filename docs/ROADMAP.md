@@ -11,7 +11,7 @@ Built in small sessions. Each step should be finishable in one sitting.
 - [x] **6. Progress service** — localStorage persistence, XP, streak
 - [x] **7. Lesson engine** — multiple choice + feedback + completion screen
 - [x] **8. First full lesson** — "Saying hello" (Lisboa)
-- [ ] **9. Explore map** — clickable stylised Portugal, locked/unlocked destinations
+- [x] **9. Explore map** — clickable stylised Portugal, locked/unlocked destinations
 - [ ] **10. Dashboard** — stats, daily quest, continue learning, weekly streak
 - [ ] **11. Onboarding** — short skippable flow
 - [ ] **12. More exercises** — matching, sentence building, fill-in-the-blank
