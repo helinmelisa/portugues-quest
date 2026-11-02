@@ -15,7 +15,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(() => storage.load('progress', emptyProgress))
   const [profile, setProfile] = useState(() => storage.load('profile', defaultProfile))
 
-  useEffect(() => storage.save('progress', progress), [progress])
+  useEffect(() => {
+    storage.save('progress', progress)
+  }, [progress])
   useEffect(() => {
     storage.save('profile', profile)
     speech.rate = profile.audioRate ?? speech.rate

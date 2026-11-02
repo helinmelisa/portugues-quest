@@ -54,7 +54,9 @@ export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
     })
   }, [session])
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), [messages, typing])
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages, typing])
 
   const send = async (text: string) => {
     if (!text.trim() || typing || done) return
