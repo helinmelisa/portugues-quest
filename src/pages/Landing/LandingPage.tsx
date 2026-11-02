@@ -1,6 +1,7 @@
 import { Compass, Footprints, Map, MessageCircle, Sparkles, Trophy } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Card } from '../../components/common'
+import { useProgress } from '../../hooks/useProgress'
 import { HeroArt } from './HeroArt'
 
 const features = [
@@ -17,7 +18,8 @@ const steps = [
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const start = () => navigate('/app')
+  const { profile } = useProgress()
+  const start = () => navigate(profile.onboarded ? '/app' : '/onboarding')
 
   return (
     <div className="min-h-screen">

@@ -1,23 +1,26 @@
 import { motion } from 'framer-motion'
 import { PartyPopper } from 'lucide-react'
+import type { LessonResult } from '../../features/progress/progressContext'
 import { Button } from '../common'
+import { Confetti } from '../gamification/Confetti'
 
 interface Props {
-  xpEarned: number
+  result: LessonResult
   correctFirstTry: number
   total: number
   onDone: () => void
 }
 
-export function LessonComplete({ xpEarned, correctFirstTry, total, onDone }: Props) {
+export function LessonComplete({ result, correctFirstTry, total, onDone }: Props) {
   return (
     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="py-10 text-center">
+      <Confetti />
       <PartyPopper className="mx-auto size-16 text-terracotta" aria-hidden />
       <h1 className="mt-4 font-display text-4xl">Parabéns!</h1>
       <p className="mt-2 text-lg opacity-80">Lesson complete. You’re one step closer to feeling at home.</p>
       <div className="mx-auto mt-8 grid max-w-sm grid-cols-2 gap-3">
         <div className="rounded-3xl bg-sun/30 p-4">
-          <p className="font-display text-3xl">+{xpEarned}</p>
+          <p className="font-display text-3xl">+{result.xpEarned}</p>
           <p className="text-sm">XP earned</p>
         </div>
         <div className="rounded-3xl bg-sage/25 p-4">
@@ -25,6 +28,33 @@ export function LessonComplete({ xpEarned, correctFirstTry, total, onDone }: Pro
           <p className="text-sm">right first try</p>
         </div>
       </div>
+
+      {result.newRank && (
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 font-medium">
+          New rank unlocked: <span className="text-terracotta-dark">{result.newRank}</span> 🎉
+        </motion.p>
+      )}
+
+      {result.achievements.length > 0 && (
+        <section aria-label="New achievements" className="mx-auto mt-6 max-w-sm space-y-2">
+          {result.achievements.map((a, i) => (
+            <motion.div
+              key={a.id}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 + i * 0.2, type: 'spring' }}
+              className="flex items-center gap-3 rounded-2xl border border-line bg-card p-3 text-left"
+            >
+              <span className="text-3xl" aria-hidden>{a.icon}</span>
+              <div>
+                <p className="font-medium">Achievement: {a.title}</p>
+                <p className="text-sm opacity-75">{a.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </section>
+      )}
+
       <Button size="lg" className="mt-10" onClick={onDone}>Continue</Button>
     </motion.div>
   )

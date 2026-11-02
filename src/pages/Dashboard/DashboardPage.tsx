@@ -1,6 +1,7 @@
 import { BookOpen, Flame, Leaf, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card, ProgressBar } from '../../components/common'
+import { AchievementList } from '../../components/gamification/AchievementList'
 import { WeeklyStreak } from '../../components/gamification/WeeklyStreak'
 import { isLessonAvailable, lessons } from '../../data/curriculum'
 import { questForDay } from '../../data/quests'
@@ -8,8 +9,6 @@ import { rankFor } from '../../features/progress/progress'
 import { useProgress } from '../../hooks/useProgress'
 import { dayKey } from '../../utils/date'
 import { DailyQuestCard } from './DailyQuestCard'
-
-const DAILY_GOAL_MINUTES = 10 // replaced by the onboarding choice in step 11
 
 function greeting() {
   const h = new Date().getHours()
@@ -19,7 +18,8 @@ function greeting() {
 }
 
 export default function DashboardPage() {
-  const { progress, stats } = useProgress()
+  const { progress, stats, profile } = useProgress()
+  const goal = profile.dailyGoalMinutes
   const today = dayKey()
   const quest = questForDay(today)
   const { next } = rankFor(stats.totalXp)
@@ -45,7 +45,7 @@ export default function DashboardPage() {
         <p className="mt-2 opacity-80">Ready to make a little Portuguese progress today?</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Badge tone="terracotta">{stats.rank}</Badge>
-          <Badge tone="sky">Level A0</Badge>
+          <Badge tone="sky">Level {profile.level}</Badge>
         </div>
       </header>
 
@@ -80,8 +80,8 @@ export default function DashboardPage() {
 
         <Card className="space-y-4">
           <div>
-            <div className="mb-1.5 flex justify-between"><h2 className="font-display text-xl">Daily goal</h2><span className="text-sm">{Math.min(minutesToday, DAILY_GOAL_MINUTES)}/{DAILY_GOAL_MINUTES} min</span></div>
-            <ProgressBar value={minutesToday} max={DAILY_GOAL_MINUTES} label="Daily goal" color="sage" />
+            <div className="mb-1.5 flex justify-between"><h2 className="font-display text-xl">Daily goal</h2><span className="text-sm">{Math.min(minutesToday, goal)}/{goal} min</span></div>
+            <ProgressBar value={minutesToday} max={goal} label="Daily goal" color="sage" />
           </div>
           <div>
             <div className="mb-1.5 flex justify-between"><h2 className="font-display text-xl">Road to A1</h2><span className="text-sm">{a0Done}/{a0Lessons.length} lessons</span></div>
@@ -97,6 +97,11 @@ export default function DashboardPage() {
           <p className="text-sm opacity-70">Missed a day? No problem — just pick up where you left off.</p>
         </div>
         <WeeklyStreak activeDays={progress.activeDays} />
+      </Card>
+
+      <Card className="space-y-3">
+        <h2 className="font-display text-xl">Achievements</h2>
+        <AchievementList unlocked={progress.achievements} />
       </Card>
     </div>
   )

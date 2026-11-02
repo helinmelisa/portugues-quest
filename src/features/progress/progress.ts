@@ -1,4 +1,4 @@
-import type { DailyQuest, LearningProgress, Lesson, UserStatistics } from '../../types'
+import type { DailyQuest, LearningProgress, Lesson, UserProfile, UserStatistics } from '../../types'
 import { addDays, dayKey } from '../../utils/date'
 
 export const emptyProgress: LearningProgress = {
@@ -10,6 +10,13 @@ export const emptyProgress: LearningProgress = {
   minutesByDay: {},
   questDays: [],
   achievements: [],
+}
+
+export const defaultProfile: UserProfile = {
+  interfaceLanguage: 'en',
+  level: 'A0',
+  dailyGoalMinutes: 10,
+  onboarded: false,
 }
 
 export const XP = { repeatLessonFactor: 0.5 }

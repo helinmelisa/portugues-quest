@@ -4,8 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button, ProgressBar } from '../../components/common'
 import { FeedbackPanel } from '../../components/lessons/FeedbackPanel'
 import { LessonComplete } from '../../components/lessons/LessonComplete'
+import type { LessonResult } from '../../features/progress/progressContext'
 import { LessonIntro } from '../../components/lessons/LessonIntro'
-import { MultipleChoice } from '../../components/lessons/MultipleChoice'
+import { ExerciseView } from '../../components/lessons/ExerciseView'
+import type { ExerciseResponse } from '../../components/lessons/types'
 import { getLesson, isLessonAvailable } from '../../data/curriculum'
 import { useProgress } from '../../hooks/useProgress'
 import type { Exercise } from '../../types'
@@ -21,9 +23,9 @@ export default function LessonPage() {
   const [stage, setStage] = useState<Stage>('intro')
   const [queue, setQueue] = useState<Exercise[]>(lesson?.exercises ?? [])
   const [missed, setMissed] = useState(new Set<string>())
-  const [selected, setSelected] = useState<number | null>(null)
+  const [response, setResponse] = useState<ExerciseResponse>({ ready: false, correct: false })
   const [checked, setChecked] = useState(false)
-  const [xpEarned, setXpEarned] = useState(0)
+  const [result, setResult] = useState<LessonResult | null>(null)
 
   const exit = () => navigate(-1)
 
@@ -42,19 +44,19 @@ export default function LessonPage() {
   const total = lesson.exercises.length
   const done = total - new Set(queue.map((e) => e.id)).size
   const current = queue[0]
-  const correct = checked && current?.type === 'multiple-choice' && selected === current.answer
+  const correct = checked && response.correct
 
   const check = () => {
     setChecked(true)
-    if (selected !== current.answer) setMissed((m) => new Set(m).add(current.id))
+    if (!response.correct) setMissed((m) => new Set(m).add(current.id))
   }
 
   const next = () => {
     const rest = correct ? queue.slice(1) : [...queue.slice(1), current]
-    setSelected(null)
+    setResponse({ ready: false, correct: false })
     setChecked(false)
     if (rest.length === 0) {
-      setXpEarned(completeLesson(lesson))
+      setResult(completeLesson(lesson))
       setStage('complete')
     }
     setQueue(rest)
@@ -72,10 +74,10 @@ export default function LessonPage() {
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-8">
         {stage === 'intro' && <LessonIntro lesson={lesson} onStart={() => setStage('exercises')} />}
         {stage === 'exercises' && current && (
-          <MultipleChoice key={current.id + queue.length} exercise={current} selected={selected} checked={checked} onSelect={setSelected} />
+          <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
-        {stage === 'complete' && (
-          <LessonComplete xpEarned={xpEarned} correctFirstTry={total - missed.size} total={total} onDone={() => navigate('/app')} />
+        {stage === 'complete' && result && (
+          <LessonComplete result={result} correctFirstTry={total - missed.size} total={total} onDone={() => navigate('/app')} />
         )}
       </main>
 
@@ -85,7 +87,7 @@ export default function LessonPage() {
         ) : (
           <div className="border-t border-line px-4 py-5">
             <div className="mx-auto flex max-w-2xl justify-end">
-              <Button onClick={check} disabled={selected === null} className="w-full sm:w-auto">Check</Button>
+              <Button onClick={check} disabled={!response.ready} className="w-full sm:w-auto">Check</Button>
             </div>
           </div>
         )

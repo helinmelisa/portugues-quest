@@ -6,6 +6,7 @@ import DestinationPage from './pages/Explore/DestinationPage'
 import ExplorePage from './pages/Explore/ExplorePage'
 import LandingPage from './pages/Landing/LandingPage'
 import LessonPage from './pages/Lesson/LessonPage'
+import OnboardingPage from './pages/Onboarding/OnboardingPage'
 import PracticePage from './pages/Practice/PracticePage'
 import TutorPage from './pages/Tutor/TutorPage'
 
@@ -15,6 +16,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/app" element={<AppLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="explore" element={<ExplorePage />} />

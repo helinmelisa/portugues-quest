@@ -1,10 +1,18 @@
 import { createContext } from 'react'
-import type { LearningProgress, Lesson, UserStatistics } from '../../types'
+import type { Achievement, LearningProgress, Lesson, UserProfile, UserStatistics } from '../../types'
+
+export interface LessonResult {
+  xpEarned: number
+  achievements: Achievement[]
+  newRank?: string
+}
 
 export interface ProgressContextValue {
   progress: LearningProgress
   stats: UserStatistics
-  completeLesson: (lesson: Lesson) => number
+  profile: UserProfile
+  completeLesson: (lesson: Lesson) => LessonResult
+  updateProfile: (changes: Partial<UserProfile>) => void
   reset: () => void
 }
 

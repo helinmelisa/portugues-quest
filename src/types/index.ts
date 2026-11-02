@@ -23,8 +23,27 @@ export interface MultipleChoiceExercise extends BaseExercise {
   answer: number
 }
 
-// More exercise types (matching, sentence building, ...) join this union later.
-export type Exercise = MultipleChoiceExercise
+export interface FillBlankExercise extends BaseExercise {
+  type: 'fill-blank'
+  sentence: string // use ___ for the gap
+  translation: string
+  options: string[]
+  answer: number
+}
+
+export interface SentenceBuildExercise extends BaseExercise {
+  type: 'sentence-build'
+  translation: string
+  words: string[] // correct order
+  distractors: string[]
+}
+
+export interface MatchingExercise extends BaseExercise {
+  type: 'matching'
+  pairs: [pt: string, en: string][]
+}
+
+export type Exercise = MultipleChoiceExercise | FillBlankExercise | SentenceBuildExercise | MatchingExercise
 
 export interface Lesson {
   id: string
@@ -71,6 +90,7 @@ export interface UserProfile {
   interfaceLanguage: 'en'
   level: CefrLevel
   motivation?: string
+  experience?: string
   dailyGoalMinutes: 5 | 10 | 15 | 20
   onboarded: boolean
 }
