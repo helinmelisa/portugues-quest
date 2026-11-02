@@ -29,7 +29,7 @@ Ordered by value per effort; everything except step 12 is free to run.
 - [x] **2. Deploy**: Vercel (free), SPA rewrites, so the app works on a phone
 
 ### B. Content (the biggest gap)
-- [ ] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
+- [x] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
 - [ ] **5. Finish Porto**: café menu, pastries, paying (numbers 1–20, prices)
 - [ ] **6. Unlock Coimbra**: numbers, days, times, daily routine. Unlock rule: finish 3 Porto lessons
 - [ ] **7. Pt-PT vs pt-BR notes**: short "In Portugal…" cards (você, autocarro, pequeno-almoço, …)
