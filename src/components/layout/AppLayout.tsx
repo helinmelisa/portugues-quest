@@ -9,6 +9,9 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-screen">
+      <a href="#content" className="sr-only z-20 rounded-full bg-card px-4 py-2 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+        Skip to content
+      </a>
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between gap-3 px-4 py-3 md:justify-end md:px-8 md:py-5">
@@ -20,7 +23,7 @@ export function AppLayout() {
             <XpChip xp={stats.totalXp} />
           </div>
         </header>
-        <main className="flex-1 px-4 pb-24 md:px-8 md:pb-10">
+        <main id="content" className="flex-1 px-4 pb-24 md:px-8 md:pb-10">
           <Outlet />
         </main>
       </div>

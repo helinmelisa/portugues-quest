@@ -9,6 +9,7 @@ import { rankFor } from '../../features/progress/progress'
 import { useProgress } from '../../hooks/useProgress'
 import { dayKey } from '../../utils/date'
 import { DailyQuestCard } from './DailyQuestCard'
+import { ResetProgress } from './ResetProgress'
 
 function greeting() {
   const h = new Date().getHours()
@@ -103,6 +104,8 @@ export default function DashboardPage() {
         <h2 className="font-display text-xl">Achievements</h2>
         <AchievementList unlocked={progress.achievements} />
       </Card>
+
+      <ResetProgress />
     </div>
   )
 }

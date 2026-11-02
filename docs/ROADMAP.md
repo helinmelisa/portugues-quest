@@ -16,9 +16,9 @@ Built in small sessions. Each step should be finishable in one sitting.
 - [x] **11. Onboarding** — short skippable flow
 - [x] **12. More exercises** — matching, sentence building, fill-in-the-blank
 - [x] **13. Achievements + celebrations**
-- [ ] **14. Practice Corner + Word Garden**
-- [ ] **15. Tutor demo UI** (Inês, scripted, clearly labelled as demo)
-- [ ] **16. Polish** — responsive pass, accessibility, README
+- [x] **14. Practice Corner + Word Garden**
+- [x] **15. Tutor demo UI** (Inês, scripted, clearly labelled as demo)
+- [x] **16. Polish** — responsive pass, accessibility, README
 
 ## Later
 Supabase auth & sync · full A0–A1 curriculum · audio & pronunciation · AI tutor ·

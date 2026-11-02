@@ -43,7 +43,14 @@ export interface MatchingExercise extends BaseExercise {
   pairs: [pt: string, en: string][]
 }
 
-export type Exercise = MultipleChoiceExercise | FillBlankExercise | SentenceBuildExercise | MatchingExercise
+export interface ListeningExercise extends BaseExercise {
+  type: 'listening'
+  audioText: string
+  options: string[]
+  answer: number
+}
+
+export type Exercise = MultipleChoiceExercise | FillBlankExercise | SentenceBuildExercise | MatchingExercise | ListeningExercise
 
 export interface Lesson {
   id: string

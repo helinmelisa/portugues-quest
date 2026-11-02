@@ -1,5 +1,6 @@
 import type { Exercise } from '../../types'
 import { FillBlank } from './FillBlank'
+import { Listening } from './Listening'
 import { Matching } from './Matching'
 import { MultipleChoice } from './MultipleChoice'
 import { SentenceBuild } from './SentenceBuild'
@@ -15,5 +16,7 @@ export function ExerciseView({ exercise, ...props }: ExerciseProps<Exercise>) {
       return <SentenceBuild exercise={exercise} {...props} />
     case 'matching':
       return <Matching exercise={exercise} {...props} />
+    case 'listening':
+      return <Listening exercise={exercise} {...props} />
   }
 }

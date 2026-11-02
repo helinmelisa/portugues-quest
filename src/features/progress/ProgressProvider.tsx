@@ -29,6 +29,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = useCallback((changes: Partial<UserProfile>) => setProfile((p) => ({ ...p, ...changes })), [])
 
+  const toggleDifficult = useCallback(
+    (id: string) =>
+      setProgress((p) => ({
+        ...p,
+        difficultWords: p.difficultWords.includes(id) ? p.difficultWords.filter((w) => w !== id) : [...p.difficultWords, id],
+      })),
+    [],
+  )
+
   const value = useMemo(
     () => ({
       progress,
@@ -36,12 +45,13 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       stats: statsFor(progress),
       completeLesson,
       updateProfile,
+      toggleDifficult,
       reset: () => {
         setProgress(emptyProgress)
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, updateProfile],
+    [progress, profile, completeLesson, updateProfile, toggleDifficult],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

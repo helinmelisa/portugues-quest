@@ -53,6 +53,7 @@ export function completeLesson(
   quest?: DailyQuest,
 ): { progress: LearningProgress; xpEarned: number } {
   const today = dayKey()
+  const isPractice = lesson.destinationId === 'practice'
   const repeat = lesson.id in progress.completedLessons
   const questBonus = quest?.lessonId === lesson.id && !progress.questDays.includes(today) ? quest.bonusXp : 0
   const xpEarned = (repeat ? Math.round(lesson.xp * XP.repeatLessonFactor) : lesson.xp) + questBonus
@@ -62,7 +63,7 @@ export function completeLesson(
     progress: {
       ...progress,
       xp: progress.xp + xpEarned,
-      completedLessons: { ...progress.completedLessons, [lesson.id]: progress.completedLessons[lesson.id] ?? today },
+      completedLessons: isPractice ? progress.completedLessons : { ...progress.completedLessons, [lesson.id]: progress.completedLessons[lesson.id] ?? today },
       learnedWords: [...new Set([...progress.learnedWords, ...lesson.vocabulary.map((v) => v.id)])],
       activeDays: progress.activeDays.includes(today) ? progress.activeDays : [...progress.activeDays, today],
       minutesByDay: { ...progress.minutesByDay, [today]: (progress.minutesByDay[today] ?? 0) + lesson.minutes },

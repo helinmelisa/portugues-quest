@@ -8,7 +8,8 @@ import type { LessonResult } from '../../features/progress/progressContext'
 import { LessonIntro } from '../../components/lessons/LessonIntro'
 import { ExerciseView } from '../../components/lessons/ExerciseView'
 import type { ExerciseResponse } from '../../components/lessons/types'
-import { getLesson, isLessonAvailable } from '../../data/curriculum'
+import { isLessonAvailable } from '../../data/curriculum'
+import { resolveLesson } from '../../features/learning/practice'
 import { useProgress } from '../../hooks/useProgress'
 import type { Exercise } from '../../types'
 
@@ -17,10 +18,10 @@ type Stage = 'intro' | 'exercises' | 'complete'
 export default function LessonPage() {
   const { lessonId = '' } = useParams()
   const navigate = useNavigate()
-  const { completeLesson } = useProgress()
-  const lesson = getLesson(lessonId)
+  const { completeLesson, progress } = useProgress()
+  const [lesson] = useState(() => resolveLesson(lessonId, progress))
 
-  const [stage, setStage] = useState<Stage>('intro')
+  const [stage, setStage] = useState<Stage>(lesson?.vocabulary.length ? 'intro' : 'exercises')
   const [queue, setQueue] = useState<Exercise[]>(lesson?.exercises ?? [])
   const [missed, setMissed] = useState(new Set<string>())
   const [response, setResponse] = useState<ExerciseResponse>({ ready: false, correct: false })
@@ -77,7 +78,7 @@ export default function LessonPage() {
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
         {stage === 'complete' && result && (
-          <LessonComplete result={result} correctFirstTry={total - missed.size} total={total} onDone={() => navigate('/app')} />
+          <LessonComplete result={result} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
         )}
       </main>
 

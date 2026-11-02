@@ -8,6 +8,7 @@ import LandingPage from './pages/Landing/LandingPage'
 import LessonPage from './pages/Lesson/LessonPage'
 import OnboardingPage from './pages/Onboarding/OnboardingPage'
 import PracticePage from './pages/Practice/PracticePage'
+import WordGardenPage from './pages/Practice/WordGardenPage'
 import TutorPage from './pages/Tutor/TutorPage'
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="explore" element={<ExplorePage />} />
             <Route path="explore/:destinationId" element={<DestinationPage />} />
             <Route path="practice" element={<PracticePage />} />
+            <Route path="practice/words" element={<WordGardenPage />} />
             <Route path="tutor" element={<TutorPage />} />
           </Route>
           <Route path="/lesson/:lessonId" element={<LessonPage />} />

@@ -13,6 +13,7 @@ export interface ProgressContextValue {
   profile: UserProfile
   completeLesson: (lesson: Lesson) => LessonResult
   updateProfile: (changes: Partial<UserProfile>) => void
+  toggleDifficult: (wordId: string) => void
   reset: () => void
 }
 
