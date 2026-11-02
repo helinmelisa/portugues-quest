@@ -4,6 +4,7 @@ import { ProgressProvider } from './features/progress/ProgressProvider'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import ExplorePage from './pages/Explore/ExplorePage'
 import LandingPage from './pages/Landing/LandingPage'
+import LessonPage from './pages/Lesson/LessonPage'
 import PracticePage from './pages/Practice/PracticePage'
 import TutorPage from './pages/Tutor/TutorPage'
 
@@ -19,6 +20,7 @@ export default function App() {
             <Route path="practice" element={<PracticePage />} />
             <Route path="tutor" element={<TutorPage />} />
           </Route>
+          <Route path="/lesson/:lessonId" element={<LessonPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

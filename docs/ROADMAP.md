@@ -9,8 +9,8 @@ Built in small sessions. Each step should be finishable in one sitting.
 - [x] **4. Landing page** — hero, features, how it works, footer
 - [x] **5. Types + data** — interfaces, Lisboa & Porto curriculum (pt-PT)
 - [x] **6. Progress service** — localStorage persistence, XP, streak
-- [ ] **7. Lesson engine** — multiple choice + feedback + completion screen
-- [ ] **8. First full lesson** — "Saying hello" (Lisboa)
+- [x] **7. Lesson engine** — multiple choice + feedback + completion screen
+- [x] **8. First full lesson** — "Saying hello" (Lisboa)
 - [ ] **9. Explore map** — clickable stylised Portugal, locked/unlocked destinations
 - [ ] **10. Dashboard** — stats, daily quest, continue learning, weekly streak
 - [ ] **11. Onboarding** — short skippable flow
