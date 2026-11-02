@@ -41,12 +41,35 @@ Ordered by value per effort; everything except step 12 is free to run.
 
 ### D. Accounts and AI (optional, only if time allows)
 - [x] **11. Supabase**: auth (magic link), sync progress across devices, keep localStorage as an offline cache
-- [ ] **12. Inês with AI**: a Supabase Edge Function plus an LLM behind the `TutorSession` interface,
+- [x] **12. Inês with AI**: a Supabase Edge Function plus an LLM behind the `TutorSession` interface,
   with level-aware prompts and a daily message cap. **This costs money for each message.**
 
-### Later
-- [ ] Full playtest and bug-fix pass on desktop and mobile
-- [ ] Installable app (PWA): manifest, icon, offline cache
+## Milestone 3 — Speak and explore
 
-Speaking practice with voice recording and pronunciation feedback · recorded native audio · A2/B1 paths ·
-Braga, Aveiro, Sintra, Algarve and Madeira · weekly challenges · more interface languages.
+Goal: actually speaking out loud, more of Portugal to explore, and Inês as a real practice partner.
+Everything runs on free tiers: Groq (Whisper and the chat model) and the browser's own speech features.
+
+### A. Speaking (the biggest gap)
+- [ ] **1. Voice input for Inês**: a mic button in the chat. Speech is transcribed by Groq Whisper through the Edge Function, and Inês can read her replies aloud
+- [ ] **2. Pronunciation exercise**: listen, record yourself, see the transcript, and get a similarity score with friendly feedback
+- [ ] **3. Speaking in lessons**: add 1 pronunciation exercise to each lesson, plus a "Speak" mode in Practice Corner
+
+### B. Inês as a practice partner
+- [ ] **4. Conversation wrap-up**: when you end a chat, Inês sums up what went well, 2–3 corrections and new words, which can be added to the Word Garden
+- [ ] **5. Rewards for talking**: XP for conversations, a "First Conversation" achievement and a "talk to Inês" daily quest
+
+### C. More of Portugal
+- [ ] **6. Aveiro (getting around)**: buses and trains, buying tickets, directions, timetables. Completes "Getting Around"
+- [ ] **7. Braga (shopping)**: prices, quantities, the mercado, clothes and sizes
+- [ ] **8. Grammar bites**: short optional cards (gender and articles, ser vs estar, regular -ar verbs) linked from lessons
+
+### D. Habit and polish
+- [ ] **9. Weekly challenge**: one gentle goal each week (e.g. 3 lessons and 1 chat) with a bonus badge
+- [ ] **10. Playtest and polish**: a full pass on iPhone and desktop, fixing whatever you've noticed
+
+## Later
+- [ ] Installable app (PWA): manifest, icon, offline cache
+- [ ] Sintra, Algarve and Madeira
+- [ ] Recorded native audio
+- [ ] A2/B1 paths
+- [ ] More interface languages
