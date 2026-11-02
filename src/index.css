@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #f8f6ef;
+  --color-ink: #34413a;
+  --color-terracotta: #d78362;
+  --color-sage: #a9b79a;
+  --color-sky: #a9c4c4;
+  --color-sun: #e8c477;
+  --color-card: #fffefa;
+  --color-line: #eae7dc;
+
+  --font-display: 'Fraunces', serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  @apply bg-cream text-ink font-sans antialiased;
+}
