@@ -25,10 +25,8 @@ Built in small sessions. Each step should be finishable in one sitting.
 Goal: enough content for ~2 weeks of daily use, usable on a phone, and words that stick.
 Ordered by value per effort; everything except step 12 is free to run.
 
-### A. Stabilise and ship
-- [ ] **1. Playtest and fix**: click through every flow on desktop and mobile, fix bugs
+### A. Ship
 - [ ] **2. Deploy**: Vercel (free), SPA rewrites, so the app works on a phone
-- [ ] **3. Installable app (PWA)**: manifest, icon, offline cache, "Add to Home Screen"
 
 ### B. Content (the biggest gap)
 - [ ] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
@@ -47,5 +45,8 @@ Ordered by value per effort; everything except step 12 is free to run.
   with level-aware prompts and a daily message cap. **This costs money for each message.**
 
 ### Later
+- [ ] Full playtest and bug-fix pass on desktop and mobile
+- [ ] Installable app (PWA): manifest, icon, offline cache
+
 Speaking practice with voice recording and pronunciation feedback · recorded native audio · A2/B1 paths ·
 Braga, Aveiro, Sintra, Algarve and Madeira · weekly challenges · more interface languages.
