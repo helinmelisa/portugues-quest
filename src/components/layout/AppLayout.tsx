@@ -1,9 +1,12 @@
 import { Link, Outlet } from 'react-router-dom'
+import { useProgress } from '../../hooks/useProgress'
 import { StreakChip, XpChip } from '../gamification/StatChip'
 import { BottomNav } from '../navigation/BottomNav'
 import { Sidebar } from '../navigation/Sidebar'
 
 export function AppLayout() {
+  const { stats } = useProgress()
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -13,8 +16,8 @@ export function AppLayout() {
             Português <span className="text-terracotta">Quest</span>
           </Link>
           <div className="flex gap-2">
-            <StreakChip days={0} />
-            <XpChip xp={0} />
+            <StreakChip days={stats.streak} />
+            <XpChip xp={stats.totalXp} />
           </div>
         </header>
         <main className="flex-1 px-4 pb-24 md:px-8 md:pb-10">
