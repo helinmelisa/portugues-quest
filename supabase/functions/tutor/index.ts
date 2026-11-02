@@ -3,7 +3,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const DAILY_LIMIT = 50
-const MODEL = Deno.env.get('GROQ_MODEL') ?? 'llama-3.3-70b-versatile'
+const MODEL = Deno.env.get('GROQ_MODEL') ?? 'openai/gpt-oss-120b'
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -71,15 +71,20 @@ Deno.serve(async (req) => {
     body: JSON.stringify({
       model: MODEL,
       temperature: 0.7,
-      max_tokens: 400,
+      max_tokens: 1000,
+      reasoning_effort: 'low',
       response_format: { type: 'json_object' },
       messages: [{ role: 'system', content: systemPrompt(setting, level) }, ...history],
     }),
   })
-  if (!groq.ok) return json({ error: 'Inês is taking a little break. Try again in a moment.' }, 502)
+  if (!groq.ok) {
+    console.error('Groq error', groq.status, await groq.text())
+    return json({ error: 'Inês is taking a little break. Try again in a moment.' }, 502)
+  }
 
   try {
-    const content = JSON.parse((await groq.json()).choices[0].message.content)
+    // Some models use non-breaking hyphens (bem‑vindo); normalise them.
+    const content = JSON.parse((await groq.json()).choices[0].message.content.replace(/\u2011/g, '-'))
     return json({
       reply: String(content.reply ?? ''),
       translation: content.translation ? String(content.translation) : undefined,
