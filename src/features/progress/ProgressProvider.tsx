@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { destinations } from '../../data/destinations'
 import { questForDay } from '../../data/quests'
+import { speech } from '../../services/speech'
 import { storage } from '../../services/storage'
-import type { Lesson, UserProfile } from '../../types'
+import type { LearningProgress, Lesson, UserProfile } from '../../types'
+import { applyReview } from '../vocabulary/srs'
 import { newlyUnlocked } from '../achievements/achievements'
 import { isDestinationUnlocked } from './destinationProgress'
 import { completeLesson as applyLesson, defaultProfile, emptyProgress, rankFor, statsFor } from './progress'
@@ -13,7 +15,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState(() => storage.load('profile', defaultProfile))
 
   useEffect(() => storage.save('progress', progress), [progress])
-  useEffect(() => storage.save('profile', profile), [profile])
+  useEffect(() => {
+    storage.save('profile', profile)
+    speech.rate = profile.audioRate ?? speech.rate
+  }, [profile])
 
   const completeLesson = useCallback(
     (lesson: Lesson) => {
@@ -43,6 +48,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const reviewWord = useCallback(
+    (id: string, correct: boolean) =>
+      setProgress((p) => ({ ...p, reviews: { ...p.reviews, [id]: applyReview(p.reviews[id], correct) } })),
+    [],
+  )
+
+  const replaceAll = useCallback((data: { progress: LearningProgress; profile: UserProfile }) => {
+    setProgress({ ...emptyProgress, ...data.progress })
+    setProfile({ ...defaultProfile, ...data.profile })
+  }, [])
+
   const value = useMemo(
     () => ({
       progress,
@@ -51,12 +67,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       completeLesson,
       updateProfile,
       toggleDifficult,
+      reviewWord,
+      replaceAll,
       reset: () => {
         setProgress(emptyProgress)
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, updateProfile, toggleDifficult],
+    [progress, profile, completeLesson, updateProfile, toggleDifficult, reviewWord, replaceAll],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

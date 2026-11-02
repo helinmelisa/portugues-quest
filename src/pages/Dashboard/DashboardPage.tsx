@@ -1,6 +1,6 @@
-import { BookOpen, Flame, Leaf, Sparkles } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { Badge, Card, ProgressBar } from '../../components/common'
+import { BookOpen, Flame, Leaf, Lightbulb, RotateCcw, Sparkles } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Badge, Button, Card, ProgressBar } from '../../components/common'
 import { AchievementList } from '../../components/gamification/AchievementList'
 import { WeeklyStreak } from '../../components/gamification/WeeklyStreak'
 import { isLessonAvailable, lessons } from '../../data/curriculum'
@@ -9,7 +9,8 @@ import { rankFor } from '../../features/progress/progress'
 import { useProgress } from '../../hooks/useProgress'
 import { dayKey } from '../../utils/date'
 import { DailyQuestCard } from './DailyQuestCard'
-import { ResetProgress } from './ResetProgress'
+import { noteForDay } from '../../data/ptNotes'
+import { dueWordIds } from '../../features/vocabulary/srs'
 
 function greeting() {
   const h = new Date().getHours()
@@ -21,8 +22,11 @@ function greeting() {
 export default function DashboardPage() {
   const { progress, stats, profile } = useProgress()
   const goal = profile.dailyGoalMinutes
+  const navigate = useNavigate()
   const today = dayKey()
   const quest = questForDay(today)
+  const dueCount = dueWordIds(progress, today).length
+  const tip = noteForDay(today)
   const { next } = rankFor(stats.totalXp)
   const minutesToday = progress.minutesByDay[today] ?? 0
 
@@ -51,6 +55,19 @@ export default function DashboardPage() {
       </header>
 
       <DailyQuestCard quest={quest} claimed={progress.questDays.includes(today)} />
+
+      {progress.learnedWords.length > 0 && (
+        <Card className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <RotateCcw className="size-6 text-sky" aria-hidden />
+            <div>
+              <h2 className="font-display text-xl">{dueCount ? `${dueCount} words to review` : 'Reviews done for today'}</h2>
+              <p className="text-sm opacity-75">{dueCount ? 'A quick review keeps words from slipping away.' : 'Your words are fresh. Volta amanhã!'}</p>
+            </div>
+          </div>
+          {dueCount > 0 && <Button onClick={() => navigate('/lesson/practice-review')}>Review now</Button>}
+        </Card>
+      )}
 
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {statItems.map(({ icon: Icon, label, value, tone }) => (
@@ -100,12 +117,23 @@ export default function DashboardPage() {
         <WeeklyStreak activeDays={progress.activeDays} />
       </Card>
 
+      <Card className="flex gap-3 bg-sun/15">
+        <Lightbulb className="mt-1 size-5 shrink-0 text-terracotta" aria-hidden />
+        <div>
+          <h2 className="font-display text-lg">In Portugal, we say…</h2>
+          <p className="mt-1">
+            <strong>{tip.pt}</strong> ({tip.en}) — not <span className="opacity-70">{tip.br}</span>.
+            {tip.note && <span className="opacity-80"> {tip.note}</span>}
+          </p>
+          <Link to="/app/practice/portugal-vs-brazil" className="mt-1 inline-block text-sm font-medium text-terracotta-dark hover:underline">See all differences →</Link>
+        </div>
+      </Card>
+
       <Card className="space-y-3">
         <h2 className="font-display text-xl">Achievements</h2>
         <AchievementList unlocked={progress.achievements} />
       </Card>
 
-      <ResetProgress />
     </div>
   )
 }

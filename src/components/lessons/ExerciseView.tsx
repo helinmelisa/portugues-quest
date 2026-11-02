@@ -4,6 +4,7 @@ import { Listening } from './Listening'
 import { Matching } from './Matching'
 import { MultipleChoice } from './MultipleChoice'
 import { SentenceBuild } from './SentenceBuild'
+import { Translation } from './Translation'
 import type { ExerciseProps } from './types'
 
 export function ExerciseView({ exercise, ...props }: ExerciseProps<Exercise>) {
@@ -18,5 +19,7 @@ export function ExerciseView({ exercise, ...props }: ExerciseProps<Exercise>) {
       return <Matching exercise={exercise} {...props} />
     case 'listening':
       return <Listening exercise={exercise} {...props} />
+    case 'translation':
+      return <Translation exercise={exercise} {...props} />
   }
 }

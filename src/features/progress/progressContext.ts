@@ -15,6 +15,8 @@ export interface ProgressContextValue {
   completeLesson: (lesson: Lesson) => LessonResult
   updateProfile: (changes: Partial<UserProfile>) => void
   toggleDifficult: (wordId: string) => void
+  reviewWord: (wordId: string, correct: boolean) => void
+  replaceAll: (data: { progress: LearningProgress; profile: UserProfile }) => void
   reset: () => void
 }
 

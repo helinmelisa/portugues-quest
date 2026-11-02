@@ -18,7 +18,7 @@ type Stage = 'intro' | 'exercises' | 'complete'
 export default function LessonPage() {
   const { lessonId = '' } = useParams()
   const navigate = useNavigate()
-  const { completeLesson, progress } = useProgress()
+  const { completeLesson, progress, reviewWord } = useProgress()
   const [lesson] = useState(() => resolveLesson(lessonId, progress))
 
   const [stage, setStage] = useState<Stage>(lesson?.vocabulary.length ? 'intro' : 'exercises')
@@ -49,6 +49,7 @@ export default function LessonPage() {
 
   const check = () => {
     setChecked(true)
+    if (current.wordId && !missed.has(current.id)) reviewWord(current.wordId, response.correct)
     if (!response.correct) setMissed((m) => new Set(m).add(current.id))
   }
 
@@ -84,7 +85,7 @@ export default function LessonPage() {
 
       {stage === 'exercises' && current && (
         checked ? (
-          <FeedbackPanel correct={correct} explanation={current.explanation} onContinue={next} />
+          <FeedbackPanel correct={correct} explanation={current.explanation} note={response.note} onContinue={next} />
         ) : (
           <div className="border-t border-line px-4 py-5">
             <div className="mx-auto flex max-w-2xl justify-end">

@@ -32,12 +32,12 @@ Ordered by value per effort; everything except step 12 is free to run.
 - [x] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
 - [x] **5. Finish Porto**: café menu, pastries, paying (numbers 1–20, prices)
 - [x] **6. Unlock Coimbra**: numbers, days, times, daily routine. Unlock rule: finish 3 Porto lessons
-- [ ] **7. Pt-PT vs pt-BR notes**: short "In Portugal…" cards (você, autocarro, pequeno-almoço, …)
+- [x] **7. Pt-PT vs pt-BR notes**: short "In Portugal…" cards (você, autocarro, pequeno-almoço, …)
 
 ### C. Learning that sticks
-- [ ] **8. Spaced repetition**: a review schedule for each word (simple SM-2), and "Words to review today" on the dashboard
-- [ ] **9. Translation exercise**: type the answer, tolerant matching (accents, punctuation)
-- [ ] **10. Settings page**: daily goal, audio speed, reset, export/import progress (JSON)
+- [x] **8. Spaced repetition**: a review schedule for each word (simple SM-2), and "Words to review today" on the dashboard
+- [x] **9. Translation exercise**: type the answer, tolerant matching (accents, punctuation)
+- [x] **10. Settings page**: daily goal, audio speed, reset, export/import progress (JSON)
 
 ### D. Accounts and AI (optional, only if time allows)
 - [ ] **11. Supabase**: auth (magic link), sync progress across devices, keep localStorage as an offline cache

@@ -1,3 +1,4 @@
+import { Settings } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
 import { useProgress } from '../../hooks/useProgress'
 import { StreakChip, XpChip } from '../gamification/StatChip'
@@ -21,6 +22,9 @@ export function AppLayout() {
           <div className="flex gap-2">
             <StreakChip days={stats.streak} />
             <XpChip xp={stats.totalXp} />
+            <Link to="/app/settings" aria-label="Settings" className="grid size-9 place-items-center rounded-full border border-line bg-card hover:border-sage">
+              <Settings className="size-4" aria-hidden />
+            </Link>
           </div>
         </header>
         <main id="content" className="flex-1 px-4 pb-24 md:px-8 md:pb-10">

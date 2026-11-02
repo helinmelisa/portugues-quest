@@ -13,6 +13,7 @@ export interface VocabularyItem {
 
 interface BaseExercise {
   id: string
+  wordId?: string // set on review exercises so results feed the word's schedule
   prompt: string
   explanation: string
 }
@@ -50,7 +51,20 @@ export interface ListeningExercise extends BaseExercise {
   answer: number
 }
 
-export type Exercise = MultipleChoiceExercise | FillBlankExercise | SentenceBuildExercise | MatchingExercise | ListeningExercise
+export interface TranslationExercise extends BaseExercise {
+  type: 'translation'
+  direction: 'en-pt' | 'pt-en'
+  source: string
+  answers: string[] // first one is shown as the model answer
+}
+
+export type Exercise =
+  | MultipleChoiceExercise
+  | FillBlankExercise
+  | SentenceBuildExercise
+  | MatchingExercise
+  | ListeningExercise
+  | TranslationExercise
 
 export interface Lesson {
   id: string
@@ -100,7 +114,14 @@ export interface UserProfile {
   motivation?: string
   experience?: string
   dailyGoalMinutes: 5 | 10 | 15 | 20
+  audioRate?: number
   onboarded: boolean
+}
+
+export interface WordReview {
+  due: string // YYYY-MM-DD
+  interval: number // days
+  ease: number
 }
 
 export interface LearningProgress {
@@ -111,6 +132,7 @@ export interface LearningProgress {
   activeDays: string[] // YYYY-MM-DD
   minutesByDay: Record<string, number>
   questDays: string[] // days the daily quest bonus was claimed
+  reviews: Record<string, WordReview>
   achievements: string[]
 }
 

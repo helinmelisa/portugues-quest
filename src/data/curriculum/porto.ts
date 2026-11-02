@@ -27,6 +27,7 @@ export const portoLessons: Lesson[] = [
       { id: 'c5', type: 'multiple-choice', prompt: 'You are ready to pay. What do you say?', options: ['A conta, se faz favor.', 'Bom dia, conta.', 'Queria um galão.'], answer: 0, explanation: '“A conta, se faz favor” means “The bill, please”.' },
       { id: 'c6', type: 'fill-blank', prompt: 'Complete the order', sentence: 'Queria ___ galão, por favor.', translation: 'I would like a galão, please.', options: ['um', 'uma', 'o'], answer: 0, explanation: '“Galão” is masculine, so it takes “um”. Feminine words like “meia de leite” take “uma”.' },
       { id: 'c7', type: 'sentence-build', prompt: 'Order a pastry', translation: 'I would like a custard tart, please.', words: ['Queria', 'um', 'pastel', 'de', 'nata,', 'por', 'favor.'], distractors: ['uma', 'sou'], explanation: '“Queria” + what you want + “por favor” works for almost any order.' },
+      { id: 'c9', type: 'translation', prompt: 'Translate into Portuguese', direction: 'en-pt', source: 'The bill, please.', answers: ['A conta, se faz favor.', 'A conta, por favor.'], explanation: '“Se faz favor” and “por favor” both work here.' },
       { id: 'c8', type: 'matching', prompt: 'Match the café words', pairs: [['um café', 'an espresso'], ['a conta', 'the bill'], ['um galão', 'milky coffee in a glass'], ['se faz favor', 'excuse me / please']], explanation: 'With these four you can survive any Portuguese café!' },
     ],
   },

@@ -1,6 +1,7 @@
 export interface ExerciseResponse {
   ready: boolean
   correct: boolean
+  note?: string
 }
 
 export interface ExerciseProps<E> {

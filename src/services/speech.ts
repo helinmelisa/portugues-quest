@@ -8,13 +8,14 @@ function findVoice() {
 
 export const speech = {
   supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
-  speak(text: string, rate = 0.9) {
+  rate: 0.9,
+  speak(text: string, rate?: number) {
     if (!this.supported) return
     voice ??= findVoice()
     speechSynthesis.cancel()
     const utterance = new SpeechSynthesisUtterance(text.replace(/…/g, ''))
     utterance.lang = 'pt-PT'
-    utterance.rate = rate
+    utterance.rate = rate ?? this.rate
     if (voice) utterance.voice = voice
     speechSynthesis.speak(utterance)
   },

@@ -9,10 +9,11 @@ const pick = (list: string[]) => list[Math.floor(Math.random() * list.length)]
 interface Props {
   correct: boolean
   explanation: string
+  note?: string
   onContinue: () => void
 }
 
-export function FeedbackPanel({ correct, explanation, onContinue }: Props) {
+export function FeedbackPanel({ correct, explanation, note, onContinue }: Props) {
   return (
     <motion.div
       initial={{ y: 40, opacity: 0 }}
@@ -23,6 +24,7 @@ export function FeedbackPanel({ correct, explanation, onContinue }: Props) {
       <div className="mx-auto flex max-w-2xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-display text-xl">{correct ? pick(praise) : pick(comfort)}</p>
+          {note && <p className="mt-1 font-medium">{note}</p>}
           <p className="mt-1 opacity-85">{explanation}</p>
           {!correct && <p className="mt-1 text-sm opacity-70">We’ll come back to this one at the end.</p>}
         </div>

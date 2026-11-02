@@ -1,5 +1,6 @@
 import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
-import type { Exercise, LearningProgress, Lesson, ListeningExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
+import type { Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
+import { dueWordIds } from '../vocabulary/srs'
 import { shuffle } from '../../utils/shuffle'
 import { destinations } from '../../data/destinations'
 import { isDestinationUnlocked } from '../progress/destinationProgress'
@@ -9,6 +10,7 @@ const modes = {
   listening: { title: 'Listening Nook', minutes: 3 },
   sentences: { title: 'Build a Sentence', minutes: 3 },
   difficult: { title: 'Tricky words', minutes: 3 },
+  review: { title: 'Daily review', minutes: 4 },
 }
 export type PracticeMode = keyof typeof modes
 
@@ -31,6 +33,7 @@ function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
     const options = shuffle([v.en, ...shuffle(all.filter((o) => o.id !== v.id)).slice(0, 2).map((o) => o.en)])
     return {
       id: `listen-${v.id}`,
+      wordId: v.id,
       type: 'listening',
       prompt: 'What did you hear?',
       audioText: spoken(v),
@@ -39,6 +42,11 @@ function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
       explanation: `You heard “${spoken(v)}” — ${v.en}.`,
     }
   })
+}
+
+function meaningExercise(v: VocabularyItem): MultipleChoiceExercise {
+  const options = shuffle([v.en, ...shuffle(allVocabulary().filter((o) => o.id !== v.id)).slice(0, 2).map((o) => o.en)])
+  return { id: `meaning-${v.id}`, wordId: v.id, type: 'multiple-choice', prompt: `What does “${v.pt}” mean?`, options, answer: options.indexOf(v.en), explanation: `“${v.pt}” means “${v.en}”.` }
 }
 
 function sentenceExercises(progress: LearningProgress): SentenceBuildExercise[] {
@@ -77,6 +85,14 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
     case 'difficult': {
       const hard = allVocabulary().filter((v) => progress.difficultWords.includes(v.id))
       exercises = listeningExercises(shuffle(hard.length ? hard : wordPool(progress)).slice(0, 5))
+      break
+    }
+    case 'review': {
+      const due = new Set(dueWordIds(progress))
+      const words = allVocabulary().filter((v) => due.has(v.id))
+      exercises = shuffle(words.length ? words : wordPool(progress))
+        .slice(0, 8)
+        .map((v, i) => (i % 2 ? meaningExercise(v) : listeningExercises([v])[0]))
     }
   }
   return { id: `practice-${mode}`, destinationId: 'practice', title: modes[mode].title, objective: '', intro: '', minutes: modes[mode].minutes, xp: 10, skills: [], vocabulary: [], exercises }

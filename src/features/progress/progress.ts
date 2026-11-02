@@ -1,5 +1,6 @@
 import type { DailyQuest, LearningProgress, Lesson, UserProfile, UserStatistics } from '../../types'
 import { addDays, dayKey } from '../../utils/date'
+import { scheduleNew } from '../vocabulary/srs'
 
 export const emptyProgress: LearningProgress = {
   xp: 0,
@@ -9,6 +10,7 @@ export const emptyProgress: LearningProgress = {
   activeDays: [],
   minutesByDay: {},
   questDays: [],
+  reviews: {},
   achievements: [],
 }
 
@@ -67,6 +69,7 @@ export function completeLesson(
       learnedWords: [...new Set([...progress.learnedWords, ...lesson.vocabulary.map((v) => v.id)])],
       activeDays: progress.activeDays.includes(today) ? progress.activeDays : [...progress.activeDays, today],
       minutesByDay: { ...progress.minutesByDay, [today]: (progress.minutesByDay[today] ?? 0) + lesson.minutes },
+      reviews: isPractice ? progress.reviews : scheduleNew(progress.reviews, lesson.vocabulary.map((v) => v.id)),
       questDays: questBonus ? [...progress.questDays, today] : progress.questDays,
     },
   }

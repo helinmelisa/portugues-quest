@@ -21,7 +21,7 @@ export function Listening({ exercise, checked, onChange }: ExerciseProps<Listeni
           <button type="button" onClick={() => speech.speak(exercise.audioText)} aria-label="Play audio" className="grid size-20 place-items-center rounded-full bg-sky/40 transition hover:bg-sky/60 active:scale-95">
             <Volume2 className="size-9" aria-hidden />
           </button>
-          <button type="button" onClick={() => speech.speak(exercise.audioText, 0.6)} aria-label="Play slowly" className="grid size-12 place-items-center rounded-full bg-line transition hover:bg-sky/40">
+          <button type="button" onClick={() => speech.speak(exercise.audioText, speech.rate * 0.65)} aria-label="Play slowly" className="grid size-12 place-items-center rounded-full bg-line transition hover:bg-sky/40">
             <Snail className="size-5" aria-hidden />
           </button>
         </div>
