@@ -26,7 +26,7 @@ Goal: enough content for ~2 weeks of daily use, usable on a phone, and words tha
 Ordered by value per effort; everything except step 12 is free to run.
 
 ### A. Ship
-- [ ] **2. Deploy**: Vercel (free), SPA rewrites, so the app works on a phone
+- [x] **2. Deploy**: Vercel (free), SPA rewrites, so the app works on a phone
 
 ### B. Content (the biggest gap)
 - [ ] **4. Finish Lisboa**: introducing yourself, asking names, where you're from, polite expressions
