@@ -18,3 +18,13 @@
 body {
   @apply bg-cream text-ink font-sans antialiased;
 }
+
+@theme {
+  --color-terracotta-dark: #b8654a;
+  --shadow-soft: 0 2px 12px -4px rgb(52 65 58 / 0.12);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-sun);
+  outline-offset: 2px;
+}
