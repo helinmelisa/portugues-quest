@@ -34,6 +34,7 @@ export interface Scenario {
   title: string
   description: string
   level: CefrLevel
-  steps: ScriptStep[]
-  farewell: { text: string; translation: string }
+  setting: string // scene description for the AI tutor
+  steps?: ScriptStep[] // scripted demo, used when the AI tutor isn't available
+  farewell?: { text: string; translation: string }
 }

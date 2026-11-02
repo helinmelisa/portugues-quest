@@ -40,7 +40,7 @@ Ordered by value per effort; everything except step 12 is free to run.
 - [x] **10. Settings page**: daily goal, audio speed, reset, export/import progress (JSON)
 
 ### D. Accounts and AI (optional, only if time allows)
-- [ ] **11. Supabase**: auth (magic link), sync progress across devices, keep localStorage as an offline cache
+- [x] **11. Supabase**: auth (magic link), sync progress across devices, keep localStorage as an offline cache
 - [ ] **12. Inês with AI**: a Supabase Edge Function plus an LLM behind the `TutorSession` interface,
   with level-aware prompts and a daily message cap. **This costs money for each message.**
 

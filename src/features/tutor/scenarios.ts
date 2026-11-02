@@ -6,6 +6,7 @@ export const scenarios: Scenario[] = [
     title: 'Ordering coffee',
     description: 'Inês is the empregada at a little café in Porto.',
     level: 'A0',
+    setting: 'You are a waitress (empregada) at a small traditional café in Porto. The learner is a customer ordering coffee and maybe a pastry, then paying.',
     steps: [
       {
         tutor: 'Bom dia! O que vai ser?',
@@ -38,6 +39,7 @@ export const scenarios: Scenario[] = [
     title: 'Introducing yourself',
     description: 'Inês is a friendly classmate you meet on your first day.',
     level: 'A0',
+    setting: 'You are a university student in Lisboa meeting the learner, a new international classmate, on the first day. Ask their name, where they are from and where they live.',
     steps: [
       {
         tutor: 'Olá! Eu sou a Inês. Como te chamas?',
@@ -66,4 +68,14 @@ export const scenarios: Scenario[] = [
   },
 ]
 
-export const upcomingScenarios = ['Supermarket cashier', 'Asking for directions', 'Talking to a landlord', 'At the pharmacy', 'Public transport', 'Making an appointment']
+const aiOnly = (id: string, title: string, description: string, setting: string, level: Scenario['level'] = 'A1'): Scenario => ({ id, title, description, level, setting })
+
+// These need the AI tutor (no scripted version).
+scenarios.push(
+  aiOnly('supermarket', 'Supermarket cashier', 'Inês works at the till of a Pingo Doce.', 'You are a cashier at a Portuguese supermarket. Greet the customer, ask if they want a bag (saco) and if they have a loyalty card, tell them the total and ask how they want to pay.', 'A0'),
+  aiOnly('directions', 'Asking for directions', 'You’re lost in Lisboa and Inês is a passer-by.', 'You are a friendly local on a street in Baixa, Lisboa. The learner is lost and asks for directions to places like the metro, Praça do Comércio or a pharmacy. Give simple directions (em frente, à direita, à esquerda).'),
+  aiOnly('landlord', 'Talking to a landlord', 'Inês is renting out a flat in Coimbra.', 'You are a landlady (senhoria) showing a small flat (T1) in Coimbra to the learner. Talk about rent (renda), bills (contas), the deposit (caução) and when they can move in. The learner should address you as “a senhora”.'),
+  aiOnly('pharmacy', 'At the pharmacy', 'Inês is the pharmacist at a farmácia.', 'You are a pharmacist (farmacêutica) in Portugal. The learner has a minor problem (headache, cold, sore throat). Ask simple questions about symptoms and recommend something.'),
+  aiOnly('transport', 'Public transport', 'Inês works at the metro ticket office.', 'You work at a Lisboa metro ticket office. Help the learner buy and top up a Navegante card, explain prices simply and which line to take.'),
+  aiOnly('appointment', 'Making an appointment', 'Inês is the receptionist at a health centre.', 'You are a receptionist at a centro de saúde. The learner wants to book a doctor appointment (marcar uma consulta). Ask for their name, utente number, and offer days and times.'),
+)

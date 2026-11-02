@@ -1,14 +1,23 @@
-import { Info, MessageCircle } from 'lucide-react'
+import { Info, MessageCircle, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
-import { scenarios, upcomingScenarios } from '../../features/tutor/scenarios'
+import { createAiTutor } from '../../features/tutor/aiTutor'
+import { scenarios } from '../../features/tutor/scenarios'
+import { createScriptedTutor } from '../../features/tutor/scriptedTutor'
+import { useProgress } from '../../hooks/useProgress'
 import { ChatView } from './ChatView'
 
 export default function TutorPage() {
+  const { cloud, profile } = useProgress()
   const [activeId, setActiveId] = useState<string | null>(null)
+  const ai = cloud.email !== null
   const active = scenarios.find((s) => s.id === activeId)
 
-  if (active) return <ChatView key={active.id} scenario={active} onBack={() => setActiveId(null)} />
+  if (active) {
+    const createSession = () => (ai ? createAiTutor(active, profile.level) : createScriptedTutor(active))
+    return <ChatView key={active.id} scenario={active} createSession={createSession} onBack={() => setActiveId(null)} />
+  }
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -16,31 +25,43 @@ export default function TutorPage() {
       <p className="mt-2 opacity-80">Inês is your friendly conversation partner from Lisboa. Pick a situation and practise speaking.</p>
 
       <p className="my-6 flex gap-2 rounded-2xl border border-sky bg-sky/20 p-4 text-sm">
-        <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
-        Demo mode: Inês follows a short script and checks your replies with simple rules. Free-form AI conversations are planned for a future version.
+        {ai ? <Sparkles className="mt-0.5 size-4 shrink-0" aria-hidden /> : <Info className="mt-0.5 size-4 shrink-0" aria-hidden />}
+        <span>
+          {ai ? (
+            'AI mode: Inês replies freely and adapts to your level. She can still make mistakes. Up to 50 messages a day.'
+          ) : (
+            <>
+              Demo mode: Inês follows a short script.{' '}
+              <Link to="/app/settings" className="font-medium underline">Sign in</Link> to unlock free conversations with AI Inês and every scenario.
+            </>
+          )}
+        </span>
       </p>
 
       <ul className="grid gap-4 sm:grid-cols-2">
-        {scenarios.map((s) => (
-          <li key={s.id}>
-            <button type="button" onClick={() => setActiveId(s.id)} className="block h-full w-full rounded-3xl text-left">
-              <Card className="h-full transition hover:-translate-y-0.5 hover:border-sage">
-                <MessageCircle className="size-7 text-terracotta" aria-hidden />
-                <h2 className="mt-3 font-display text-xl">{s.title}</h2>
-                <p className="mt-1 opacity-80">{s.description}</p>
-                <Badge tone="terracotta" className="mt-4">{s.level}</Badge>
-              </Card>
-            </button>
-          </li>
-        ))}
-        {upcomingScenarios.map((title) => (
-          <li key={title}>
-            <Card className="flex h-full items-center justify-between gap-3 opacity-60">
-              <span className="font-medium">{title}</span>
-              <Badge>Coming soon</Badge>
+        {scenarios.map((s) => {
+          const playable = ai || s.steps !== undefined
+          const content = (
+            <Card className={`h-full transition ${playable ? 'hover:-translate-y-0.5 hover:border-sage' : 'opacity-60'}`}>
+              <MessageCircle className="size-7 text-terracotta" aria-hidden />
+              <h2 className="mt-3 font-display text-xl">{s.title}</h2>
+              <p className="mt-1 opacity-80">{s.description}</p>
+              <div className="mt-4 flex gap-2">
+                <Badge tone="terracotta">{s.level}</Badge>
+                {!playable && <Badge>Sign in to unlock</Badge>}
+              </div>
             </Card>
-          </li>
-        ))}
+          )
+          return (
+            <li key={s.id}>
+              {playable ? (
+                <button type="button" onClick={() => setActiveId(s.id)} className="block h-full w-full rounded-3xl text-left">{content}</button>
+              ) : (
+                content
+              )}
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

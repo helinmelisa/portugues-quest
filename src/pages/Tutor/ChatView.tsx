@@ -1,8 +1,7 @@
 import { ArrowLeft, Lightbulb, Send } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Button, SpeakButton } from '../../components/common'
-import { createScriptedTutor } from '../../features/tutor/scriptedTutor'
-import type { Scenario, TutorMessage } from '../../features/tutor/types'
+import type { Scenario, TutorMessage, TutorSession } from '../../features/tutor/types'
 import { cn } from '../../utils/cn'
 
 function TutorBubble({ message }: { message: TutorMessage }) {
@@ -32,8 +31,14 @@ function TutorBubble({ message }: { message: TutorMessage }) {
   )
 }
 
-export function ChatView({ scenario, onBack }: { scenario: Scenario; onBack: () => void }) {
-  const [session] = useState(() => createScriptedTutor(scenario))
+interface ChatViewProps {
+  scenario: Scenario
+  createSession: () => TutorSession
+  onBack: () => void
+}
+
+export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
+  const [session] = useState(createSession)
   const [messages, setMessages] = useState<TutorMessage[]>([])
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [typing, setTyping] = useState(true)
