@@ -15,6 +15,8 @@ export const emptyProgress: LearningProgress = {
   conversations: 0,
   activityByDay: {},
   weeklyClaimed: [],
+  storiesRead: [],
+  mistakes: [],
   customWords: [],
   achievements: [],
 }
@@ -75,6 +77,7 @@ export function completeLesson(
       activeDays: progress.activeDays.includes(today) ? progress.activeDays : [...progress.activeDays, today],
       minutesByDay: { ...progress.minutesByDay, [today]: (progress.minutesByDay[today] ?? 0) + lesson.minutes },
       activityByDay: recordActivity(progress, 'lessons'),
+      storiesRead: lesson.id.startsWith('story-') && !progress.storiesRead.includes(lesson.id) ? [...progress.storiesRead, lesson.id] : progress.storiesRead,
       reviews: isPractice ? progress.reviews : scheduleNew(progress.reviews, lesson.vocabulary.map((v) => v.id)),
       questDays: questBonus ? [...progress.questDays, today] : progress.questDays,
     },

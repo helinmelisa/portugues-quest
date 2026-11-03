@@ -21,12 +21,19 @@ async function callTutor<T = AiResponse>(body: object): Promise<T & { error?: st
   }
 }
 
+export interface LearnerContext {
+  name?: string
+  interests?: string
+  motivation?: string
+  mistakes: string[]
+}
+
 // Free conversation with Inês through the `tutor` Supabase Edge Function.
-export function createAiTutor(scenario: Scenario, level: CefrLevel): TutorSession {
+export function createAiTutor(scenario: Scenario, level: CefrLevel, learner?: LearnerContext): TutorSession {
   const history: { role: 'user' | 'assistant'; content: string }[] = []
 
   const respond = async (): Promise<TutorReply> => {
-    const res = await callTutor({ setting: scenario.setting, level, messages: history })
+    const res = await callTutor({ setting: scenario.setting, level, learner, messages: history })
     if (res.error || !res.reply) {
       return { messages: [{ id: crypto.randomUUID(), from: 'tutor', text: 'Desculpa…', tip: res.error ?? 'Something went wrong.' }], suggestions: [], done: false }
     }

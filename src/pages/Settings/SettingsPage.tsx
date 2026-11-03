@@ -72,6 +72,17 @@ export default function SettingsPage() {
 
       <Card className="space-y-5">
         <h2 className="font-display text-xl">Learning</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1">
+            <span className="font-medium">Your name</span>
+            <input value={profile.name ?? ''} onChange={(e) => updateProfile({ name: e.target.value })} placeholder="What should Inês call you?" className="w-full rounded-full border border-line bg-cream px-4 py-2.5" />
+          </label>
+          <label className="space-y-1">
+            <span className="font-medium">Your interests</span>
+            <input value={profile.interests ?? ''} onChange={(e) => updateProfile({ interests: e.target.value })} placeholder="e.g. football, cooking, hiking" className="w-full rounded-full border border-line bg-cream px-4 py-2.5" />
+          </label>
+        </div>
+        <p className="text-sm opacity-70">Inês uses these, plus your recent mistakes, to make conversations more personal.</p>
         <div className="space-y-2">
           <p className="font-medium">Daily goal</p>
           <Choice label="Daily goal" value={profile.dailyGoalMinutes} onChange={(v) => updateProfile({ dailyGoalMinutes: v })} options={goals.map((g) => ({ value: g, label: `${g} min` }))} />

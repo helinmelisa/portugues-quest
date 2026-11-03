@@ -1,4 +1,4 @@
-import { BookOpen, Headphones, Languages, Mic, Puzzle, Sprout, Zap, type LucideIcon } from 'lucide-react'
+import { BookOpen, Headphones, Languages, Library, Mic, NotebookPen, Puzzle, Sprout, Zap, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
 import { useProgress } from '../../hooks/useProgress'
@@ -22,6 +22,8 @@ export default function PracticePage() {
     { to: '/lesson/practice-listening', icon: Headphones, title: 'Listening Nook', text: 'Listen, replay slowly and pick what you heard.', badge: '3 min · +10 XP', tone: 'text-sky' },
     { to: '/app/practice/portugal-vs-brazil', icon: Languages, title: 'In Portugal, we say…', text: 'The words that tell Portuguese and Brazilian Portuguese apart.', badge: 'Cheat sheet', tone: 'text-terracotta' },
     { to: '/lesson/practice-speak', icon: Mic, title: 'Speak out loud', text: 'Listen, repeat and get feedback on your pronunciation.', badge: '3 min · +10 XP', tone: 'text-terracotta' },
+    { to: '/app/practice/stories', icon: Library, title: 'Histórias', text: 'Short stories from each destination. Tap words to translate, then answer questions.', badge: `${progress.storiesRead.length}/8 read · +15 XP`, tone: 'text-sky' },
+    { to: '/app/practice/mistakes', icon: NotebookPen, title: 'Mistake notebook', text: 'Corrections from your chats with Inês, ready to practise.', badge: `${progress.mistakes.length} saved`, tone: 'text-terracotta' },
     { to: '/app/practice/grammar', icon: BookOpen, title: 'Grammar bites', text: 'Short, friendly explanations: gender, ser vs estar, verbs and more.', badge: '7 bites', tone: 'text-sage' },
     { to: '/lesson/practice-sentences', icon: Puzzle, title: 'Build a Sentence', text: 'Put the words in the right order to make natural Portuguese.', badge: '3 min · +10 XP', tone: 'text-terracotta' },
   ]

@@ -11,6 +11,9 @@ import LessonPage from './pages/Lesson/LessonPage'
 import OnboardingPage from './pages/Onboarding/OnboardingPage'
 import PracticePage from './pages/Practice/PracticePage'
 import GrammarPage from './pages/Practice/GrammarPage'
+import MistakesPage from './pages/Practice/MistakesPage'
+import StoriesPage from './pages/Practice/StoriesPage'
+import StoryPage from './pages/Practice/StoryPage'
 import PortugalVsBrazilPage from './pages/Practice/PortugalVsBrazilPage'
 import WordGardenPage from './pages/Practice/WordGardenPage'
 import SettingsPage from './pages/Settings/SettingsPage'
@@ -31,6 +34,9 @@ export default function App() {
             <Route path="practice" element={<PracticePage />} />
             <Route path="practice/words" element={<WordGardenPage />} />
             <Route path="practice/grammar" element={<GrammarPage />} />
+            <Route path="practice/stories" element={<StoriesPage />} />
+            <Route path="practice/stories/:storyId" element={<StoryPage />} />
+            <Route path="practice/mistakes" element={<MistakesPage />} />
             <Route path="practice/portugal-vs-brazil" element={<PortugalVsBrazilPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="tutor" element={<TutorPage />} />

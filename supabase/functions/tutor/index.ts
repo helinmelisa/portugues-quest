@@ -40,12 +40,26 @@ const levelGuide: Record<string, string> = {
   A1: 'The learner knows the basics. Use short, simple sentences (max 15 words), common vocabulary, mostly present tense.',
 }
 
-function systemPrompt(setting: string, level: string) {
+function learnerSection(learner: unknown) {
+  if (!learner || typeof learner !== 'object') return ''
+  const l = learner as Record<string, unknown>
+  const text = (v: unknown) => (typeof v === 'string' ? v.slice(0, 200).trim() : '')
+  const mistakes = Array.isArray(l.mistakes) ? l.mistakes.slice(0, 5).map(text).filter(Boolean) : []
+  const lines = [
+    text(l.name) && `- Name: ${text(l.name)} (use it now and then)`,
+    text(l.interests) && `- Interests: ${text(l.interests)} (bring them up when it feels natural)`,
+    text(l.motivation) && `- Why they learn: ${text(l.motivation)}`,
+    mistakes.length ? `- Recent mistakes to gently practise without lecturing: ${mistakes.join('; ')}` : '',
+  ].filter(Boolean)
+  return lines.length ? `\nABOUT THE LEARNER:\n${lines.join('\n')}\n` : ''
+}
+
+function systemPrompt(setting: string, level: string, learner?: unknown) {
   return `You are Inês, a warm, friendly young woman from Lisboa helping someone practise Portuguese through role-play.
 
 SCENE: ${setting}
 LEVEL: ${levelGuide[level] ?? levelGuide.A0}
-
+${learnerSection(learner)}
 LANGUAGE RULES (very important):
 - Speak ONLY European Portuguese (Portugal), never Brazilian Portuguese.
 - Use "tu" with peers, "o senhor / a senhora" for polite address. Avoid "você".
@@ -116,7 +130,7 @@ Deno.serve(async (req) => {
             { role: 'system', content: summaryPrompt(level) },
             { role: 'user', content: history.map((m: { role: string; content: string }) => `${m.role === 'user' ? 'Learner' : 'Inês'}: ${m.content}`).join('\n') },
           ]
-        : [{ role: 'system', content: systemPrompt(setting, level) }, ...history],
+        : [{ role: 'system', content: systemPrompt(setting, level, body.learner) }, ...history],
     }),
   })
   if (!groq.ok) {

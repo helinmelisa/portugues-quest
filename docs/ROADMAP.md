@@ -79,12 +79,12 @@ Still free to run: Groq free tier + Supabase free tier.
 - [x] **4. New grammar bites**: -er/-ir verbs, ir + infinitive, the past tense (pretérito perfeito)
 
 ### B. Listening stories
-- [ ] **5. Histórias**: short graded stories (one per destination) read aloud, with tap-to-translate words and 3 comprehension questions
+- [x] **5. Histórias**: short graded stories (one per destination) read aloud, with tap-to-translate words and 3 comprehension questions
 
 ### C. A more personal Inês
-- [ ] **6. Free chat and your own scenario**: chat about anything, or describe a situation you're about to face (“I have a meeting with my landlord tomorrow”)
-- [ ] **7. Inês remembers you**: a short learner profile (name, interests, frequent mistakes) saved in your account and used in her prompt
-- [ ] **8. Mistake notebook**: corrections from wrap-ups collected in one place and turned into review exercises
+- [x] **6. Free chat and your own scenario**: chat about anything, or describe a situation you're about to face (“I have a meeting with my landlord tomorrow”)
+- [x] **7. Inês remembers you**: a short learner profile (name, interests, frequent mistakes) saved in your account and used in her prompt
+- [x] **8. Mistake notebook**: corrections from wrap-ups collected in one place and turned into review exercises
 
 ### D. Milestones that mean something
 - [ ] **9. A1 checkpoint**: a short mixed test after Braga and a shareable “A1 explorer” certificate page

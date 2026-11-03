@@ -4,6 +4,7 @@ import { questForDay } from '../../data/quests'
 import { speech } from '../../services/speech'
 import { storage } from '../../services/storage'
 import type { LearningProgress, Lesson, UserProfile } from '../../types'
+import { dayKey } from '../../utils/date'
 import { useCloudSync } from '../sync/useCloudSync'
 import { applyReview, scheduleNew } from '../vocabulary/srs'
 import { newlyUnlocked } from '../achievements/achievements'
@@ -82,6 +83,20 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setProfile({ ...defaultProfile, ...data.profile })
   }, [])
 
+  const addMistakes = useCallback(
+    (corrections: { said: string; better: string; why: string }[]) =>
+      setProgress((p) => {
+        const fresh = corrections
+          .filter((c) => c.said && c.better)
+          .map((c) => ({ ...c, id: customWordId(c.better).replace('custom-', 'm-'), date: dayKey() }))
+          .filter((m) => !p.mistakes.some((x) => x.id === m.id))
+        return fresh.length ? { ...p, mistakes: [...p.mistakes, ...fresh].slice(-50) } : p
+      }),
+    [],
+  )
+
+  const removeMistake = useCallback((id: string) => setProgress((p) => ({ ...p, mistakes: p.mistakes.filter((m) => m.id !== id) })), [])
+
   const syncData = useMemo(() => ({ progress, profile }), [progress, profile])
   const cloud = useCloudSync(syncData, replaceAll)
 
@@ -93,6 +108,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       completeLesson,
       completeConversation,
       addCustomWord,
+      addMistakes,
+      removeMistake,
       updateProfile,
       toggleDifficult,
       reviewWord,
@@ -103,7 +120,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, completeConversation, addCustomWord, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
+    [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

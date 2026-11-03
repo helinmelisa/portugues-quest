@@ -1,23 +1,48 @@
-import { Info, MessageCircle, Sparkles } from 'lucide-react'
-import { useState } from 'react'
+import { Info, MessageCircle, PenLine, Sparkles } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Badge, Card } from '../../components/common'
-import { createAiTutor } from '../../features/tutor/aiTutor'
+import { Badge, Button, Card } from '../../components/common'
+import { createAiTutor, type LearnerContext } from '../../features/tutor/aiTutor'
 import { scenarios } from '../../features/tutor/scenarios'
 import { createScriptedTutor } from '../../features/tutor/scriptedTutor'
+import type { Scenario } from '../../features/tutor/types'
 import { useProgress } from '../../hooks/useProgress'
+import { onboardingSteps } from '../Onboarding/steps'
 import { ChatView } from './ChatView'
 
 export default function TutorPage() {
-  const { cloud, profile } = useProgress()
+  const { cloud, profile, progress } = useProgress()
   const [params] = useSearchParams()
   const [activeId, setActiveId] = useState<string | null>(params.get('scenario'))
+  const [custom, setCustom] = useState<Scenario | null>(null)
+  const [writing, setWriting] = useState(false)
+  const [situation, setSituation] = useState('')
   const ai = cloud.email !== null
-  const active = scenarios.find((s) => s.id === activeId && (ai || s.steps))
+  const active = activeId === 'custom' ? custom : scenarios.find((s) => s.id === activeId && (ai || s.steps))
 
   if (active) {
-    const createSession = () => (ai ? createAiTutor(active, profile.level) : createScriptedTutor(active))
+    const learner: LearnerContext = {
+      name: profile.name,
+      interests: profile.interests,
+      motivation: onboardingSteps.find((s) => s.key === 'motivation')?.options.find((o) => o.value === profile.motivation)?.label,
+      mistakes: progress.mistakes.slice(-5).map((m) => `“${m.said}” → “${m.better}”`),
+    }
+    const createSession = () => (ai ? createAiTutor(active, profile.level, learner) : createScriptedTutor(active))
     return <ChatView key={active.id} scenario={active} createSession={createSession} voice={ai} onBack={() => setActiveId(null)} />
+  }
+
+  const startCustom = (e: FormEvent) => {
+    e.preventDefault()
+    const text = situation.trim()
+    if (!text) return
+    setCustom({
+      id: 'custom',
+      title: 'Your situation',
+      description: text,
+      level: profile.level,
+      setting: `Help the learner rehearse a real situation they are about to face in Portugal: “${text}”. Play the other person in that situation, realistically but kindly.`,
+    })
+    setActiveId('custom')
   }
 
   return (
@@ -29,15 +54,35 @@ export default function TutorPage() {
         {ai ? <Sparkles className="mt-0.5 size-4 shrink-0" aria-hidden /> : <Info className="mt-0.5 size-4 shrink-0" aria-hidden />}
         <span>
           {ai ? (
-            'AI mode: Inês replies freely and adapts to your level. She can still make mistakes. Up to 50 messages a day.'
+            <>AI mode: Inês adapts to your level and remembers what you’ve told her. She can still make mistakes. Up to 50 messages a day. <Link to="/app/settings" className="underline">Tell her about you</Link></>
           ) : (
-            <>
-              Demo mode: Inês follows a short script.{' '}
-              <Link to="/app/settings" className="font-medium underline">Sign in</Link> to unlock free conversations with AI Inês and every scenario.
-            </>
+            <>Demo mode: Inês follows a short script. <Link to="/app/settings" className="font-medium underline">Sign in</Link> to unlock free conversations.</>
           )}
         </span>
       </p>
+
+      {ai && (
+        <Card className="mb-4 space-y-3 bg-sun/15">
+          <h2 className="flex items-center gap-2 font-display text-xl"><PenLine className="size-5 text-terracotta" aria-hidden /> Practise your own situation</h2>
+          <p className="text-sm opacity-80">About to face something real? Describe it and Inês will role-play it with you.</p>
+          {writing ? (
+            <form onSubmit={startCustom} className="space-y-2">
+              <label htmlFor="situation" className="sr-only">Your situation</label>
+              <textarea
+                id="situation"
+                rows={2}
+                value={situation}
+                onChange={(e) => setSituation(e.target.value)}
+                placeholder="e.g. Tomorrow I have to call my landlord because the heating is broken."
+                className="w-full resize-none rounded-2xl border border-line bg-card px-4 py-3"
+              />
+              <Button type="submit" disabled={!situation.trim()}>Start role-play</Button>
+            </form>
+          ) : (
+            <Button variant="secondary" onClick={() => setWriting(true)}>Describe a situation</Button>
+          )}
+        </Card>
+      )}
 
       <ul className="grid gap-4 sm:grid-cols-2">
         {scenarios.map((s) => {

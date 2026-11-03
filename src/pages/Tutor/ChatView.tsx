@@ -52,7 +52,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
   const [done, setDone] = useState(false)
   const [input, setInput] = useState('')
   const endRef = useRef<HTMLDivElement>(null)
-  const { profile, updateProfile, completeConversation } = useProgress()
+  const { profile, updateProfile, completeConversation, addMistakes } = useProgress()
   const [summary, setSummary] = useState<ConversationSummary | null>(null)
   const [reward, setReward] = useState<LessonResult | null>(null)
   const [ending, setEnding] = useState(false)
@@ -72,7 +72,10 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
     const result = await session.summarize()
     setEnding(false)
     if ('error' in result) setEndError(result.error)
-    else setSummary(result)
+    else {
+      setSummary(result)
+      addMistakes(result.corrections)
+    }
     finish()
     setDone(true)
   }

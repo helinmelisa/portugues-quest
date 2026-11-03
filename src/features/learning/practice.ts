@@ -2,6 +2,7 @@ import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
 import type { PronunciationExercise, Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
 import { dueWordIds } from '../vocabulary/srs'
 import { shuffle } from '../../utils/shuffle'
+import { getStory } from '../../data/stories'
 import { destinations } from '../../data/destinations'
 import { isDestinationUnlocked } from '../progress/destinationProgress'
 
@@ -12,6 +13,7 @@ const modes = {
   difficult: { title: 'Tricky words', minutes: 3 },
   review: { title: 'Daily review', minutes: 4 },
   speak: { title: 'Speak out loud', minutes: 3 },
+  mistakes: { title: 'Mistake notebook', minutes: 3 },
 }
 export type PracticeMode = keyof typeof modes
 
@@ -105,6 +107,19 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
     case 'speak':
       exercises = speakingExercises(shuffle(wordPool(progress))).slice(0, 5)
       break
+    case 'mistakes':
+      exercises = shuffle(progress.mistakes)
+        .slice(0, 6)
+        .map((m, i): Exercise => {
+          const said = m.said.split(' ')
+          return i % 2
+            ? { id: `mistake-build-${m.id}`, type: 'sentence-build', prompt: 'Build the natural version', translation: `Not “${m.said}”…`, words: m.better.split(' '), distractors: said.filter((w) => !m.better.split(' ').includes(w)).slice(0, 2), explanation: m.why }
+            : (() => {
+                const options = shuffle([m.better, m.said])
+                return { id: `mistake-mc-${m.id}`, type: 'multiple-choice', prompt: 'Which one sounds like European Portuguese?', options, answer: options.indexOf(m.better), explanation: m.why }
+              })()
+        })
+      break
     case 'review': {
       const due = new Set(dueWordIds(progress))
       const words = vocabularyFor(progress).filter((v) => due.has(v.id))
@@ -116,7 +131,25 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
   return { id: `practice-${mode}`, destinationId: 'practice', title: modes[mode].title, objective: '', intro: '', minutes: modes[mode].minutes, xp: 10, skills: [], vocabulary: [], exercises }
 }
 
+function storyQuiz(id: string): Lesson | undefined {
+  const story = getStory(id)
+  if (!story) return undefined
+  return {
+    id: `story-${story.id}`,
+    destinationId: 'practice',
+    title: story.title,
+    objective: '',
+    intro: '',
+    minutes: 3,
+    xp: 15,
+    skills: ['listening', 'reading'],
+    vocabulary: [],
+    exercises: story.questions.map((q, i) => ({ id: `${story.id}-q${i}`, type: 'multiple-choice', ...q })),
+  }
+}
+
 export function resolveLesson(id: string, progress: LearningProgress) {
+  if (id.startsWith('story-')) return storyQuiz(id.slice('story-'.length))
   const mode = id.replace(/^practice-/, '')
   if (id.startsWith('practice-')) return mode in modes ? buildPractice(mode as PracticeMode, progress) : undefined
   return getLesson(id)

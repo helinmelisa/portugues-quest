@@ -122,11 +122,20 @@ export interface UserProfile {
   interfaceLanguage: 'en'
   level: CefrLevel
   motivation?: string
+  interests?: string
   experience?: string
   dailyGoalMinutes: 5 | 10 | 15 | 20
   audioRate?: number
   tutorVoice?: boolean // read Inês's replies aloud
   onboarded: boolean
+}
+
+export interface Mistake {
+  id: string
+  said: string
+  better: string
+  why: string
+  date: string
 }
 
 export interface WordReview {
@@ -146,6 +155,8 @@ export interface LearningProgress {
   reviews: Record<string, WordReview>
   conversations: number
   activityByDay: Record<string, { lessons: number; conversations: number }>
+  storiesRead: string[]
+  mistakes: Mistake[] // corrections collected from conversations with Inês
   weeklyClaimed: string[] // week keys (Monday dates) whose challenge bonus was claimed
   customWords: VocabularyItem[] // words saved from conversations
   achievements: string[]

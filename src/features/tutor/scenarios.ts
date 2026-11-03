@@ -71,6 +71,10 @@ export const scenarios: Scenario[] = [
 const aiOnly = (id: string, title: string, description: string, setting: string, level: Scenario['level'] = 'A1'): Scenario => ({ id, title, description, level, setting })
 
 // These need the AI tutor (no scripted version).
+scenarios.unshift(
+  aiOnly('free-chat', 'Free chat', 'Talk about your day, your plans or anything you like.', 'A relaxed, friendly chat between friends about everyday life: the learner’s day, week, plans, hobbies and life in Portugal. Ask about them and share a little about yourself.', 'A1'),
+)
+
 scenarios.push(
   aiOnly('supermarket', 'Supermarket cashier', 'Inês works at the till of a Pingo Doce.', 'You are a cashier at a Portuguese supermarket. Greet the customer, ask if they want a bag (saco) and if they have a loyalty card, tell them the total and ask how they want to pay.', 'A0'),
   aiOnly('directions', 'Asking for directions', 'You’re lost in Lisboa and Inês is a passer-by.', 'You are a friendly local on a street in Baixa, Lisboa. The learner is lost and asks for directions to places like the metro, Praça do Comércio or a pharmacy. Give simple directions (em frente, à direita, à esquerda).'),

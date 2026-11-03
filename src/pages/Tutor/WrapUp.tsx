@@ -32,7 +32,7 @@ export function WrapUp({ summary, reward, onBack }: Props) {
 
           {summary.corrections.length > 0 && (
             <div>
-              <h3 className="mb-2 font-medium">Little fixes</h3>
+              <h3 className="mb-2 font-medium">Little fixes <span className="text-sm font-normal opacity-70">· saved to your Mistake notebook</span></h3>
               <ul className="space-y-2">
                 {summary.corrections.map((c, i) => (
                   <li key={i} className="rounded-2xl bg-card p-3 text-sm">
