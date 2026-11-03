@@ -58,6 +58,12 @@ export interface TranslationExercise extends BaseExercise {
   answers: string[] // first one is shown as the model answer
 }
 
+export interface PronunciationExercise extends BaseExercise {
+  type: 'pronunciation'
+  phrase: string
+  translation: string
+}
+
 export type Exercise =
   | MultipleChoiceExercise
   | FillBlankExercise
@@ -65,6 +71,7 @@ export type Exercise =
   | MatchingExercise
   | ListeningExercise
   | TranslationExercise
+  | PronunciationExercise
 
 export interface Lesson {
   id: string

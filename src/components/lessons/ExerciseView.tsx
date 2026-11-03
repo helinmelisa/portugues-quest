@@ -3,6 +3,7 @@ import { FillBlank } from './FillBlank'
 import { Listening } from './Listening'
 import { Matching } from './Matching'
 import { MultipleChoice } from './MultipleChoice'
+import { Pronunciation } from './Pronunciation'
 import { SentenceBuild } from './SentenceBuild'
 import { Translation } from './Translation'
 import type { ExerciseProps } from './types'
@@ -21,5 +22,7 @@ export function ExerciseView({ exercise, ...props }: ExerciseProps<Exercise>) {
       return <Listening exercise={exercise} {...props} />
     case 'translation':
       return <Translation exercise={exercise} {...props} />
+    case 'pronunciation':
+      return <Pronunciation exercise={exercise} {...props} />
   }
 }

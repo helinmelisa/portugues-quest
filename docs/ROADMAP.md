@@ -51,7 +51,7 @@ Everything runs on free tiers: Groq (Whisper and the chat model) and the browser
 
 ### A. Speaking (the biggest gap)
 - [x] **1. Voice input for Inês**: a mic button in the chat. Speech is transcribed by Groq Whisper through the Edge Function, and Inês can read her replies aloud
-- [ ] **2. Pronunciation exercise**: listen, record yourself, see the transcript, and get a similarity score with friendly feedback
+- [x] **2. Pronunciation exercise**: listen, record yourself, see the transcript, and get a similarity score with friendly feedback
 - [ ] **3. Speaking in lessons**: add 1 pronunciation exercise to each lesson, plus a "Speak" mode in Practice Corner
 
 ### B. Inês as a practice partner
