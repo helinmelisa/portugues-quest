@@ -63,6 +63,41 @@ export const grammarBites: GrammarBite[] = [
       { text: 'Brazilians usually put it before the verb (“Me chamo Ana”), so this is one of the clearest signs of European Portuguese.' },
     ],
   },
+  {
+    id: 'er-ir-verbs',
+    title: 'Regular -er and -ir verbs',
+    summary: 'Two more verb families, with endings very close to -ar verbs.',
+    sections: [
+      {
+        text: 'Take off -er / -ir and add these endings:',
+        table: [['', 'comer (eat)', 'abrir (open)'], ['eu', 'como', 'abro'], ['tu', 'comes', 'abres'], ['ele / ela / você', 'come', 'abre'], ['nós', 'comemos', 'abrimos'], ['eles / elas / vocês', 'comem', 'abrem']],
+      },
+      { text: 'Other useful verbs: beber (drink), viver (live), escrever (write), partir (leave), decidir (decide).', examples: [{ pt: 'Não como carne.', en: 'I don’t eat meat.' }, { pt: 'Vives em Lisboa?', en: 'Do you live in Lisbon?' }, { pt: 'O comboio parte às dez.', en: 'The train leaves at ten.' }] },
+    ],
+  },
+  {
+    id: 'ir-infinitive',
+    title: 'Ir + verb: the near future',
+    summary: 'The easiest way to talk about plans: “I’m going to…”.',
+    sections: [
+      { text: 'Use the present of “ir” (to go) plus any verb in its basic form.', table: [['', 'ir'], ['eu', 'vou'], ['tu', 'vais'], ['ele / ela / você', 'vai'], ['nós', 'vamos'], ['eles / elas / vocês', 'vão']] },
+      { text: 'Examples:', examples: [{ pt: 'Vou visitar Sintra.', en: 'I’m going to visit Sintra.' }, { pt: 'Vais jantar connosco?', en: 'Are you going to have dinner with us?' }, { pt: 'Vamos nadar!', en: 'Let’s swim! / We’re going to swim!' }] },
+      { text: '“Vamos” on its own is also a friendly way to suggest something: “Vamos?” = Shall we go?' },
+    ],
+  },
+  {
+    id: 'past',
+    title: 'The past tense (pretérito perfeito)',
+    summary: 'For finished actions: I went, I ate, I visited.',
+    sections: [
+      {
+        text: 'Regular endings:',
+        table: [['', '-ar (visitar)', '-er (comer)', '-ir (partir)'], ['eu', 'visitei', 'comi', 'parti'], ['tu', 'visitaste', 'comeste', 'partiste'], ['ele / ela / você', 'visitou', 'comeu', 'partiu'], ['nós', 'visitámos', 'comemos', 'partimos'], ['eles / elas / vocês', 'visitaram', 'comeram', 'partiram']],
+      },
+      { text: 'In Portugal, the “nós” form of -ar verbs has an accent in the past: “visitámos” (we visited) vs “visitamos” (we visit).' },
+      { text: '“Ir” (go) and “ser” (be) share the same irregular past: fui, foste, foi, fomos, foram.', examples: [{ pt: 'Fui ao Funchal.', en: 'I went to Funchal.' }, { pt: 'Foi incrível!', en: 'It was amazing!' }] },
+    ],
+  },
 ]
 
 export const getGrammarBite = (id: string) => grammarBites.find((g) => g.id === id)

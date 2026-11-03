@@ -3,7 +3,8 @@ let voice: SpeechSynthesisVoice | null | undefined
 
 function findVoice() {
   const voices = speechSynthesis.getVoices()
-  return voices.find((v) => v.lang === 'pt-PT' || v.lang === 'pt_PT') ?? voices.find((v) => v.lang.startsWith('pt')) ?? null
+  const lang = (v: SpeechSynthesisVoice) => v.lang.toLowerCase().replace('_', '-')
+  return voices.find((v) => lang(v) === 'pt-pt') ?? voices.find((v) => lang(v).startsWith('pt')) ?? null
 }
 
 export const speech = {

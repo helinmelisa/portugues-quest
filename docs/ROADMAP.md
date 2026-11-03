@@ -73,10 +73,10 @@ Goal: finish the map of Portugal, take the first steps into A2 (past tense, plan
 Still free to run: Groq free tier + Supabase free tier.
 
 ### A. Finish the map
-- [ ] **1. Sintra (making plans)**: invitations, “ir + infinitive” (vou visitar), weekend plans, meeting times
-- [ ] **2. Algarve (leisure)**: weather, the beach, ordering a meal at a restaurant, small talk
-- [ ] **3. Madeira (first A2 steps)**: talking about past holidays with the pretérito perfeito (fui, comi, visitei)
-- [ ] **4. New grammar bites**: -er/-ir verbs, ir + infinitive, the past tense (pretérito perfeito)
+- [x] **1. Sintra (making plans)**: invitations, “ir + infinitive” (vou visitar), weekend plans, meeting times
+- [x] **2. Algarve (leisure)**: weather, the beach, ordering a meal at a restaurant, small talk
+- [x] **3. Madeira (first A2 steps)**: talking about past holidays with the pretérito perfeito (fui, comi, visitei)
+- [x] **4. New grammar bites**: -er/-ir verbs, ir + infinitive, the past tense (pretérito perfeito)
 
 ### B. Listening stories
 - [ ] **5. Histórias**: short graded stories (one per destination) read aloud, with tap-to-translate words and 3 comprehension questions
