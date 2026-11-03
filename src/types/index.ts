@@ -115,6 +115,7 @@ export interface UserProfile {
   experience?: string
   dailyGoalMinutes: 5 | 10 | 15 | 20
   audioRate?: number
+  tutorVoice?: boolean // read Inês's replies aloud
   onboarded: boolean
 }
 

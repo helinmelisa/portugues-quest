@@ -13,6 +13,28 @@ const cors = {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
 
+async function transcribe(audio: string, mimeType: string) {
+  if (!audio || audio.length > 2_000_000) return json({ error: 'That recording is too long. Try a shorter one.' }, 413)
+  const bytes = Uint8Array.from(atob(audio), (c) => c.charCodeAt(0))
+  const ext = mimeType.includes('mp4') ? 'mp4' : mimeType.includes('ogg') ? 'ogg' : 'webm'
+  const form = new FormData()
+  form.append('file', new Blob([bytes], { type: mimeType }), `speech.${ext}`)
+  form.append('model', 'whisper-large-v3-turbo')
+  form.append('language', 'pt')
+  form.append('response_format', 'json')
+  const res = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${Deno.env.get('GROQ_API_KEY')}` },
+    body: form,
+  })
+  if (!res.ok) {
+    console.error('Whisper error', res.status, await res.text())
+    return json({ error: 'Couldn’t understand the recording. Try again?' }, 502)
+  }
+  const { text } = await res.json()
+  return json({ text: String(text ?? '').trim() })
+}
+
 const levelGuide: Record<string, string> = {
   A0: 'The learner is a complete beginner. Use very short sentences (max 10 words), only basic everyday words, present tense.',
   A1: 'The learner knows the basics. Use short, simple sentences (max 15 words), common vocabulary, mostly present tense.',
@@ -50,13 +72,15 @@ Deno.serve(async (req) => {
   const { data: { user } } = await admin.auth.getUser(token)
   if (!user) return json({ error: 'Please sign in to chat with Inês.' }, 401)
 
+  const body = await req.json().catch(() => ({}))
+  if (body.action === 'transcribe') return transcribe(String(body.audio ?? ''), String(body.mimeType ?? 'audio/webm'))
+
   const day = new Date().toISOString().slice(0, 10)
   const { data: usage } = await admin.from('tutor_usage').select('count').eq('user_id', user.id).eq('day', day).maybeSingle()
   const count = usage?.count ?? 0
   if (count >= DAILY_LIMIT) return json({ error: `You’ve reached today’s ${DAILY_LIMIT} messages with Inês. Até amanhã!` }, 429)
   await admin.from('tutor_usage').upsert({ user_id: user.id, day, count: count + 1 })
 
-  const body = await req.json().catch(() => ({}))
   const setting = String(body.setting ?? 'A casual chat.').slice(0, 400)
   const level = String(body.level ?? 'A0')
   const history = (Array.isArray(body.messages) ? body.messages : [])

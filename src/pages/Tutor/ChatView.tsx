@@ -1,7 +1,11 @@
-import { ArrowLeft, Lightbulb, Send } from 'lucide-react'
+import { ArrowLeft, Lightbulb, Loader2, Mic, Send, Square, Volume2, VolumeX } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Button, SpeakButton } from '../../components/common'
 import type { Scenario, TutorMessage, TutorSession } from '../../features/tutor/types'
+import { useProgress } from '../../hooks/useProgress'
+import { recorderSupported, useRecorder } from '../../hooks/useRecorder'
+import { speech } from '../../services/speech'
+import { transcribe } from '../../services/transcribe'
 import { cn } from '../../utils/cn'
 
 function TutorBubble({ message }: { message: TutorMessage }) {
@@ -34,10 +38,11 @@ function TutorBubble({ message }: { message: TutorMessage }) {
 interface ChatViewProps {
   scenario: Scenario
   createSession: () => TutorSession
+  voice?: boolean // AI mode: microphone input and spoken replies
   onBack: () => void
 }
 
-export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
+export function ChatView({ scenario, createSession, voice = false, onBack }: ChatViewProps) {
   const [session] = useState(createSession)
   const [messages, setMessages] = useState<TutorMessage[]>([])
   const [suggestions, setSuggestions] = useState<string[]>([])
@@ -45,6 +50,26 @@ export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
   const [done, setDone] = useState(false)
   const [input, setInput] = useState('')
   const endRef = useRef<HTMLDivElement>(null)
+  const { profile, updateProfile } = useProgress()
+  const [transcribing, setTranscribing] = useState(false)
+  const [micHint, setMicHint] = useState<string | null>(null)
+  const spokenId = useRef<string | null>(null)
+  const readAloud = voice && profile.tutorVoice === true
+
+  const recorder = useRecorder(async (audio) => {
+    setTranscribing(true)
+    const result = await transcribe(audio)
+    setTranscribing(false)
+    if (result.text) setInput((current) => (current ? `${current} ${result.text}` : result.text!))
+    setMicHint(result.error ?? (result.text ? null : 'I didn’t catch that. Try again a bit closer to the mic.'))
+  })
+
+  useEffect(() => {
+    const last = messages.findLast((m) => m.from === 'tutor')
+    if (!readAloud || !last || last.id === spokenId.current) return
+    spokenId.current = last.id
+    speech.speak(last.text)
+  }, [messages, readAloud])
 
   useEffect(() => {
     session.start().then((r) => {
@@ -80,7 +105,28 @@ export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
       <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100">
         <ArrowLeft className="size-4" aria-hidden /> All scenarios
       </button>
-      <h1 className="font-display text-2xl md:text-3xl">{scenario.title}</h1>
+      <div className="flex items-start justify-between gap-3">
+        <h1 className="font-display text-2xl md:text-3xl">{scenario.title}</h1>
+        {voice && speech.supported && (
+          <button
+            type="button"
+            onClick={() => {
+              // iOS only allows speech that starts from a tap, so speak right away to unlock it.
+              const last = messages.findLast((m) => m.from === 'tutor')
+              if (!readAloud && last) {
+                spokenId.current = last.id
+                speech.speak(last.text)
+              }
+              updateProfile({ tutorVoice: !readAloud })
+            }}
+            aria-pressed={readAloud}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-sm hover:border-sage"
+          >
+            {readAloud ? <Volume2 className="size-4" aria-hidden /> : <VolumeX className="size-4" aria-hidden />}
+            {readAloud ? 'Voice on' : 'Voice off'}
+          </button>
+        )}
+      </div>
       <p className="mb-6 opacity-75">{scenario.description}</p>
 
       <ol aria-live="polite" className="space-y-4">
@@ -120,10 +166,24 @@ export function ChatView({ scenario, createSession, onBack }: ChatViewProps) {
               autoComplete="off"
               className="min-w-0 flex-1 rounded-full border border-line bg-card px-4 py-3"
             />
+            {voice && recorderSupported && (
+              <Button
+                type="button"
+                variant={recorder.recording ? 'primary' : 'secondary'}
+                aria-label={recorder.recording ? 'Stop recording' : 'Speak your reply'}
+                disabled={typing || transcribing}
+                onClick={recorder.recording ? recorder.stop : recorder.start}
+                className={cn('px-4', recorder.recording && 'animate-pulse')}
+              >
+                {transcribing ? <Loader2 className="size-5 animate-spin" aria-hidden /> : recorder.recording ? <Square className="size-5" aria-hidden /> : <Mic className="size-5" aria-hidden />}
+              </Button>
+            )}
             <Button type="submit" aria-label="Send" disabled={typing || !input.trim()} className={cn('px-4')}>
               <Send className="size-5" aria-hidden />
             </Button>
           </form>
+          {recorder.recording && <p className="text-sm opacity-75">Listening… tap ■ when you’re done.</p>}
+          {(recorder.error ?? micHint) && <p role="alert" className="text-sm text-terracotta-dark">{recorder.error ?? micHint}</p>}
         </div>
       )}
     </div>

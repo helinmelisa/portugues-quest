@@ -16,7 +16,7 @@ export default function TutorPage() {
 
   if (active) {
     const createSession = () => (ai ? createAiTutor(active, profile.level) : createScriptedTutor(active))
-    return <ChatView key={active.id} scenario={active} createSession={createSession} onBack={() => setActiveId(null)} />
+    return <ChatView key={active.id} scenario={active} createSession={createSession} voice={ai} onBack={() => setActiveId(null)} />
   }
 
   return (
