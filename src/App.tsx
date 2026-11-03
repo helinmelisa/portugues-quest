@@ -1,5 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
+import { RequireAccount } from './components/layout/RequireAccount'
+import LoginPage from './pages/Auth/LoginPage'
 import { ProgressProvider } from './features/progress/ProgressProvider'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import DestinationPage from './pages/Explore/DestinationPage'
@@ -20,8 +22,9 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/app" element={<AppLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/onboarding" element={<RequireAccount onboarded={false}><OnboardingPage /></RequireAccount>} />
+          <Route path="/app" element={<RequireAccount><AppLayout /></RequireAccount>}>
             <Route index element={<DashboardPage />} />
             <Route path="explore" element={<ExplorePage />} />
             <Route path="explore/:destinationId" element={<DestinationPage />} />
@@ -32,7 +35,7 @@ export default function App() {
             <Route path="settings" element={<SettingsPage />} />
             <Route path="tutor" element={<TutorPage />} />
           </Route>
-          <Route path="/lesson/:lessonId" element={<LessonPage />} />
+          <Route path="/lesson/:lessonId" element={<RequireAccount><LessonPage /></RequireAccount>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

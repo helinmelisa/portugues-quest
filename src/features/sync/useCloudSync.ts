@@ -1,24 +1,28 @@
 import type { User } from '@supabase/supabase-js'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { cloud, type UserData } from '../../services/cloud'
 import { supabase } from '../../services/supabase'
 import { defaultProfile, emptyProgress } from '../progress/progress'
 import { mergeProfile, mergeProgress } from './merge'
 
-export type SyncStatus = 'off' | 'signed-out' | 'syncing' | 'synced' | 'error'
+export type SyncStatus = 'off' | 'loading' | 'signed-out' | 'syncing' | 'synced' | 'error'
 
 export interface CloudSync {
   email: string | null
   status: SyncStatus
+  ready: boolean // session known and the account's data loaded
   signIn: (email: string) => Promise<string | null>
   signOut: () => Promise<void>
 }
 
 export function useCloudSync(data: UserData, apply: (data: UserData) => void): CloudSync {
-  const [user, setUser] = useState<User | null>(null)
-  const [status, setStatus] = useState<SyncStatus>(cloud.enabled ? 'signed-out' : 'off')
+  // undefined = still checking for a saved session
+  const [user, setUser] = useState<User | null | undefined>(cloud.enabled ? undefined : null)
+  const [status, setStatus] = useState<SyncStatus>(cloud.enabled ? 'loading' : 'off')
+  const [pulled, setPulled] = useState(false)
   const ready = useRef(false)
   const latest = useRef(data)
+  const known = user !== undefined
   const userId = user?.id
 
   useEffect(() => {
@@ -32,11 +36,13 @@ export function useCloudSync(data: UserData, apply: (data: UserData) => void): C
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  // On sign-in: pull the cloud copy, merge it with this device, then push the result back.
+  // On sign-in: pull the account's data, merge in anything learned on this device, push the result back.
   useEffect(() => {
     ready.current = false
+    setPulled(false)
+    if (!known || !cloud.enabled) return
     if (!userId) {
-      if (cloud.enabled) setStatus('signed-out')
+      setStatus('signed-out')
       return
     }
     let cancelled = false
@@ -58,10 +64,11 @@ export function useCloudSync(data: UserData, apply: (data: UserData) => void): C
         if (!cancelled) setStatus('synced')
       })
       .catch(() => !cancelled && setStatus('error'))
+      .finally(() => !cancelled && setPulled(true))
     return () => {
       cancelled = true
     }
-  }, [userId, apply])
+  }, [userId, known, apply])
 
   // Afterwards: push changes a moment after they happen.
   useEffect(() => {
@@ -76,5 +83,17 @@ export function useCloudSync(data: UserData, apply: (data: UserData) => void): C
     return () => clearTimeout(timer)
   }, [data, userId])
 
-  return { email: user?.email ?? null, status, signIn: cloud.signIn, signOut: cloud.signOut }
+  // Signing out clears this device, so the next account starts clean.
+  const signOut = useCallback(async () => {
+    await cloud.signOut()
+    apply({ progress: emptyProgress, profile: defaultProfile })
+  }, [apply])
+
+  return {
+    email: user?.email ?? null,
+    status,
+    ready: status === 'off' || (known && (!userId || pulled)),
+    signIn: cloud.signIn,
+    signOut,
+  }
 }

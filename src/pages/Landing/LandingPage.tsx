@@ -18,8 +18,8 @@ const steps = [
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const { profile } = useProgress()
-  const start = () => navigate(profile.onboarded ? '/app' : '/onboarding')
+  const { cloud } = useProgress()
+  const start = () => navigate('/app')
 
   return (
     <div className="min-h-screen">
@@ -27,7 +27,7 @@ export default function LandingPage() {
         <Link to="/" className="font-display text-xl md:text-2xl">
           Português <span className="text-terracotta">Quest</span>
         </Link>
-        <Button size="sm" variant="secondary" onClick={start}>Open app</Button>
+        <Button size="sm" variant="secondary" onClick={start}>{cloud.email ? 'Open app' : 'Sign in'}</Button>
       </header>
 
       <main>

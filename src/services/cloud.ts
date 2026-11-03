@@ -11,7 +11,7 @@ export const cloud = {
 
   async signIn(email: string) {
     if (!supabase) return 'Sync is not configured.'
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/app/settings` } })
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/app` } })
     return error?.message ?? null
   },
 

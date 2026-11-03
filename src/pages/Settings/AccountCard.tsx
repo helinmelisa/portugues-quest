@@ -5,6 +5,7 @@ import { useProgress } from '../../hooks/useProgress'
 
 const statusText = {
   off: 'Sync is not configured.',
+  loading: '',
   'signed-out': '',
   syncing: 'Syncing…',
   synced: 'All progress synced.',
