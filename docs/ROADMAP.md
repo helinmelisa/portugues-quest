@@ -59,9 +59,9 @@ Everything runs on free tiers: Groq (Whisper and the chat model) and the browser
 - [x] **5. Rewards for talking**: XP for conversations, a "First Conversation" achievement and a "talk to Inês" daily quest
 
 ### C. More of Portugal
-- [ ] **6. Aveiro (getting around)**: buses and trains, buying tickets, directions, timetables. Completes "Getting Around"
-- [ ] **7. Braga (shopping)**: prices, quantities, the mercado, clothes and sizes
-- [ ] **8. Grammar bites**: short optional cards (gender and articles, ser vs estar, regular -ar verbs) linked from lessons
+- [x] **6. Aveiro (getting around)**: buses and trains, buying tickets, directions, timetables. Completes "Getting Around"
+- [x] **7. Braga (shopping)**: prices, quantities, the mercado, clothes and sizes
+- [x] **8. Grammar bites**: short optional cards (gender and articles, ser vs estar, regular -ar verbs) linked from lessons
 
 ### D. Habit and polish
 - [ ] **9. Weekly challenge**: one gentle goal each week (e.g. 3 lessons and 1 chat) with a bonus badge

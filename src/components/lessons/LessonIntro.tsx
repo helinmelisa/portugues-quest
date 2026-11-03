@@ -1,6 +1,8 @@
 import { Clock, Sparkles } from 'lucide-react'
 import type { Lesson } from '../../types'
+import { getGrammarBite } from '../../data/grammar'
 import { Badge, Button, Card, SpeakButton } from '../common'
+import { GrammarBiteCard } from './GrammarBiteCard'
 
 export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) {
   return (
@@ -37,6 +39,12 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
           ))}
         </div>
       </section>
+
+      {lesson.grammarId && getGrammarBite(lesson.grammarId) && (
+        <section aria-label="Grammar bite">
+          <GrammarBiteCard bite={getGrammarBite(lesson.grammarId)!} />
+        </section>
+      )}
 
       <Button size="lg" onClick={onStart} className="w-full sm:w-auto">Let’s practise</Button>
     </div>

@@ -3,6 +3,7 @@ import type { Lesson } from '../../types'
 export const coimbraLessons: Lesson[] = [
   {
     id: 'coimbra-university',
+    grammarId: 'ar-verbs',
     destinationId: 'coimbra',
     title: 'Talking about university',
     objective: 'Say what you study and talk about classes.',
@@ -92,6 +93,7 @@ export const coimbraLessons: Lesson[] = [
   },
   {
     id: 'coimbra-routine',
+    grammarId: 'pronouns',
     destinationId: 'coimbra',
     title: 'Your daily routine',
     objective: 'Describe your day from morning to night.',

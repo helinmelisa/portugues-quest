@@ -84,6 +84,7 @@ export interface Lesson {
   skills: Skill[]
   vocabulary: VocabularyItem[]
   exercises: Exercise[]
+  grammarId?: string // optional grammar bite shown in the intro
 }
 
 export interface Destination {

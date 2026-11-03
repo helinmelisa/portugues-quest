@@ -35,6 +35,7 @@ export const lisboaLessons: Lesson[] = [
   },
   {
     id: 'lisboa-introduce',
+    grammarId: 'pronouns',
     destinationId: 'lisboa',
     title: 'Introducing yourself',
     objective: 'Say your name, your age and what you do.',
@@ -90,6 +91,7 @@ export const lisboaLessons: Lesson[] = [
   },
   {
     id: 'lisboa-from',
+    grammarId: 'ser-estar',
     destinationId: 'lisboa',
     title: 'Where are you from?',
     objective: 'Say where you are from and where you live.',

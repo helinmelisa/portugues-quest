@@ -62,6 +62,7 @@ export const portoLessons: Lesson[] = [
   },
   {
     id: 'porto-pastries',
+    grammarId: 'gender',
     destinationId: 'porto',
     title: 'Ordering pastries',
     objective: 'Choose between sweet and savoury and say if it’s to take away.',
