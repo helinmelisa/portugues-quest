@@ -12,6 +12,7 @@ import { dayKey } from '../../utils/date'
 import { DailyQuestCard } from './DailyQuestCard'
 import { noteForDay } from '../../data/ptNotes'
 import { dueWordIds } from '../../features/vocabulary/srs'
+import { checkpointAvailable } from '../../features/learning/practice'
 
 function greeting() {
   const h = new Date().getHours()
@@ -107,6 +108,11 @@ export default function DashboardPage() {
             <ProgressBar value={a0Done} max={a0Lessons.length} label="Progress to A1" />
           </div>
           {next && <p className="text-sm opacity-70">{next.minXp - stats.totalXp} XP until {next.name}</p>}
+          {progress.certificates.A1 ? (
+            <Link to="/app/certificate/A1" className="block rounded-2xl bg-sky/20 p-3 font-medium hover:bg-sky/30">🎓 A1 Explorer — view your certificate</Link>
+          ) : checkpointAvailable(progress) ? (
+            <Link to="/lesson/checkpoint-A1" className="block rounded-2xl bg-sun/30 p-3 font-medium hover:bg-sun/40">🎓 Ready? Take the A1 checkpoint (12 questions) →</Link>
+          ) : null}
         </Card>
       </div>
 

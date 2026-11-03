@@ -156,6 +156,7 @@ export interface LearningProgress {
   conversations: number
   activityByDay: Record<string, { lessons: number; conversations: number }>
   storiesRead: string[]
+  certificates: Record<string, string> // level → date passed
   mistakes: Mistake[] // corrections collected from conversations with Inês
   weeklyClaimed: string[] // week keys (Monday dates) whose challenge bonus was claimed
   customWords: VocabularyItem[] // words saved from conversations

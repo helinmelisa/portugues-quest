@@ -97,6 +97,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const removeMistake = useCallback((id: string) => setProgress((p) => ({ ...p, mistakes: p.mistakes.filter((m) => m.id !== id) })), [])
 
+  const passCheckpoint = useCallback(
+    (level: string) => setProgress((p) => (p.certificates[level] ? p : { ...p, certificates: { ...p.certificates, [level]: dayKey() } })),
+    [],
+  )
+
   const syncData = useMemo(() => ({ progress, profile }), [progress, profile])
   const cloud = useCloudSync(syncData, replaceAll)
 
@@ -110,6 +115,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       addCustomWord,
       addMistakes,
       removeMistake,
+      passCheckpoint,
       updateProfile,
       toggleDifficult,
       reviewWord,
@@ -120,7 +126,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
+    [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, passCheckpoint, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

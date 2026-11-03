@@ -17,6 +17,7 @@ import StoryPage from './pages/Practice/StoryPage'
 import PortugalVsBrazilPage from './pages/Practice/PortugalVsBrazilPage'
 import WordGardenPage from './pages/Practice/WordGardenPage'
 import SettingsPage from './pages/Settings/SettingsPage'
+import CertificatePage from './pages/Certificate/CertificatePage'
 import TutorPage from './pages/Tutor/TutorPage'
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="practice/mistakes" element={<MistakesPage />} />
             <Route path="practice/portugal-vs-brazil" element={<PortugalVsBrazilPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="certificate/:level" element={<CertificatePage />} />
             <Route path="tutor" element={<TutorPage />} />
           </Route>
           <Route path="/lesson/:lessonId" element={<RequireAccount><LessonPage /></RequireAccount>} />

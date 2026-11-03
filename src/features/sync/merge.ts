@@ -34,6 +34,7 @@ export function mergeProgress(a: LearningProgress, b: LearningProgress): Learnin
     ),
     weeklyClaimed: union(a.weeklyClaimed, b.weeklyClaimed),
     storiesRead: union(a.storiesRead, b.storiesRead),
+    certificates: { ...b.certificates, ...a.certificates },
     mistakes: [...a.mistakes, ...b.mistakes.filter((m) => !a.mistakes.some((x) => x.id === m.id))],
     customWords: [...a.customWords, ...b.customWords.filter((w) => !a.customWords.some((x) => x.id === w.id))],
     achievements: union(a.achievements, b.achievements),

@@ -19,6 +19,7 @@ export interface ProgressContextValue {
   addCustomWord: (word: { pt: string; en: string }) => void
   addMistakes: (corrections: { said: string; better: string; why: string }[]) => void
   removeMistake: (id: string) => void
+  passCheckpoint: (level: string) => void
   updateProfile: (changes: Partial<UserProfile>) => void
   toggleDifficult: (wordId: string) => void
   reviewWord: (wordId: string, correct: boolean) => void

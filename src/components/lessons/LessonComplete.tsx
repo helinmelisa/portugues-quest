@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { PartyPopper } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import type { LessonResult } from '../../features/progress/progressContext'
 import { Button } from '../common'
 import { Confetti } from '../gamification/Confetti'
@@ -8,10 +9,11 @@ interface Props {
   result: LessonResult
   correctFirstTry: number
   total: number
+  checkpoint?: boolean | null
   onDone: () => void
 }
 
-export function LessonComplete({ result, correctFirstTry, total, onDone }: Props) {
+export function LessonComplete({ result, correctFirstTry, total, checkpoint = null, onDone }: Props) {
   return (
     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="py-10 text-center">
       <Confetti />
@@ -33,6 +35,19 @@ export function LessonComplete({ result, correctFirstTry, total, onDone }: Props
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 font-medium">
           New rank unlocked: <span className="text-terracotta-dark">{result.newRank}</span> 🎉
         </motion.p>
+      )}
+
+      {checkpoint !== null && (
+        <div className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-4">
+          {checkpoint ? (
+            <>
+              <p className="font-medium">🎓 You passed the A1 checkpoint!</p>
+              <Link to="/app/certificate/A1" className="mt-1 inline-block font-medium text-terracotta-dark underline">See your certificate →</Link>
+            </>
+          ) : (
+            <p>Quase lá! You need {Math.ceil(total * 0.75)}/{total} right first try to pass. Review a little and try again anytime.</p>
+          )}
+        </div>
       )}
 
       {result.weeklyBonus > 0 && (

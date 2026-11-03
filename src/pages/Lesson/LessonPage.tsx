@@ -9,7 +9,7 @@ import { LessonIntro } from '../../components/lessons/LessonIntro'
 import { ExerciseView } from '../../components/lessons/ExerciseView'
 import type { ExerciseResponse } from '../../components/lessons/types'
 import { isLessonAvailable } from '../../data/curriculum'
-import { resolveLesson } from '../../features/learning/practice'
+import { CHECKPOINT_PASS, resolveLesson } from '../../features/learning/practice'
 import { useProgress } from '../../hooks/useProgress'
 import type { Exercise } from '../../types'
 
@@ -18,7 +18,7 @@ type Stage = 'intro' | 'exercises' | 'complete'
 export default function LessonPage() {
   const { lessonId = '' } = useParams()
   const navigate = useNavigate()
-  const { completeLesson, progress, reviewWord } = useProgress()
+  const { completeLesson, progress, reviewWord, passCheckpoint } = useProgress()
   const [lesson] = useState(() => resolveLesson(lessonId, progress))
 
   const [stage, setStage] = useState<Stage>(lesson?.vocabulary.length ? 'intro' : 'exercises')
@@ -27,6 +27,7 @@ export default function LessonPage() {
   const [response, setResponse] = useState<ExerciseResponse>({ ready: false, correct: false })
   const [checked, setChecked] = useState(false)
   const [result, setResult] = useState<LessonResult | null>(null)
+  const [checkpointPassed, setCheckpointPassed] = useState<boolean | null>(null)
 
   const exit = () => navigate(-1)
 
@@ -58,6 +59,11 @@ export default function LessonPage() {
     setResponse({ ready: false, correct: false })
     setChecked(false)
     if (rest.length === 0) {
+      if (lesson.id.startsWith('checkpoint-')) {
+        const passed = total - missed.size >= Math.ceil(total * CHECKPOINT_PASS)
+        if (passed) passCheckpoint(lesson.id.replace('checkpoint-', ''))
+        setCheckpointPassed(passed)
+      }
       setResult(completeLesson(lesson))
       setStage('complete')
     }
@@ -79,7 +85,7 @@ export default function LessonPage() {
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
         {stage === 'complete' && result && (
-          <LessonComplete result={result} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
+          <LessonComplete result={result} checkpoint={checkpointPassed} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
         )}
       </main>
 

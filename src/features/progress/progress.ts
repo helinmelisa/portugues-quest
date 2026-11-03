@@ -16,6 +16,7 @@ export const emptyProgress: LearningProgress = {
   activityByDay: {},
   weeklyClaimed: [],
   storiesRead: [],
+  certificates: {},
   mistakes: [],
   customWords: [],
   achievements: [],

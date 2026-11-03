@@ -148,7 +148,34 @@ function storyQuiz(id: string): Lesson | undefined {
   }
 }
 
+export const CHECKPOINT_PASS = 0.75
+const A1_DESTINATIONS = ['lisboa', 'porto', 'coimbra', 'aveiro', 'braga']
+
+// The A1 checkpoint is open once three Braga lessons are done.
+export const checkpointAvailable = (progress: LearningProgress) =>
+  lessons.filter((l) => l.destinationId === 'braga' && l.id in progress.completedLessons).length >= 3
+
+function checkpoint(): Lesson {
+  const pool = lessons
+    .filter((l) => A1_DESTINATIONS.includes(l.destinationId))
+    .flatMap((l) => l.exercises)
+    .filter((e) => e.type !== 'pronunciation' && e.type !== 'matching')
+  return {
+    id: 'checkpoint-A1',
+    destinationId: 'practice',
+    title: 'A1 checkpoint',
+    objective: '',
+    intro: '',
+    minutes: 10,
+    xp: 50,
+    skills: ['vocabulary', 'grammar', 'listening'],
+    vocabulary: [],
+    exercises: shuffle(pool).slice(0, 12),
+  }
+}
+
 export function resolveLesson(id: string, progress: LearningProgress) {
+  if (id === 'checkpoint-A1') return checkpoint()
   if (id.startsWith('story-')) return storyQuiz(id.slice('story-'.length))
   const mode = id.replace(/^practice-/, '')
   if (id.startsWith('practice-')) return mode in modes ? buildPractice(mode as PracticeMode, progress) : undefined
