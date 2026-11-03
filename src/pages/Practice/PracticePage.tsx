@@ -1,4 +1,4 @@
-import { Headphones, Languages, Puzzle, Sprout, Zap, type LucideIcon } from 'lucide-react'
+import { Headphones, Languages, Mic, Puzzle, Sprout, Zap, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
 import { useProgress } from '../../hooks/useProgress'
@@ -21,6 +21,7 @@ export default function PracticePage() {
     { to: '/app/practice/words', icon: Sprout, title: 'Word Garden', text: 'Every word you’ve learned, ready to review and listen to again.', badge: `${progress.learnedWords.length} words`, tone: 'text-sage' },
     { to: '/lesson/practice-listening', icon: Headphones, title: 'Listening Nook', text: 'Listen, replay slowly and pick what you heard.', badge: '3 min · +10 XP', tone: 'text-sky' },
     { to: '/app/practice/portugal-vs-brazil', icon: Languages, title: 'In Portugal, we say…', text: 'The words that tell Portuguese and Brazilian Portuguese apart.', badge: 'Cheat sheet', tone: 'text-terracotta' },
+    { to: '/lesson/practice-speak', icon: Mic, title: 'Speak out loud', text: 'Listen, repeat and get feedback on your pronunciation.', badge: '3 min · +10 XP', tone: 'text-terracotta' },
     { to: '/lesson/practice-sentences', icon: Puzzle, title: 'Build a Sentence', text: 'Put the words in the right order to make natural Portuguese.', badge: '3 min · +10 XP', tone: 'text-terracotta' },
   ]
 

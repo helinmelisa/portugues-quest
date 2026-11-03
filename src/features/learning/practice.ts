@@ -1,5 +1,5 @@
 import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
-import type { Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
+import type { PronunciationExercise, Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
 import { dueWordIds } from '../vocabulary/srs'
 import { shuffle } from '../../utils/shuffle'
 import { destinations } from '../../data/destinations'
@@ -11,6 +11,7 @@ const modes = {
   sentences: { title: 'Build a Sentence', minutes: 3 },
   difficult: { title: 'Tricky words', minutes: 3 },
   review: { title: 'Daily review', minutes: 4 },
+  speak: { title: 'Speak out loud', minutes: 3 },
 }
 export type PracticeMode = keyof typeof modes
 
@@ -47,6 +48,19 @@ function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
 function meaningExercise(v: VocabularyItem): MultipleChoiceExercise {
   const options = shuffle([v.en, ...shuffle(allVocabulary().filter((o) => o.id !== v.id)).slice(0, 2).map((o) => o.en)])
   return { id: `meaning-${v.id}`, wordId: v.id, type: 'multiple-choice', prompt: `What does “${v.pt}” mean?`, options, answer: options.indexOf(v.en), explanation: `“${v.pt}” means “${v.en}”.` }
+}
+
+function speakingExercises(items: VocabularyItem[]): PronunciationExercise[] {
+  return items
+    .filter((v) => v.example || !v.pt.includes('…'))
+    .map((v) => ({
+      id: `speak-${v.id}`,
+      type: 'pronunciation',
+      prompt: 'Say it out loud',
+      phrase: v.example?.pt ?? spoken(v),
+      translation: v.example?.en ?? v.en,
+      explanation: v.pronunciation ? `Pronunciation guide: /${v.pronunciation}/` : `“${spoken(v)}” — ${v.en}.`,
+    }))
 }
 
 function sentenceExercises(progress: LearningProgress): SentenceBuildExercise[] {
@@ -87,6 +101,9 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
       exercises = listeningExercises(shuffle(hard.length ? hard : wordPool(progress)).slice(0, 5))
       break
     }
+    case 'speak':
+      exercises = speakingExercises(shuffle(wordPool(progress))).slice(0, 5)
+      break
     case 'review': {
       const due = new Set(dueWordIds(progress))
       const words = allVocabulary().filter((v) => due.has(v.id))
