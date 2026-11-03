@@ -1,11 +1,13 @@
 import { ArrowLeft, Lightbulb, Loader2, Mic, Send, Square, Volume2, VolumeX } from 'lucide-react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Button, SpeakButton } from '../../components/common'
-import type { Scenario, TutorMessage, TutorSession } from '../../features/tutor/types'
+import type { LessonResult } from '../../features/progress/progressContext'
+import type { ConversationSummary, Scenario, TutorMessage, TutorSession } from '../../features/tutor/types'
 import { useProgress } from '../../hooks/useProgress'
 import { recorderSupported, useRecorder } from '../../hooks/useRecorder'
 import { speech } from '../../services/speech'
 import { transcribe } from '../../services/transcribe'
+import { WrapUp } from './WrapUp'
 import { cn } from '../../utils/cn'
 
 function TutorBubble({ message }: { message: TutorMessage }) {
@@ -50,7 +52,30 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
   const [done, setDone] = useState(false)
   const [input, setInput] = useState('')
   const endRef = useRef<HTMLDivElement>(null)
-  const { profile, updateProfile } = useProgress()
+  const { profile, updateProfile, completeConversation } = useProgress()
+  const [summary, setSummary] = useState<ConversationSummary | null>(null)
+  const [reward, setReward] = useState<LessonResult | null>(null)
+  const [ending, setEnding] = useState(false)
+  const [endError, setEndError] = useState<string | null>(null)
+  const rewarded = useRef(false)
+  const userTurns = messages.filter((m) => m.from === 'user').length
+
+  const finish = () => {
+    if (rewarded.current) return
+    rewarded.current = true
+    setReward(completeConversation())
+  }
+
+  const end = async () => {
+    if (!session.summarize) return
+    setEnding(true)
+    const result = await session.summarize()
+    setEnding(false)
+    if ('error' in result) setEndError(result.error)
+    else setSummary(result)
+    finish()
+    setDone(true)
+  }
   const [transcribing, setTranscribing] = useState(false)
   const [micHint, setMicHint] = useState<string | null>(null)
   const spokenId = useRef<string | null>(null)
@@ -92,6 +117,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
     setMessages((m) => [...m, ...reply.messages])
     setSuggestions(reply.suggestions)
     setDone(reply.done)
+    if (reply.done) finish()
     setTyping(false)
   }
 
@@ -142,11 +168,10 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
       <div ref={endRef} />
 
       {done ? (
-        <div className="mt-8 rounded-3xl bg-sun/25 p-6 text-center">
-          <p className="font-display text-2xl">Conversa completa! 🎉</p>
-          <p className="mt-1 opacity-80">You just had a real Portuguese exchange.</p>
-          <Button className="mt-4" onClick={onBack}>Try another scenario</Button>
-        </div>
+        <>
+          {endError && <p role="alert" className="mt-6 text-sm text-terracotta-dark">{endError}</p>}
+          <WrapUp summary={summary} reward={reward} onBack={onBack} />
+        </>
       ) : (
         <div className="sticky bottom-20 mt-6 space-y-3 bg-cream py-3 md:bottom-0">
           <div className="flex flex-wrap gap-2">
@@ -182,6 +207,11 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
               <Send className="size-5" aria-hidden />
             </Button>
           </form>
+          {session.summarize && userTurns >= 2 && (
+            <Button variant="ghost" size="sm" disabled={typing || ending} onClick={end}>
+              {ending ? <><Loader2 className="size-4 animate-spin" aria-hidden /> Preparing your feedback…</> : 'End conversation & get feedback'}
+            </Button>
+          )}
           {recorder.recording && <p className="text-sm opacity-75">Listening… tap ■ when you’re done.</p>}
           {(recorder.error ?? micHint) && <p role="alert" className="text-sm text-terracotta-dark">{recorder.error ?? micHint}</p>}
         </div>

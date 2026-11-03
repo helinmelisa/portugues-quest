@@ -2,12 +2,17 @@ import { CheckCircle2, Clock, Gauge, Sparkles } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Badge, Button } from '../../components/common'
 import { getLesson } from '../../data/curriculum'
+import { CONVERSATION_XP } from '../../features/progress/progress'
 import type { DailyQuest } from '../../types'
 
 export function DailyQuestCard({ quest, claimed }: { quest: DailyQuest; claimed: boolean }) {
   const navigate = useNavigate()
-  const lesson = getLesson(quest.lessonId)
-  if (!lesson) return null
+  const lesson = quest.lessonId ? getLesson(quest.lessonId) : undefined
+  const minutes = lesson?.minutes ?? 5
+  const xp = lesson?.xp ?? CONVERSATION_XP
+  const skills = lesson?.skills ?? ['speaking']
+  const target = lesson ? `/lesson/${lesson.id}` : `/app/tutor?scenario=${quest.scenarioId ?? 'coffee'}`
+  const chip = 'bg-white/20 text-white'
 
   return (
     <section aria-labelledby="quest-title" className="relative overflow-hidden rounded-[2rem] bg-terracotta p-6 text-white shadow-soft md:p-8">
@@ -18,15 +23,15 @@ export function DailyQuestCard({ quest, claimed }: { quest: DailyQuest; claimed:
         <h2 id="quest-title" className="mt-1 font-display text-3xl md:text-4xl">{quest.title}</h2>
         <p className="mt-2 max-w-md opacity-90">{quest.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Badge className="bg-white/20 text-white"><Clock className="size-3.5" aria-hidden /> {lesson.minutes} min</Badge>
-          <Badge className="bg-white/20 text-white"><Gauge className="size-3.5" aria-hidden /> {quest.difficulty}</Badge>
-          <Badge className="bg-white/20 text-white"><Sparkles className="size-3.5" aria-hidden /> {lesson.xp} + {quest.bonusXp} bonus XP</Badge>
-          {lesson.skills.map((s) => <Badge key={s} className="bg-white/20 capitalize text-white">{s}</Badge>)}
+          <Badge className={chip}><Clock className="size-3.5" aria-hidden /> {minutes} min</Badge>
+          <Badge className={chip}><Gauge className="size-3.5" aria-hidden /> {quest.difficulty}</Badge>
+          <Badge className={chip}><Sparkles className="size-3.5" aria-hidden /> {xp} + {quest.bonusXp} bonus XP</Badge>
+          {skills.map((s) => <Badge key={s} className={`${chip} capitalize`}>{s}</Badge>)}
         </div>
         {claimed ? (
           <p className="mt-6 flex items-center gap-2 font-medium"><CheckCircle2 className="size-5" aria-hidden /> Quest complete — até amanhã!</p>
         ) : (
-          <Button variant="secondary" size="lg" className="mt-6" onClick={() => navigate(`/lesson/${lesson.id}`)}>Start quest</Button>
+          <Button variant="secondary" size="lg" className="mt-6" onClick={() => navigate(target)}>Start quest</Button>
         )}
       </div>
     </section>

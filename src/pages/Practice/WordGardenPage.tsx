@@ -2,14 +2,14 @@ import { ArrowLeft, Sprout, Star } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, SpeakButton } from '../../components/common'
-import { allVocabulary, spoken } from '../../features/learning/practice'
+import { spoken, vocabularyFor } from '../../features/learning/practice'
 import { useProgress } from '../../hooks/useProgress'
 import { cn } from '../../utils/cn'
 
 export default function WordGardenPage() {
   const { progress, toggleDifficult } = useProgress()
   const [onlyDifficult, setOnlyDifficult] = useState(false)
-  const learned = allVocabulary().filter((v) => progress.learnedWords.includes(v.id))
+  const learned = vocabularyFor(progress).filter((v) => progress.learnedWords.includes(v.id))
   const words = onlyDifficult ? learned.filter((v) => progress.difficultWords.includes(v.id)) : learned
 
   return (

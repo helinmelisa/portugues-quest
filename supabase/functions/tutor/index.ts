@@ -64,6 +64,18 @@ Respond ONLY with JSON in this exact shape:
 {"reply": "<your Portuguese line>", "translation": "<English translation of reply>", "tip": "<short English tip or null>", "suggestions": ["<short Portuguese reply the learner could give>", "<another>"]}`
 }
 
+function summaryPrompt(level: string) {
+  return `You are Inês, a kind European Portuguese tutor. Review this short role-play between a learner (CEFR level ${level}) and you.
+
+Return ONLY JSON in this exact shape:
+{"wentWell": "<one encouraging English sentence about something specific the learner did well>", "corrections": [{"said": "<the learner's exact words>", "better": "<natural European Portuguese>", "why": "<short English reason>"}], "newWords": [{"pt": "<useful European Portuguese word or short phrase>", "en": "<English>"}]}
+
+Rules:
+- At most 3 corrections, only for real mistakes in the LEARNER's lines (grammar, wrong word, Brazilian forms). Use an empty array if there are none.
+- 3 to 5 newWords from or related to the conversation, suited to the learner's level.
+- European Portuguese (Portugal) only.`
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
 
@@ -85,10 +97,11 @@ Deno.serve(async (req) => {
   const level = String(body.level ?? 'A0')
   const history = (Array.isArray(body.messages) ? body.messages : [])
     .filter((m: { role?: string }) => m.role === 'user' || m.role === 'assistant')
-    .slice(-12)
+    .slice(-20)
     .map((m: { role: string; content: unknown }) => ({ role: m.role, content: String(m.content).slice(0, 500) }))
   if (history.length === 0) history.push({ role: 'user', content: '(Start the role-play now with a greeting that fits the scene.)' })
 
+  const summary = body.action === 'summary'
   const groq = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { Authorization: `Bearer ${Deno.env.get('GROQ_API_KEY')}`, 'Content-Type': 'application/json' },
@@ -98,7 +111,12 @@ Deno.serve(async (req) => {
       max_tokens: 1000,
       reasoning_effort: 'low',
       response_format: { type: 'json_object' },
-      messages: [{ role: 'system', content: systemPrompt(setting, level) }, ...history],
+      messages: summary
+        ? [
+            { role: 'system', content: summaryPrompt(level) },
+            { role: 'user', content: history.map((m: { role: string; content: string }) => `${m.role === 'user' ? 'Learner' : 'Inês'}: ${m.content}`).join('\n') },
+          ]
+        : [{ role: 'system', content: systemPrompt(setting, level) }, ...history],
     }),
   })
   if (!groq.ok) {
@@ -109,6 +127,13 @@ Deno.serve(async (req) => {
   try {
     // Some models use non-breaking hyphens (bem‑vindo); normalise them.
     const content = JSON.parse((await groq.json()).choices[0].message.content.replace(/\u2011/g, '-'))
+    if (summary) {
+      return json({
+        wentWell: String(content.wentWell ?? ''),
+        corrections: (Array.isArray(content.corrections) ? content.corrections : []).slice(0, 3).map((c: Record<string, unknown>) => ({ said: String(c.said ?? ''), better: String(c.better ?? ''), why: String(c.why ?? '') })),
+        newWords: (Array.isArray(content.newWords) ? content.newWords : []).slice(0, 5).map((w: Record<string, unknown>) => ({ pt: String(w.pt ?? ''), en: String(w.en ?? '') })),
+      })
+    }
     return json({
       reply: String(content.reply ?? ''),
       translation: content.translation ? String(content.translation) : undefined,

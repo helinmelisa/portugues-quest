@@ -107,7 +107,9 @@ export interface Achievement {
 
 export interface DailyQuest {
   id: string
-  lessonId: string
+  kind: 'lesson' | 'conversation'
+  lessonId?: string
+  scenarioId?: string
   title: string
   description: string
   difficulty: 'easy' | 'medium' | 'hard'
@@ -141,6 +143,8 @@ export interface LearningProgress {
   minutesByDay: Record<string, number>
   questDays: string[] // days the daily quest bonus was claimed
   reviews: Record<string, WordReview>
+  conversations: number
+  customWords: VocabularyItem[] // words saved from conversations
   achievements: string[]
 }
 

@@ -14,10 +14,17 @@ export interface TutorReply {
   done: boolean
 }
 
+export interface ConversationSummary {
+  wentWell: string
+  corrections: { said: string; better: string; why: string }[]
+  newWords: { pt: string; en: string }[]
+}
+
 // Any tutor backend (the local script now, an AI service later) implements this.
 export interface TutorSession {
   start(): Promise<TutorReply>
   reply(text: string): Promise<TutorReply>
+  summarize?: () => Promise<ConversationSummary | { error: string }>
 }
 
 export interface ScriptStep {

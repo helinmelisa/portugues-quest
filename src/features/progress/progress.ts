@@ -11,6 +11,8 @@ export const emptyProgress: LearningProgress = {
   minutesByDay: {},
   questDays: [],
   reviews: {},
+  conversations: 0,
+  customWords: [],
   achievements: [],
 }
 
@@ -57,7 +59,7 @@ export function completeLesson(
   const today = dayKey()
   const isPractice = lesson.destinationId === 'practice'
   const repeat = lesson.id in progress.completedLessons
-  const questBonus = quest?.lessonId === lesson.id && !progress.questDays.includes(today) ? quest.bonusXp : 0
+  const questBonus = quest?.kind === 'lesson' && quest.lessonId === lesson.id && !progress.questDays.includes(today) ? quest.bonusXp : 0
   const xpEarned = (repeat ? Math.round(lesson.xp * XP.repeatLessonFactor) : lesson.xp) + questBonus
 
   return {
@@ -74,6 +76,28 @@ export function completeLesson(
     },
   }
 }
+
+export const CONVERSATION_XP = 15
+
+export function completeConversation(progress: LearningProgress, quest?: DailyQuest) {
+  const today = dayKey()
+  const questBonus = quest?.kind === 'conversation' && !progress.questDays.includes(today) ? quest.bonusXp : 0
+  const xpEarned = CONVERSATION_XP + questBonus
+  return {
+    xpEarned,
+    progress: {
+      ...progress,
+      xp: progress.xp + xpEarned,
+      conversations: progress.conversations + 1,
+      activeDays: progress.activeDays.includes(today) ? progress.activeDays : [...progress.activeDays, today],
+      minutesByDay: { ...progress.minutesByDay, [today]: (progress.minutesByDay[today] ?? 0) + 5 },
+      questDays: questBonus ? [...progress.questDays, today] : progress.questDays,
+    },
+  }
+}
+
+export const customWordId = (pt: string) =>
+  'custom-' + pt.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 export function statsFor(progress: LearningProgress): UserStatistics {
   return {

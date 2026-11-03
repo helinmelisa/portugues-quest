@@ -21,10 +21,11 @@ const availableLessons = (progress?: LearningProgress) =>
     return isLessonAvailable(l) && (!progress || (destination !== undefined && isDestinationUnlocked(destination, progress)))
   })
 export const allVocabulary = () => availableLessons().flatMap((l) => l.vocabulary)
+export const vocabularyFor = (progress: LearningProgress) => [...allVocabulary(), ...progress.customWords]
 export const spoken = (v: VocabularyItem) => v.pt.split(' / ')[0]
 
 function wordPool(progress: LearningProgress) {
-  const learned = allVocabulary().filter((v) => progress.learnedWords.includes(v.id))
+  const learned = vocabularyFor(progress).filter((v) => progress.learnedWords.includes(v.id))
   return learned.length >= 4 ? learned : allVocabulary()
 }
 
@@ -97,7 +98,7 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
       exercises = shuffle(sentenceExercises(progress)).slice(0, 5)
       break
     case 'difficult': {
-      const hard = allVocabulary().filter((v) => progress.difficultWords.includes(v.id))
+      const hard = vocabularyFor(progress).filter((v) => progress.difficultWords.includes(v.id))
       exercises = listeningExercises(shuffle(hard.length ? hard : wordPool(progress)).slice(0, 5))
       break
     }
@@ -106,7 +107,7 @@ function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
       break
     case 'review': {
       const due = new Set(dueWordIds(progress))
-      const words = allVocabulary().filter((v) => due.has(v.id))
+      const words = vocabularyFor(progress).filter((v) => due.has(v.id))
       exercises = shuffle(words.length ? words : wordPool(progress))
         .slice(0, 8)
         .map((v, i) => (i % 2 ? meaningExercise(v) : listeningExercises([v])[0]))

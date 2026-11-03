@@ -24,6 +24,8 @@ export function mergeProgress(a: LearningProgress, b: LearningProgress): Learnin
     minutesByDay,
     questDays: union(a.questDays, b.questDays),
     reviews,
+    conversations: Math.max(a.conversations, b.conversations),
+    customWords: [...a.customWords, ...b.customWords.filter((w) => !a.customWords.some((x) => x.id === w.id))],
     achievements: union(a.achievements, b.achievements),
   }
 }

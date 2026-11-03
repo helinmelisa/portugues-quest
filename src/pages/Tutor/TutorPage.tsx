@@ -1,6 +1,6 @@
 import { Info, MessageCircle, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
 import { createAiTutor } from '../../features/tutor/aiTutor'
 import { scenarios } from '../../features/tutor/scenarios'
@@ -10,9 +10,10 @@ import { ChatView } from './ChatView'
 
 export default function TutorPage() {
   const { cloud, profile } = useProgress()
-  const [activeId, setActiveId] = useState<string | null>(null)
+  const [params] = useSearchParams()
+  const [activeId, setActiveId] = useState<string | null>(params.get('scenario'))
   const ai = cloud.email !== null
-  const active = scenarios.find((s) => s.id === activeId)
+  const active = scenarios.find((s) => s.id === activeId && (ai || s.steps))
 
   if (active) {
     const createSession = () => (ai ? createAiTutor(active, profile.level) : createScriptedTutor(active))

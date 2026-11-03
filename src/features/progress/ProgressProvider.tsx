@@ -5,11 +5,11 @@ import { speech } from '../../services/speech'
 import { storage } from '../../services/storage'
 import type { LearningProgress, Lesson, UserProfile } from '../../types'
 import { useCloudSync } from '../sync/useCloudSync'
-import { applyReview } from '../vocabulary/srs'
+import { applyReview, scheduleNew } from '../vocabulary/srs'
 import { newlyUnlocked } from '../achievements/achievements'
 import { isDestinationUnlocked } from './destinationProgress'
-import { completeLesson as applyLesson, defaultProfile, emptyProgress, rankFor, statsFor } from './progress'
-import { ProgressContext } from './progressContext'
+import { completeConversation as applyConversation, completeLesson as applyLesson, customWordId, defaultProfile, emptyProgress, rankFor, statsFor } from './progress'
+import { ProgressContext, type LessonResult } from './progressContext'
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(() => storage.load('progress', emptyProgress))
@@ -23,9 +23,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     speech.rate = profile.audioRate ?? speech.rate
   }, [profile])
 
-  const completeLesson = useCallback(
-    (lesson: Lesson) => {
-      const result = applyLesson(progress, lesson, questForDay())
+  // Applies a finished activity: unlocks achievements and reports rank-ups and new destinations.
+  const finish = useCallback(
+    (result: { progress: LearningProgress; xpEarned: number }): LessonResult => {
       const unlocked = newlyUnlocked(result.progress)
       const next = { ...result.progress, achievements: [...result.progress.achievements, ...unlocked.map((a) => a.id)] }
       setProgress(next)
@@ -38,6 +38,24 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       return { xpEarned: result.xpEarned, achievements: unlocked, newRank: after !== before ? after : undefined, unlockedDestinations }
     },
     [progress],
+  )
+
+  const completeLesson = useCallback((lesson: Lesson) => finish(applyLesson(progress, lesson, questForDay())), [progress, finish])
+  const completeConversation = useCallback(() => finish(applyConversation(progress, questForDay())), [progress, finish])
+
+  const addCustomWord = useCallback(
+    (word: { pt: string; en: string }) =>
+      setProgress((p) => {
+        const id = customWordId(word.pt)
+        if (p.customWords.some((w) => w.id === id)) return p
+        return {
+          ...p,
+          customWords: [...p.customWords, { id, pt: word.pt, en: word.en, context: 'Saved from a conversation with Inês.' }],
+          learnedWords: p.learnedWords.includes(id) ? p.learnedWords : [...p.learnedWords, id],
+          reviews: scheduleNew(p.reviews, [id]),
+        }
+      }),
+    [],
   )
 
   const updateProfile = useCallback((changes: Partial<UserProfile>) => setProfile((p) => ({ ...p, ...changes })), [])
@@ -71,6 +89,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       profile,
       stats: statsFor(progress),
       completeLesson,
+      completeConversation,
+      addCustomWord,
       updateProfile,
       toggleDifficult,
       reviewWord,
@@ -81,7 +101,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         setProfile(defaultProfile)
       },
     }),
-    [progress, profile, completeLesson, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
+    [progress, profile, completeLesson, completeConversation, addCustomWord, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

@@ -1,6 +1,6 @@
 import { supabase } from '../../services/supabase'
 import type { CefrLevel } from '../../types'
-import type { Scenario, TutorMessage, TutorReply, TutorSession } from './types'
+import type { ConversationSummary, Scenario, TutorMessage, TutorReply, TutorSession } from './types'
 
 interface AiResponse {
   reply?: string
@@ -10,14 +10,14 @@ interface AiResponse {
   error?: string
 }
 
-async function callTutor(body: object): Promise<AiResponse> {
-  if (!supabase) return { error: 'The AI tutor is not configured.' }
-  const { data, error } = await supabase.functions.invoke<AiResponse>('tutor', { body })
-  if (!error) return data ?? {}
+async function callTutor<T = AiResponse>(body: object): Promise<T & { error?: string }> {
+  if (!supabase) return { error: 'The AI tutor is not configured.' } as T & { error: string }
+  const { data, error } = await supabase.functions.invoke<T>('tutor', { body })
+  if (!error) return (data ?? {}) as T & { error?: string }
   try {
     return await (error as { context?: Response }).context!.json()
   } catch {
-    return { error: 'Couldn’t reach Inês. Check your connection and try again.' }
+    return { error: 'Couldn’t reach Inês. Check your connection and try again.' } as T & { error: string }
   }
 }
 
@@ -40,6 +40,10 @@ export function createAiTutor(scenario: Scenario, level: CefrLevel): TutorSessio
     async reply(text) {
       history.push({ role: 'user', content: text })
       return respond()
+    },
+    async summarize() {
+      const res = await callTutor<ConversationSummary>({ action: 'summary', level, messages: history })
+      return res.error || !res.wentWell ? { error: res.error ?? 'Inês couldn’t prepare your feedback this time.' } : res
     },
   }
 }

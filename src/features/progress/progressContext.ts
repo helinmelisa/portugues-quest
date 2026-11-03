@@ -14,6 +14,8 @@ export interface ProgressContextValue {
   stats: UserStatistics
   profile: UserProfile
   completeLesson: (lesson: Lesson) => LessonResult
+  completeConversation: () => LessonResult
+  addCustomWord: (word: { pt: string; en: string }) => void
   updateProfile: (changes: Partial<UserProfile>) => void
   toggleDifficult: (wordId: string) => void
   reviewWord: (wordId: string, correct: boolean) => void
