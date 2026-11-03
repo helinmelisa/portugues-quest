@@ -22,6 +22,7 @@ export function WrapUp({ summary, reward, onBack }: Props) {
           <Sparkles className="size-4 text-terracotta" aria-hidden /> +{reward.xpEarned} XP
           {reward.achievements.map((a) => <span key={a.id}> · {a.icon} {a.title}</span>)}
           {reward.newRank && <span> · New rank: {reward.newRank}</span>}
+          {reward.weeklyBonus > 0 && <span> · 🏆 Weekly challenge complete!</span>}
         </p>
       )}
 

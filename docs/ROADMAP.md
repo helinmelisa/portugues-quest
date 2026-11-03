@@ -64,12 +64,35 @@ Everything runs on free tiers: Groq (Whisper and the chat model) and the browser
 - [x] **8. Grammar bites**: short optional cards (gender and articles, ser vs estar, regular -ar verbs) linked from lessons
 
 ### D. Habit and polish
-- [ ] **9. Weekly challenge**: one gentle goal each week (e.g. 3 lessons and 1 chat) with a bonus badge
-- [ ] **10. Playtest and polish**: a full pass on iPhone and desktop, fixing whatever you've noticed
+- [x] **9. Weekly challenge**: one gentle goal each week (e.g. 3 lessons and 1 chat) with a bonus badge
+- Step 10 (playtest and polish) moved to Later.
+
+## Milestone 4 — Towards A2
+
+Goal: finish the map of Portugal, take the first steps into A2 (past tense, plans), and make Inês feel personal.
+Still free to run: Groq free tier + Supabase free tier.
+
+### A. Finish the map
+- [ ] **1. Sintra (making plans)**: invitations, “ir + infinitive” (vou visitar), weekend plans, meeting times
+- [ ] **2. Algarve (leisure)**: weather, the beach, ordering a meal at a restaurant, small talk
+- [ ] **3. Madeira (first A2 steps)**: talking about past holidays with the pretérito perfeito (fui, comi, visitei)
+- [ ] **4. New grammar bites**: -er/-ir verbs, ir + infinitive, the past tense (pretérito perfeito)
+
+### B. Listening stories
+- [ ] **5. Histórias**: short graded stories (one per destination) read aloud, with tap-to-translate words and 3 comprehension questions
+
+### C. A more personal Inês
+- [ ] **6. Free chat and your own scenario**: chat about anything, or describe a situation you're about to face (“I have a meeting with my landlord tomorrow”)
+- [ ] **7. Inês remembers you**: a short learner profile (name, interests, frequent mistakes) saved in your account and used in her prompt
+- [ ] **8. Mistake notebook**: corrections from wrap-ups collected in one place and turned into review exercises
+
+### D. Milestones that mean something
+- [ ] **9. A1 checkpoint**: a short mixed test after Braga and a shareable “A1 explorer” certificate page
+- [ ] **10. Installable app (PWA)**: home-screen icon, offline lessons, splash screen
 
 ## Later
-- [ ] Installable app (PWA): manifest, icon, offline cache
-- [ ] Sintra, Algarve and Madeira
+- [ ] Full playtest and polish pass on iPhone and desktop
+- [ ] Daily reminder notifications (needs the PWA + web push)
 - [ ] Recorded native audio
-- [ ] A2/B1 paths
+- [ ] B1 path
 - [ ] More interface languages

@@ -10,6 +10,7 @@ import { newlyUnlocked } from '../achievements/achievements'
 import { isDestinationUnlocked } from './destinationProgress'
 import { completeConversation as applyConversation, completeLesson as applyLesson, customWordId, defaultProfile, emptyProgress, rankFor, statsFor } from './progress'
 import { ProgressContext, type LessonResult } from './progressContext'
+import { claimWeekly } from './weekly'
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(() => storage.load('progress', emptyProgress))
@@ -26,8 +27,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   // Applies a finished activity: unlocks achievements and reports rank-ups and new destinations.
   const finish = useCallback(
     (result: { progress: LearningProgress; xpEarned: number }): LessonResult => {
-      const unlocked = newlyUnlocked(result.progress)
-      const next = { ...result.progress, achievements: [...result.progress.achievements, ...unlocked.map((a) => a.id)] }
+      const weekly = claimWeekly(result.progress)
+      const unlocked = newlyUnlocked(weekly.progress)
+      const next = { ...weekly.progress, achievements: [...weekly.progress.achievements, ...unlocked.map((a) => a.id)] }
       setProgress(next)
 
       const before = rankFor(progress.xp).current.name
@@ -35,7 +37,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       const unlockedDestinations = destinations
         .filter((d) => !isDestinationUnlocked(d, progress) && isDestinationUnlocked(d, next))
         .map((d) => d.name)
-      return { xpEarned: result.xpEarned, achievements: unlocked, newRank: after !== before ? after : undefined, unlockedDestinations }
+      return { xpEarned: result.xpEarned + weekly.bonus, weeklyBonus: weekly.bonus, achievements: unlocked, newRank: after !== before ? after : undefined, unlockedDestinations }
     },
     [progress],
   )

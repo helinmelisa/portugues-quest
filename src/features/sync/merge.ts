@@ -25,6 +25,14 @@ export function mergeProgress(a: LearningProgress, b: LearningProgress): Learnin
     questDays: union(a.questDays, b.questDays),
     reviews,
     conversations: Math.max(a.conversations, b.conversations),
+    activityByDay: Object.fromEntries(
+      union(Object.keys(a.activityByDay), Object.keys(b.activityByDay)).map((day) => {
+        const x = a.activityByDay[day] ?? { lessons: 0, conversations: 0 }
+        const y = b.activityByDay[day] ?? { lessons: 0, conversations: 0 }
+        return [day, { lessons: Math.max(x.lessons, y.lessons), conversations: Math.max(x.conversations, y.conversations) }]
+      }),
+    ),
+    weeklyClaimed: union(a.weeklyClaimed, b.weeklyClaimed),
     customWords: [...a.customWords, ...b.customWords.filter((w) => !a.customWords.some((x) => x.id === w.id))],
     achievements: union(a.achievements, b.achievements),
   }

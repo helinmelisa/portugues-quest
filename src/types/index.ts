@@ -145,6 +145,8 @@ export interface LearningProgress {
   questDays: string[] // days the daily quest bonus was claimed
   reviews: Record<string, WordReview>
   conversations: number
+  activityByDay: Record<string, { lessons: number; conversations: number }>
+  weeklyClaimed: string[] // week keys (Monday dates) whose challenge bonus was claimed
   customWords: VocabularyItem[] // words saved from conversations
   achievements: string[]
 }

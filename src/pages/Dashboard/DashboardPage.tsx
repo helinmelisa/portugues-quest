@@ -2,6 +2,7 @@ import { BookOpen, Flame, Leaf, Lightbulb, RotateCcw, Sparkles } from 'lucide-re
 import { Link, useNavigate } from 'react-router-dom'
 import { Badge, Button, Card, ProgressBar } from '../../components/common'
 import { AchievementList } from '../../components/gamification/AchievementList'
+import { WeeklyChallengeCard } from '../../components/gamification/WeeklyChallengeCard'
 import { WeeklyStreak } from '../../components/gamification/WeeklyStreak'
 import { isLessonAvailable, lessons } from '../../data/curriculum'
 import { questForDay } from '../../data/quests'
@@ -115,6 +116,7 @@ export default function DashboardPage() {
           <p className="text-sm opacity-70">Missed a day? No problem — just pick up where you left off.</p>
         </div>
         <WeeklyStreak activeDays={progress.activeDays} />
+        <WeeklyChallengeCard progress={progress} />
       </Card>
 
       <Card className="flex gap-3 bg-sun/15">

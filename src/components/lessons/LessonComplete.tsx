@@ -35,6 +35,12 @@ export function LessonComplete({ result, correctFirstTry, total, onDone }: Props
         </motion.p>
       )}
 
+      {result.weeklyBonus > 0 && (
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mx-auto mt-6 max-w-sm rounded-2xl bg-sun/30 p-3 font-medium">
+          🏆 Weekly challenge complete! +{result.weeklyBonus} bonus XP
+        </motion.p>
+      )}
+
       {result.unlockedDestinations.map((name) => (
         <motion.p key={name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-3 font-medium">
           🗺️ New destination unlocked: {name}!
