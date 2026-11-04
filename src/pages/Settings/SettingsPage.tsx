@@ -6,12 +6,13 @@ import { speech } from '../../services/speech'
 import type { CefrLevel, UserProfile } from '../../types'
 import { cn } from '../../utils/cn'
 import { dayKey } from '../../utils/date'
+import { LegacyBackup } from './LegacyBackup'
 import { InstallCard } from './InstallCard'
 import { AccountCard } from './AccountCard'
 import { ResetProgress } from './ResetProgress'
 
 const goals: UserProfile['dailyGoalMinutes'][] = [5, 10, 15, 20]
-const levels: CefrLevel[] = ['A0', 'A1']
+const levels: CefrLevel[] = ['A0', 'A1', 'A2']
 const speeds = [
   { rate: 0.7, label: 'Slow' },
   { rate: 0.9, label: 'Normal' },
@@ -71,6 +72,7 @@ export default function SettingsPage() {
 
       <AccountCard />
       <InstallCard />
+      <LegacyBackup />
 
       <Card className="space-y-5">
         <h2 className="font-display text-xl">Learning</h2>

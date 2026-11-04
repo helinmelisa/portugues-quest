@@ -127,8 +127,8 @@ The first release is installed from Safari onto the Home Screen. An App Store re
 
 ### B. One account, one learning journey
 - [ ] **3. Sign-in and account isolation**: test magic-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
-- [ ] **4. Cross-device sync**: pull and merge on foreground/reconnect, and refresh while both clients are open through account-scoped realtime updates with a fallback refresh. Prevent stale whole-profile writes from erasing newer progress. Preserve lesson completion, XP, streaks, word reviews, settings, mistakes and certificates; define how edits and deletions resolve
-- [ ] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
+- [x] **4. Cross-device sync**: pull and merge on foreground/reconnect, and refresh while both clients are open through account-scoped realtime updates with a fallback refresh. Prevent stale whole-profile writes from erasing newer progress. Preserve lesson completion, XP, streaks, word reviews, settings, mistakes and certificates; define how edits and deletions resolve
+- [x] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
 
 ### C. Learn without a connection
 - [ ] **6. Offline lessons and reading**: cache the app shell and bundled curriculum after an online visit, then support lessons, grammar, Word Garden and reading offline for the last signed-in account. Keep AI chat, transcription and calls clearly online-only. Do not service-worker-cache auth responses, tokens or private API responses; treat device speech availability separately
@@ -145,7 +145,7 @@ Suggested commits: (1) installable shell and installation guide; (2) account-saf
 
 Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
 
-Implementation progress: installable shell and assets are implemented.
+Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed.
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.

@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
+  const [link, setLink] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   if (cloud.status === 'off' || cloud.email) return <Navigate to="/app" replace />
@@ -17,10 +18,12 @@ export default function LoginPage() {
     e.preventDefault()
     setSending(true)
     setError(null)
-    const err = await cloud.signIn(email.trim())
-    setSending(false)
-    if (err) setError(err)
-    else setSent(true)
+    try {
+      const err = await cloud.signIn(email.trim())
+      if (err) setError(err)
+      else setSent(true)
+    } catch { setError('Couldn’t send the email. Check your connection and try again.') }
+    finally { setSending(false) }
   }
 
   return (
@@ -35,6 +38,22 @@ export default function LoginPage() {
               <p className="text-5xl" aria-hidden>📬</p>
               <h1 className="font-display text-2xl">Check your email</h1>
               <p className="opacity-80">We sent a sign-in link to <strong>{email}</strong>. Tap it to start learning — you’ll stay signed in on this device.</p>
+              <details className="rounded-2xl border border-line p-3 text-left text-sm">
+                <summary className="cursor-pointer font-medium">Signing in to the home-screen app?</summary>
+                <p className="my-3 opacity-80">If tapping the email opens Safari, copy the original sign-in link from the email and paste it here. It signs in this app window. Use a fresh link that you haven’t opened yet.</p>
+                <form onSubmit={async (e) => {
+                  e.preventDefault()
+                  setSending(true)
+                  setError(null)
+                  try { setError(await cloud.redeemLink(link)) } catch { setError('Couldn’t sign in. Check your connection and request a fresh link.') }
+                  finally { setSending(false); setLink('') }
+                }} className="space-y-2">
+                  <label htmlFor="sign-in-link" className="block">Sign-in link</label>
+                  <input id="sign-in-link" type="password" value={link} onChange={(e) => setLink(e.target.value)} autoComplete="off" className="w-full rounded-xl border border-line bg-cream p-3" />
+                  <Button type="submit" disabled={sending || !link.trim()}>Sign in to this app</Button>
+                </form>
+                {error && <p role="alert" className="mt-2 text-terracotta-dark">{error}</p>}
+              </details>
               <button type="button" onClick={() => setSent(false)} className="text-sm underline opacity-70 hover:opacity-100">Use a different email</button>
             </div>
           ) : (

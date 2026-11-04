@@ -9,6 +9,8 @@ const statusText = {
   'signed-out': '',
   syncing: 'Syncing…',
   synced: 'All progress synced.',
+  saved: 'Saved on this device. Waiting to sync.',
+  'storage-error': 'Device storage is unavailable. Export a backup before closing this app.',
   error: 'Couldn’t sync right now. Your progress is still saved on this device.',
 }
 
@@ -38,7 +40,9 @@ export function AccountCard() {
         <>
           <p>Signed in as <strong>{cloud.email}</strong></p>
           <p role="status" className="text-sm opacity-75">{statusText[cloud.status]}</p>
-          <Button variant="secondary" size="sm" onClick={cloud.signOut}><LogOut className="size-4" aria-hidden /> Sign out</Button>
+          {['error', 'saved'].includes(cloud.status) && <Button size="sm" variant="secondary" onClick={cloud.retry}>Retry sync</Button>}
+          {error && <p role="alert" className="text-sm text-terracotta-dark">{error}</p>}
+          <Button variant="secondary" size="sm" onClick={() => { void cloud.signOut().catch(() => setError('Couldn’t finish sign-out. Reconnect and try again.')) }}><LogOut className="size-4" aria-hidden /> Sign out</Button>
         </>
       ) : sent ? (
         <p role="status">📬 Check <strong>{email}</strong> and tap the link to sign in. You can close this page.</p>

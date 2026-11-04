@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useSyncExternalStore, type ReactNode } from 'react'
 import { destinations } from '../../data/destinations'
 import { questForDay } from '../../data/quests'
 import { speech } from '../../services/speech'
-import { storage } from '../../services/storage'
+import { learningStore } from '../sync/learningStore'
+import type { SetStateAction } from 'react'
 import type { LearningProgress, Lesson, UserProfile } from '../../types'
 import { dayKey } from '../../utils/date'
 import { useCloudSync } from '../sync/useCloudSync'
@@ -13,17 +14,18 @@ import { completeConversation as applyConversation, completeLesson as applyLesso
 import { ProgressContext, type LessonResult } from './progressContext'
 import { claimWeekly } from './weekly'
 
-export function ProgressProvider({ children }: { children: ReactNode }) {
-  const [progress, setProgress] = useState(() => storage.load('progress', emptyProgress))
-  const [profile, setProfile] = useState(() => storage.load('profile', defaultProfile))
+function setProgress(value: SetStateAction<LearningProgress>) {
+  const current = learningStore.getSnapshot()
+  learningStore.update({ ...current, progress: typeof value === 'function' ? value(current.progress) : value })
+}
+function setProfile(value: SetStateAction<UserProfile>) {
+  const current = learningStore.getSnapshot()
+  learningStore.update({ ...current, profile: typeof value === 'function' ? value(current.profile) : value })
+}
 
-  useEffect(() => {
-    storage.save('progress', progress)
-  }, [progress])
-  useEffect(() => {
-    storage.save('profile', profile)
-    speech.rate = profile.audioRate ?? speech.rate
-  }, [profile])
+export function ProgressProvider({ children }: { children: ReactNode }) {
+  const { progress, profile } = useSyncExternalStore(learningStore.subscribe, learningStore.getSnapshot)
+  useEffect(() => { speech.rate = profile.audioRate ?? 0.9 }, [profile.audioRate])
 
   // Applies a finished activity: unlocks achievements and reports rank-ups and new destinations.
   const finish = useCallback(
@@ -43,8 +45,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [progress],
   )
 
-  const completeLesson = useCallback((lesson: Lesson) => finish(applyLesson(progress, lesson, questForDay())), [progress, finish])
-  const completeConversation = useCallback(() => finish(applyConversation(progress, questForDay())), [progress, finish])
+  const completeLesson = useCallback((lesson: Lesson) => finish(applyLesson(learningStore.getSnapshot().progress, lesson, questForDay())), [progress, finish])
+  const completeConversation = useCallback(() => finish(applyConversation(learningStore.getSnapshot().progress, questForDay())), [progress, finish])
 
   const addCustomWord = useCallback(
     (word: { pt: string; en: string }) =>
@@ -79,8 +81,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   )
 
   const replaceAll = useCallback((data: { progress: LearningProgress; profile: UserProfile }) => {
-    setProgress({ ...emptyProgress, ...data.progress })
-    setProfile({ ...defaultProfile, ...data.profile })
+    learningStore.update({ progress: { ...emptyProgress, ...data.progress }, profile: { ...defaultProfile, ...data.profile } }, true)
   }, [])
 
   const addMistakes = useCallback(
@@ -106,8 +107,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   )
 
-  const syncData = useMemo(() => ({ progress, profile }), [progress, profile])
-  const cloud = useCloudSync(syncData, replaceAll)
+  const cloud = useCloudSync()
 
   const value = useMemo(
     () => ({
@@ -126,8 +126,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       replaceAll,
       cloud,
       reset: () => {
-        setProgress(emptyProgress)
-        setProfile(defaultProfile)
+        learningStore.update({ progress: structuredClone(emptyProgress), profile: { ...defaultProfile } }, true)
       },
     }),
     [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, passCheckpoint, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
