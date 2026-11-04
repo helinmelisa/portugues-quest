@@ -32,7 +32,7 @@ export function Matching({ exercise, checked, onChange }: ExerciseProps<Matching
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border-2 bg-card px-4 py-3 text-left transition',
+        'min-w-0 max-w-full rounded-2xl border-2 bg-card px-3 py-3 text-left [overflow-wrap:anywhere] transition sm:px-4',
         matched.has(pair) ? 'border-sage bg-sage/20 opacity-70' : 'border-line hover:border-sage',
         selected && 'border-terracotta bg-terracotta/10',
         wrong === pair && side === 1 && 'animate-[shake_0.3s] border-terracotta',
@@ -47,8 +47,8 @@ export function Matching({ exercise, checked, onChange }: ExerciseProps<Matching
       <legend className="mb-2 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
       <p className="mb-6 opacity-70">Tap a Portuguese word, then its meaning.</p>
       <div className="grid grid-cols-2 gap-3">
-        <div className="grid gap-3">{left.map((p) => tile(p, 0, () => setActive(p), active === p))}</div>
-        <div className="grid gap-3">{right.map((p) => tile(p, 1, () => pickRight(p), false))}</div>
+        <div className="grid min-w-0 gap-3">{left.map((p) => tile(p, 0, () => setActive(p), active === p))}</div>
+        <div className="grid min-w-0 gap-3">{right.map((p) => tile(p, 1, () => pickRight(p), false))}</div>
       </div>
     </fieldset>
   )

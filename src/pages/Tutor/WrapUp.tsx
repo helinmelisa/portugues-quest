@@ -33,7 +33,7 @@ export function WrapUp({ summary, reward, onBack }: Props) {
             <div className="space-y-3 rounded-2xl bg-card p-4">
               <h3 className="font-display text-xl">Your speaking feedback</h3>
               <p className="text-xs opacity-70">Inês’s estimates from your transcript, out of 5. Fluency here means how clearly you link ideas; this does not measure pronunciation, pace or pauses.</p>
-              <dl className="grid grid-cols-3 gap-2 text-center">
+              <dl className="grid grid-cols-1 gap-3 text-center min-[360px]:grid-cols-3">
                 {(['fluency', 'vocabulary', 'accuracy'] as const).map((key) => <div key={key}><dt className="text-sm capitalize opacity-75">{key}</dt><dd className="font-display text-2xl">{summary.speaking![key]}/5</dd></div>)}
               </dl>
               <p><strong>One thing to practise:</strong> {summary.speaking.practise}</p>
@@ -61,13 +61,13 @@ export function WrapUp({ summary, reward, onBack }: Props) {
                 {summary.newWords.map((w) => {
                   const saved = progress.customWords.some((x) => x.id === customWordId(w.pt))
                   return (
-                    <li key={w.pt} className="flex items-center gap-3 rounded-2xl bg-card p-3">
+                    <li key={w.pt} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-2xl bg-card p-3 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
                       <SpeakButton text={w.pt} className="size-8" />
                       <div className="min-w-0 flex-1">
                         <p className="font-medium">{w.pt}</p>
                         <p className="text-sm opacity-75">{w.en}</p>
                       </div>
-                      <Button size="sm" variant={saved ? 'ghost' : 'secondary'} disabled={saved} onClick={() => addCustomWord(w)}>
+                      <Button className="col-span-2 w-full sm:col-span-1 sm:w-auto" size="sm" variant={saved ? 'ghost' : 'secondary'} disabled={saved} onClick={() => addCustomWord(w)}>
                         {saved ? <><Check className="size-4" aria-hidden /> Saved</> : <><Plus className="size-4" aria-hidden /> Word Garden</>}
                       </Button>
                     </li>

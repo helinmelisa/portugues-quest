@@ -26,9 +26,11 @@ export default function VidaPage() {
               return (
                 <li key={id}>
                   <Link to={`/lesson/${id}`}>
-                    <Card className="flex items-center gap-3 p-4 hover:border-sage">
-                      {id in progress.completedLessons && <CheckCircle2 className="size-5 shrink-0 text-sage" aria-label="Completed" />}
-                      <div className="flex-1"><h3 className="font-medium">{lesson.title}</h3><p className="text-sm opacity-75">{lesson.objective}</p></div>
+                    <Card className="flex flex-col items-start gap-3 p-4 hover:border-sage sm:flex-row sm:items-center">
+                      <div className="flex min-w-0 flex-1 items-start gap-3">
+                        {id in progress.completedLessons && <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-sage" aria-label="Completed" />}
+                        <div className="min-w-0"><h3 className="font-medium">{lesson.title}</h3><p className="text-sm opacity-75">{lesson.objective}</p></div>
+                      </div>
                       <Badge>{lesson.minutes} min · {lesson.xp} XP</Badge>
                     </Card>
                   </Link>

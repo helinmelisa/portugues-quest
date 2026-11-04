@@ -51,8 +51,8 @@ export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<Pro
       <legend className="mb-6 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
 
       <div className="mb-6 rounded-3xl bg-sun/20 p-5">
-        <div className="flex items-center gap-3">
-          <p className="flex-1 font-display text-2xl">
+        <div className="flex flex-wrap items-start gap-3">
+          <p className="min-w-0 basis-full font-display text-2xl sm:flex-1 sm:basis-0">
             {result
               ? matchedWords(result.heard, exercise.phrase).map(({ word, ok }, i) => (
                   <span key={i} className={cn(!ok && 'rounded bg-terracotta/20 text-terracotta-dark')}>{word} </span>

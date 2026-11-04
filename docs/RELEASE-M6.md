@@ -26,3 +26,9 @@ Record the iPhone model, iOS version, desktop browser version and date beside th
 - [ ] Verify large text, reduced motion, keyboard visibility, landscape and safe-area spacing on the physical phone.
 
 Do not mark the whole milestone complete until these device checks and hosted release verification are recorded.
+
+## Mobile overflow follow-up
+
+The user identified their target device as an iPhone 15 Pro Max. At a 320px baseline, the header pushed Settings outside the page (368px scroll width), and feedback action buttons squeezed a saved phrase into a nearly vertical column. The header now wraps; saved-word and correction actions stack below their text; lesson badges and certificate stats have phone layouts; shared controls and grammar/form children can shrink and wrap.
+
+The local fixture uses long Portuguese phrases and an eight-digit XP value. Dashboard, Vida, grammar, settings, tutor selection, conversation feedback, certificate, lesson intro and matching passed at 430 × 932 and 932 × 430 with scroll width equal to viewport width and no clipped button contents. Fourteen screens passed the same checks at 320px and 390px; desktop feedback retained its side-by-side layout. Build and lint passed, with the existing lint warnings and bundle-size advisory. These checks use browser viewports, not a physical iPhone.

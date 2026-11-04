@@ -23,7 +23,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
           {lesson.vocabulary.map((v) => (
             <Card key={v.id} className="p-4 md:p-4">
               <div className="flex items-start justify-between gap-2">
-                <p className="font-display text-xl">{v.pt}</p>
+                <p className="min-w-0 flex-1 font-display text-xl">{v.pt}</p>
                 <SpeakButton text={v.pt.split(' / ')[0]} />
               </div>
               <p className="opacity-80">{v.en}</p>
@@ -32,7 +32,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
               {v.example && (
                 <p className="mt-2 flex items-center gap-2 text-sm">
                   <SpeakButton text={v.example.pt} className="size-7" />
-                  <span><span className="font-medium">{v.example.pt}</span> <span className="opacity-70">— {v.example.en}</span></span>
+                  <span className="min-w-0 flex-1"><span className="font-medium">{v.example.pt}</span> <span className="opacity-70">— {v.example.en}</span></span>
                 </p>
               )}
             </Card>

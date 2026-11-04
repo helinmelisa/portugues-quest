@@ -27,13 +27,13 @@ export default function MistakesPage() {
           <ul className="space-y-3">
             {mistakes.map((m) => (
               <li key={m.id}>
-                <Card className="flex items-start gap-3 p-4 md:p-4">
+                <Card className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] md:p-4">
                   <SpeakButton text={m.better} className="size-8" />
                   <div className="min-w-0 flex-1">
                     <p><span className="line-through opacity-60">{m.said}</span> → <strong>{m.better}</strong></p>
                     <p className="mt-1 text-sm opacity-75">{m.why}</p>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => removeMistake(m.id)} aria-label={`Mark “${m.better}” as learned`}>
+                  <Button className="col-span-2 w-full sm:col-span-1 sm:w-auto" variant="ghost" size="sm" onClick={() => removeMistake(m.id)} aria-label={`Mark “${m.better}” as learned`}>
                     <Check className="size-4" aria-hidden /> Got it
                   </Button>
                 </Card>

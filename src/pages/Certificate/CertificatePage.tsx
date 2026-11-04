@@ -31,7 +31,7 @@ export default function CertificatePage() {
         <ArrowLeft className="size-4" aria-hidden /> Dashboard
       </Link>
 
-      <article className="relative overflow-hidden rounded-[2rem] border-4 border-double border-terracotta bg-card p-8 text-center shadow-soft md:p-12">
+      <article className="relative overflow-hidden rounded-[2rem] border-4 border-double border-terracotta bg-card p-5 text-center sm:p-8 shadow-soft md:p-12">
         <div aria-hidden className="absolute -left-10 -top-10 size-32 rounded-full bg-sky/30" />
         <div aria-hidden className="absolute -bottom-12 -right-8 size-36 rounded-full bg-sun/30" />
         <div className="relative">
@@ -46,10 +46,10 @@ export default function CertificatePage() {
               : 'passed the A1 checkpoint in European Portuguese and can greet people, order at a café, get around, shop and talk about daily life in Portugal.'}
           </p>
           <p className="mt-3 text-xs opacity-60">A learning milestone from Português Quest · Not an official language qualification</p>
-          <dl className="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-3">
-            <div><dt className="text-xs opacity-70">Lessons</dt><dd className="font-display text-2xl">{stats.lessonsCompleted}</dd></div>
-            <div><dt className="text-xs opacity-70">Words</dt><dd className="font-display text-2xl">{stats.wordsLearned}</dd></div>
-            <div><dt className="text-xs opacity-70">XP</dt><dd className="font-display text-2xl">{stats.totalXp}</dd></div>
+          <dl className="mx-auto mt-8 grid max-w-sm grid-cols-1 gap-3 sm:grid-cols-3">
+            <div><dt className="text-xs opacity-70">Lessons</dt><dd className="font-display text-2xl [overflow-wrap:anywhere]">{stats.lessonsCompleted}</dd></div>
+            <div><dt className="text-xs opacity-70">Words</dt><dd className="font-display text-2xl [overflow-wrap:anywhere]">{stats.wordsLearned}</dd></div>
+            <div><dt className="text-xs opacity-70">XP</dt><dd className="font-display text-2xl [overflow-wrap:anywhere]">{stats.totalXp}</dd></div>
           </dl>
           <p className="mt-8 text-sm opacity-70">{when}</p>
           <p className="mt-1 font-display italic">Parabéns!</p>

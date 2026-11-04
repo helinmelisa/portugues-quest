@@ -7,7 +7,7 @@ export function GrammarBiteCard({ bite, open = false }: { bite: GrammarBite; ope
     <details open={open} className="group rounded-3xl border border-line bg-card p-5 shadow-soft">
       <summary className="flex cursor-pointer list-none items-start gap-3">
         <BookOpen className="mt-1 size-5 shrink-0 text-sage" aria-hidden />
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <h3 className="font-display text-xl">{bite.title}</h3>
           <p className="text-sm opacity-75">{bite.summary}</p>
         </div>
@@ -18,7 +18,7 @@ export function GrammarBiteCard({ bite, open = false }: { bite: GrammarBite; ope
           <div key={i} className="space-y-2">
             <p>{section.text}</p>
             {section.table && (
-              <div className="overflow-x-auto">
+              <div className="min-w-0 max-w-full overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-line">{section.table[0].map((h, j) => <th key={j} className="py-1.5 pr-4 font-medium">{h}</th>)}</tr>
@@ -38,7 +38,7 @@ export function GrammarBiteCard({ bite, open = false }: { bite: GrammarBite; ope
                 {section.examples.map((e) => (
                   <li key={e.pt} className="flex items-center gap-2 rounded-2xl bg-cream px-3 py-2">
                     <SpeakButton text={e.pt} className="size-7" />
-                    <span><strong>{e.pt}</strong> <span className="opacity-70">— {e.en}</span></span>
+                    <span className="min-w-0 flex-1"><strong>{e.pt}</strong> <span className="opacity-70">— {e.en}</span></span>
                   </li>
                 ))}
               </ul>

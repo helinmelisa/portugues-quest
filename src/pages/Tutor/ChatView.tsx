@@ -140,7 +140,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
       <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100">
         <ArrowLeft className="size-4" aria-hidden /> All scenarios
       </button>
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <h1 className="font-display text-2xl md:text-3xl">{scenario.title}</h1>
         {voice && speech.supported && (
           <button
@@ -207,12 +207,12 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
                 aria-label={recorder.recording ? 'Stop recording' : 'Speak your reply'}
                 disabled={!online || typing || transcribing}
                 onClick={() => { speech.cancel(); if (recorder.recording) recorder.stop(); else void recorder.start() }}
-                className={cn('px-4', recorder.recording && 'animate-pulse')}
+                className={cn('shrink-0 px-4', recorder.recording && 'animate-pulse')}
               >
                 {transcribing ? <Loader2 className="size-5 animate-spin" aria-hidden /> : recorder.recording ? <Square className="size-5" aria-hidden /> : <Mic className="size-5" aria-hidden />}
               </Button>
             )}
-            <Button type="submit" aria-label="Send" disabled={!online || typing || !input.trim()} className={cn('px-4')}>
+            <Button type="submit" aria-label="Send" disabled={!online || typing || !input.trim()} className={cn('shrink-0 px-4')}>
               <Send className="size-5" aria-hidden />
             </Button>
           </form>
