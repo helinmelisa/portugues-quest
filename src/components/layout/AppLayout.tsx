@@ -15,14 +15,14 @@ export function AppLayout() {
       </a>
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-3 px-4 py-3 md:justify-end md:px-8 md:py-5">
+        <header className="flex flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between md:justify-end md:px-8 md:py-5">
           <Link to="/" className="font-display text-xl md:hidden">
             Português <span className="text-terracotta">Quest</span>
           </Link>
-          <div className="flex gap-2">
+          <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2 sm:justify-end">
             <StreakChip days={stats.streak} />
             <XpChip xp={stats.totalXp} />
-            <Link to="/app/settings" aria-label="Settings" className="grid size-11 place-items-center rounded-full border border-line bg-card hover:border-sage">
+            <Link to="/app/settings" aria-label="Settings" className="grid size-11 shrink-0 place-items-center rounded-full border border-line bg-card hover:border-sage">
               <Settings className="size-4" aria-hidden />
             </Link>
           </div>

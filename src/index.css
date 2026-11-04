@@ -48,3 +48,7 @@ main { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Flex and form children must be allowed to shrink inside narrow cards. */
+fieldset { min-inline-size: 0; }
+h1, h2, h3 { overflow-wrap: break-word; text-wrap: balance; }

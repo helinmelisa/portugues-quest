@@ -147,6 +147,8 @@ Installation reference: [Apple’s guide to opening a website as an iPhone web a
 
 Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed. Public-asset offline caching, saved lesson drafts and explicit cross-tab-safe updates are implemented and tested in the production preview. Mobile layout and voice recovery are implemented. Production Supabase settings are now configured in Vercel. After the user completed Vercel identity verification, the rebuilt release was confirmed Ready, the live bundle contained the project URL/public key, the account sign-in screen rendered, and manifest/worker requests returned HTTP 200. An additional identity-race test verifies that in-flight sync requests keep their original account token. Steps 1, 3, 9 and 10 remain open for physical iPhone, authenticated hosted sync and final release checks; see [release evidence](RELEASE-M6.md).
 
+Mobile overflow follow-up: the header now wraps its status chips and keeps Settings visible, shared buttons/badges wrap long labels, and grid/form children can shrink inside cards. Target device: the user’s iPhone 15 Pro Max.
+
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.
 - iPhone and desktop playtest/polish moved to Milestone 6.
