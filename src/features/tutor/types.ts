@@ -11,10 +11,17 @@ export interface TutorMessage {
 export interface TutorReply {
   messages: TutorMessage[]
   suggestions: string[]
+  error?: string
   done: boolean
 }
 
 export interface ConversationSummary {
+  speaking?: {
+    fluency: number
+    vocabulary: number
+    accuracy: number
+    practise: string
+  } // 1–5, estimated from transcribed language, not acoustic pronunciation
   wentWell: string
   corrections: { said: string; better: string; why: string }[]
   newWords: { pt: string; en: string }[]
@@ -41,6 +48,7 @@ export interface Scenario {
   title: string
   description: string
   level: CefrLevel
+  call?: boolean // suitable for a phone role-play
   setting: string // scene description for the AI tutor
   steps?: ScriptStep[] // scripted demo, used when the AI tutor isn't available
   farewell?: { text: string; translation: string }

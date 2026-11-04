@@ -29,6 +29,16 @@ export function WrapUp({ summary, reward, onBack }: Props) {
       {summary && (
         <>
           <p>{summary.wentWell}</p>
+          {summary.speaking && (
+            <div className="space-y-3 rounded-2xl bg-card p-4">
+              <h3 className="font-display text-xl">Your speaking feedback</h3>
+              <p className="text-xs opacity-70">Inês’s estimates from your transcript, out of 5. Fluency here means how clearly you link ideas; this does not measure pronunciation, pace or pauses.</p>
+              <dl className="grid grid-cols-3 gap-2 text-center">
+                {(['fluency', 'vocabulary', 'accuracy'] as const).map((key) => <div key={key}><dt className="text-sm capitalize opacity-75">{key}</dt><dd className="font-display text-2xl">{summary.speaking![key]}/5</dd></div>)}
+              </dl>
+              <p><strong>One thing to practise:</strong> {summary.speaking.practise}</p>
+            </div>
+          )}
 
           {summary.corrections.length > 0 && (
             <div>

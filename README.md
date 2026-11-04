@@ -58,3 +58,37 @@ a component in `src/components/lessons/` and a case in `ExerciseView`.
 | Review | Word Garden lets you mark tricky words | Spaced repetition |
 
 No external services or API keys are needed to run the app.
+
+## Milestone 5 — Life in Portugal
+
+- **Vida em Portugal**: ten A2 lessons for papers, home, health, work, banking and a second visit
+  to Lisboa and Porto. Open this chapter from Explore Portugal or Practice Corner.
+- **Grammar bites**: the imperfect, reflexive verbs, object pronouns and comparisons, linked
+  from the new lessons.
+- **Real-life texts**: six authored examples (sign, notice, rental ad, appointment SMS, utility
+  bill and interview email), with English support and three questions each.
+- **A2 checkpoint**: complete all ten Vida lessons and two Madeira lessons to unlock sixteen
+  mixed questions. Twelve correct on the first try earns the A2 Explorer certificate and achievement.
+- **Call mode**: switch it on in Inês’s scenario picker, then choose a phone scenario or describe
+  your own situation. Inês speaks, the mic listens, and a short silence submits your turn.
+  Pause/resume and backgrounding release the microphone; failed requests pause the call.
+- **Speaking feedback**: after at least two replies, end the call for vocabulary, accuracy and
+  transcript-based fluency estimates (1–5), plus one concrete practice suggestion. These are
+  language estimates, not an acoustic assessment of pronunciation or speaking speed.
+
+The existing Supabase `tutor` Edge Function must be redeployed for the A2 prompts and call
+feedback payload. Use the same project and existing `GROQ_API_KEY` / optional `GROQ_MODEL` secrets:
+
+```bash
+supabase functions deploy tutor --project-ref <your-project-ref>
+npm run test:milestone5
+```
+
+No database migration or new paid service is needed. Calls use the existing Groq transcription
+and chat integration, and browser text-to-speech. A secure context (HTTPS or localhost), microphone
+permission, MediaRecorder, AudioContext and speech synthesis are required. Browser speech support
+varies, especially on mobile; chat remains available. Live microphone playback and hosted AI calls
+still need a device check after deployment.
+
+Reading samples use fictional dates, amounts and payment details. The curriculum teaches language;
+service requirements, banking products and treatment decisions are not supplied by these examples.

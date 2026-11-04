@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:milestone5": "node scripts/check-milestone5.mjs"
+    "test:milestone5": "node scripts/check-milestone5.mjs && node scripts/check-call-recorder.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",

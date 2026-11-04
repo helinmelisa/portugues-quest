@@ -29,13 +29,13 @@ export interface LearnerContext {
 }
 
 // Free conversation with Inês through the `tutor` Supabase Edge Function.
-export function createAiTutor(scenario: Scenario, level: CefrLevel, learner?: LearnerContext): TutorSession {
+export function createAiTutor(scenario: Scenario, level: CefrLevel, learner?: LearnerContext, call = false): TutorSession {
   const history: { role: 'user' | 'assistant'; content: string }[] = []
 
   const respond = async (): Promise<TutorReply> => {
-    const res = await callTutor({ setting: scenario.setting, level, learner, messages: history })
+    const res = await callTutor({ setting: scenario.setting, level, learner, call, messages: history })
     if (res.error || !res.reply) {
-      return { messages: [{ id: crypto.randomUUID(), from: 'tutor', text: 'Desculpa…', tip: res.error ?? 'Something went wrong.' }], suggestions: [], done: false }
+      return { messages: [{ id: crypto.randomUUID(), from: 'tutor', text: 'Desculpa…', tip: res.error ?? 'Something went wrong.' }], suggestions: [], done: false, error: res.error ?? 'Something went wrong.' }
     }
     history.push({ role: 'assistant', content: res.reply })
     const message: TutorMessage = { id: crypto.randomUUID(), from: 'tutor', text: res.reply, translation: res.translation, tip: res.tip }
@@ -49,7 +49,7 @@ export function createAiTutor(scenario: Scenario, level: CefrLevel, learner?: Le
       return respond()
     },
     async summarize() {
-      const res = await callTutor<ConversationSummary>({ action: 'summary', level, messages: history })
+      const res = await callTutor<ConversationSummary>({ action: 'summary', level, call, messages: history })
       return res.error || !res.wentWell ? { error: res.error ?? 'Inês couldn’t prepare your feedback this time.' } : res
     },
   }

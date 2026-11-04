@@ -74,6 +74,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
     if ('error' in result) setEndError(result.error)
     else {
       setSummary(result)
+      finish()
       addMistakes(result.corrections)
     }
     finish()

@@ -8,6 +8,9 @@ import { createScriptedTutor } from '../../features/tutor/scriptedTutor'
 import type { Scenario } from '../../features/tutor/types'
 import { useProgress } from '../../hooks/useProgress'
 import { onboardingSteps } from '../Onboarding/steps'
+import { speech } from '../../services/speech'
+import { recorderSupported } from '../../hooks/useRecorder'
+import { CallView } from './CallView'
 import { ChatView } from './ChatView'
 
 export default function TutorPage() {
@@ -15,9 +18,11 @@ export default function TutorPage() {
   const [params] = useSearchParams()
   const [activeId, setActiveId] = useState<string | null>(params.get('scenario'))
   const [custom, setCustom] = useState<Scenario | null>(null)
+  const [callMode, setCallMode] = useState(false)
   const [writing, setWriting] = useState(false)
   const [situation, setSituation] = useState('')
   const ai = cloud.email !== null
+  const canCall = ai && recorderSupported && speech.supported && typeof AudioContext !== 'undefined'
   const active = activeId === 'custom' ? custom : scenarios.find((s) => s.id === activeId && (ai || s.steps))
 
   if (active) {
@@ -27,7 +32,8 @@ export default function TutorPage() {
       motivation: onboardingSteps.find((s) => s.key === 'motivation')?.options.find((o) => o.value === profile.motivation)?.label,
       mistakes: progress.mistakes.slice(-5).map((m) => `“${m.said}” → “${m.better}”`),
     }
-    const createSession = () => (ai ? createAiTutor(active, profile.level, learner) : createScriptedTutor(active))
+    const createSession = () => (ai ? createAiTutor(active, active.level === 'A2' ? 'A2' : profile.level, learner, callMode) : createScriptedTutor(active))
+    if (callMode && canCall) return <CallView key={active.id} scenario={active} createSession={createSession} onBack={() => setActiveId(null)} />
     return <ChatView key={active.id} scenario={active} createSession={createSession} voice={ai} onBack={() => setActiveId(null)} />
   }
 
@@ -84,8 +90,17 @@ export default function TutorPage() {
         </Card>
       )}
 
+      {ai && (
+        <Card className="mb-6 space-y-3 bg-sky/15">
+          <h2 className="font-display text-xl">Call mode with Inês</h2>
+          <p className="text-sm opacity-80">Practise a phone call: your microphone listens after each spoken reply and sends your turn after a short silence. Finish with two or more replies for feedback on your language.</p>
+          {canCall ? <Button variant={callMode ? 'primary' : 'secondary'} aria-pressed={callMode} onClick={() => setCallMode(!callMode)}>{callMode ? 'Call mode on' : 'Turn on call mode'}</Button>
+            : <p className="text-sm opacity-70">Call mode needs a browser with microphone recording, audio analysis and spoken replies. You can still practise every scenario in chat.</p>}
+          {callMode && <p className="text-sm opacity-70">Choose a phone scenario below, or rehearse your own situation.</p>}
+        </Card>
+      )}
       <ul className="grid gap-4 sm:grid-cols-2">
-        {scenarios.map((s) => {
+        {scenarios.filter((s) => !callMode || s.call).map((s) => {
           const playable = ai || s.steps !== undefined
           const content = (
             <Card className={`h-full transition ${playable ? 'hover:-translate-y-0.5 hover:border-sage' : 'opacity-60'}`}>

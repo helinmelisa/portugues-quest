@@ -37,6 +37,7 @@ async function transcribe(audio: string, mimeType: string) {
 
 const levelGuide: Record<string, string> = {
   A0: 'The learner is a complete beginner. Use very short sentences (max 10 words), only basic everyday words, present tense.',
+  A2: 'The learner can handle everyday situations. Use clear sentences, past events, imperfect background, comparisons and polite requests. Keep unfamiliar words supported by context.',
   A1: 'The learner knows the basics. Use short, simple sentences (max 15 words), common vocabulary, mostly present tense.',
 }
 
@@ -54,10 +55,11 @@ function learnerSection(learner: unknown) {
   return lines.length ? `\nABOUT THE LEARNER:\n${lines.join('\n')}\n` : ''
 }
 
-function systemPrompt(setting: string, level: string, learner?: unknown) {
+function systemPrompt(setting: string, level: string, learner?: unknown, call = false) {
   return `You are Inês, a warm, friendly young woman from Lisboa helping someone practise Portuguese through role-play.
 
 SCENE: ${setting}
+${call ? 'MODE: A telephone role-play. Open as if answering the phone. Keep each turn short, ask one question at a time, and never require visual cues. This is a fictional language exercise: use invented personal details.' : ''}
 LEVEL: ${levelGuide[level] ?? levelGuide.A0}
 ${learnerSection(learner)}
 LANGUAGE RULES (very important):
@@ -78,11 +80,13 @@ Respond ONLY with JSON in this exact shape:
 {"reply": "<your Portuguese line>", "translation": "<English translation of reply>", "tip": "<short English tip or null>", "suggestions": ["<short Portuguese reply the learner could give>", "<another>"]}`
 }
 
-function summaryPrompt(level: string) {
+function summaryPrompt(level: string, call = false) {
   return `You are Inês, a kind European Portuguese tutor. Review this short role-play between a learner (CEFR level ${level}) and you.
 
 Return ONLY JSON in this exact shape:
 {"wentWell": "<one encouraging English sentence about something specific the learner did well>", "corrections": [{"said": "<the learner's exact words>", "better": "<natural European Portuguese>", "why": "<short English reason>"}], "newWords": [{"pt": "<useful European Portuguese word or short phrase>", "en": "<English>"}]}
+
+${call ? 'Also include "speaking": {"fluency": <integer 1–5>, "vocabulary": <integer 1–5>, "accuracy": <integer 1–5>, "practise": "<one concrete next practice task with a Portuguese example>"}. Rate only the learner, relative to their level: 1 needs support, 3 developing, 5 confident. Estimate fluency as coherence and linking ideas in the transcript. You have no timing or audio: never claim to assess pronunciation, pauses or speed.' : ''}
 
 Rules:
 - At most 3 corrections, only for real mistakes in the LEARNER's lines (grammar, wrong word, Brazilian forms). Use an empty array if there are none.
@@ -127,10 +131,10 @@ Deno.serve(async (req) => {
       response_format: { type: 'json_object' },
       messages: summary
         ? [
-            { role: 'system', content: summaryPrompt(level) },
+            { role: 'system', content: summaryPrompt(level, body.call === true) },
             { role: 'user', content: history.map((m: { role: string; content: string }) => `${m.role === 'user' ? 'Learner' : 'Inês'}: ${m.content}`).join('\n') },
           ]
-        : [{ role: 'system', content: systemPrompt(setting, level, body.learner) }, ...history],
+        : [{ role: 'system', content: systemPrompt(setting, level, body.learner, body.call === true) }, ...history],
     }),
   })
   if (!groq.ok) {
@@ -143,6 +147,15 @@ Deno.serve(async (req) => {
     const content = JSON.parse((await groq.json()).choices[0].message.content.replace(/\u2011/g, '-'))
     if (summary) {
       return json({
+        ...(body.call === true && content.speaking &&
+          ['fluency', 'vocabulary', 'accuracy'].every((key) => Number.isFinite(content.speaking[key])) &&
+          typeof content.speaking.practise === 'string' && content.speaking.practise.trim()
+          ? { speaking: {
+              fluency: Math.max(1, Math.min(5, Math.round(content.speaking.fluency))),
+              vocabulary: Math.max(1, Math.min(5, Math.round(content.speaking.vocabulary))),
+              accuracy: Math.max(1, Math.min(5, Math.round(content.speaking.accuracy))),
+              practise: content.speaking.practise.slice(0, 500),
+            } } : {}),
         wentWell: String(content.wentWell ?? ''),
         corrections: (Array.isArray(content.corrections) ? content.corrections : []).slice(0, 3).map((c: Record<string, unknown>) => ({ said: String(c.said ?? ''), better: String(c.better ?? ''), why: String(c.why ?? '') })),
         newWords: (Array.isArray(content.newWords) ? content.newWords : []).slice(0, 5).map((w: Record<string, unknown>) => ({ pt: String(w.pt ?? ''), en: String(w.en ?? '') })),

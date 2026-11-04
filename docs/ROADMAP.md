@@ -106,12 +106,14 @@ Still free to run: Groq free tier + Supabase free tier.
 - [x] **6. Second visit to Lisboa and Porto**: A2 lessons using the past tense (what happened, how it was)
 
 ### C. Speaking like real life
-- [ ] **7. Call mode with Inês**: hands-free voice conversation (you speak, she answers aloud, repeat) for phone-call scenarios
-- [ ] **8. Speaking feedback**: after a call, Inês scores fluency, vocabulary and accuracy and suggests one thing to practise
+- [x] **7. Call mode with Inês**: hands-free voice conversation (you speak, she answers aloud, repeat) for phone-call scenarios
+- [x] **8. Speaking feedback**: after a call, Inês scores fluency, vocabulary and accuracy and suggests one thing to practise
 
 ### D. Real-world reading and the A2 goal
 - [x] **9. Real-life texts**: signs, notices, a rental ad, an SMS from the doctor, a utility bill, each with questions
 - [x] **10. A2 checkpoint and certificate**
+
+Implementation notes: call feedback and the A2 tutor prompts require redeploying the existing `tutor` Edge Function. Live microphone/audio and hosted AI calls still need a device check after deployment; the full phone playtest remains below. No new database migration is needed.
 
 ## Later
 - [ ] Installable app (PWA): home-screen icon, offline lessons, splash screen
