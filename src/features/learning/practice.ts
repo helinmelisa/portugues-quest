@@ -2,6 +2,8 @@ import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
 import type { PronunciationExercise, Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
 import { dueWordIds } from '../vocabulary/srs'
 import { shuffle } from '../../utils/shuffle'
+import { getRealText } from '../../data/realTexts'
+import { vidaLessons } from '../../data/curriculum/vida'
 import { getStory } from '../../data/stories'
 import { destinations } from '../../data/destinations'
 import { isDestinationUnlocked } from '../progress/destinationProgress'
@@ -157,7 +159,7 @@ export const checkpointAvailable = (progress: LearningProgress) =>
 
 function checkpoint(): Lesson {
   const pool = lessons
-    .filter((l) => A1_DESTINATIONS.includes(l.destinationId))
+    .filter((l) => A1_DESTINATIONS.includes(l.destinationId) && l.level !== 'A2')
     .flatMap((l) => l.exercises)
     .filter((e) => e.type !== 'pronunciation' && e.type !== 'matching')
   return {
@@ -174,8 +176,32 @@ function checkpoint(): Lesson {
   }
 }
 
+export const a2CheckpointAvailable = (progress: LearningProgress) =>
+  vidaLessons.every((l) => l.id in progress.completedLessons) &&
+  lessons.filter((l) => l.destinationId === 'madeira' && l.id in progress.completedLessons).length >= 2
+
+function a2Checkpoint(): Lesson {
+  // One question per topic, plus dedicated reading and past-tense questions.
+  const exercises = vidaLessons.map((l) => shuffle(l.exercises.filter((e) => ['fill-blank', 'listening', 'sentence-build'].includes(e.type)))[0])
+  const reading = ['rental', 'sms', 'bill'].map((id) => {
+    const text = getRealText(id)!
+    const question = text.questions[1]
+    return { id: `a2-text-${id}`, type: 'multiple-choice' as const, ...question, prompt: `${text.text}\n\n${question.prompt}` }
+  })
+  const past = shuffle(lessons.filter((l) => l.destinationId === 'madeira').flatMap((l) => l.exercises).filter((e) => e.type === 'fill-blank')).slice(0, 3)
+  return { id: 'checkpoint-A2', destinationId: 'practice', title: 'A2 checkpoint', objective: '', intro: '', minutes: 12, xp: 60, skills: ['grammar', 'reading', 'listening'], vocabulary: [], exercises: shuffle([...exercises, ...reading, ...past]) }
+}
+
+function textQuiz(id: string): Lesson | undefined {
+  const text = getRealText(id)
+  if (!text) return undefined
+  return { id: `text-${id}`, destinationId: 'practice', title: text.title, objective: '', intro: '', minutes: 3, xp: 15, skills: ['reading'], vocabulary: [], exercises: text.questions.map((q, i) => ({ id: `text-${id}-${i}`, type: 'multiple-choice', ...q, prompt: `${text.text}\n\n${q.prompt}` })) }
+}
+
 export function resolveLesson(id: string, progress: LearningProgress) {
-  if (id === 'checkpoint-A1') return checkpoint()
+  if (id === 'checkpoint-A1') return checkpointAvailable(progress) ? checkpoint() : undefined
+  if (id === 'checkpoint-A2') return a2CheckpointAvailable(progress) ? a2Checkpoint() : undefined
+  if (id.startsWith('text-')) return textQuiz(id.slice('text-'.length))
   if (id.startsWith('story-')) return storyQuiz(id.slice('story-'.length))
   const mode = id.replace(/^practice-/, '')
   if (id.startsWith('practice-')) return mode in modes ? buildPractice(mode as PracticeMode, progress) : undefined

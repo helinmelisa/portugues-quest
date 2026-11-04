@@ -98,7 +98,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const removeMistake = useCallback((id: string) => setProgress((p) => ({ ...p, mistakes: p.mistakes.filter((m) => m.id !== id) })), [])
 
   const passCheckpoint = useCallback(
-    (level: string) => setProgress((p) => (p.certificates[level] ? p : { ...p, certificates: { ...p.certificates, [level]: dayKey() } })),
+    (level: string) => setProgress((p) => {
+      if (p.certificates[level]) return p
+      const next = { ...p, certificates: { ...p.certificates, [level]: dayKey() } }
+      return { ...next, achievements: [...next.achievements, ...newlyUnlocked(next).map((a) => a.id)] }
+    }),
     [],
   )
 

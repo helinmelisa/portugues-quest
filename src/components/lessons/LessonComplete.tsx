@@ -10,10 +10,11 @@ interface Props {
   correctFirstTry: number
   total: number
   checkpoint?: boolean | null
+  checkpointLevel?: string
   onDone: () => void
 }
 
-export function LessonComplete({ result, correctFirstTry, total, checkpoint = null, onDone }: Props) {
+export function LessonComplete({ result, correctFirstTry, total, checkpoint = null, checkpointLevel = 'A1', onDone }: Props) {
   return (
     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="py-10 text-center">
       <Confetti />
@@ -41,8 +42,8 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
         <div className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-4">
           {checkpoint ? (
             <>
-              <p className="font-medium">🎓 You passed the A1 checkpoint!</p>
-              <Link to="/app/certificate/A1" className="mt-1 inline-block font-medium text-terracotta-dark underline">See your certificate →</Link>
+              <p className="font-medium">🎓 You passed the {checkpointLevel} checkpoint!</p>
+              <Link to={`/app/certificate/${checkpointLevel}`} className="mt-1 inline-block font-medium text-terracotta-dark underline">See your certificate →</Link>
             </>
           ) : (
             <p>Quase lá! You need {Math.ceil(total * 0.75)}/{total} right first try to pass. Review a little and try again anytime.</p>

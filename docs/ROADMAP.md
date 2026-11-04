@@ -110,8 +110,8 @@ Still free to run: Groq free tier + Supabase free tier.
 - [ ] **8. Speaking feedback**: after a call, Inês scores fluency, vocabulary and accuracy and suggests one thing to practise
 
 ### D. Real-world reading and the A2 goal
-- [ ] **9. Real-life texts**: signs, notices, a rental ad, an SMS from the doctor, a utility bill, each with questions
-- [ ] **10. A2 checkpoint and certificate**
+- [x] **9. Real-life texts**: signs, notices, a rental ad, an SMS from the doctor, a utility bill, each with questions
+- [x] **10. A2 checkpoint and certificate**
 
 ## Later
 - [ ] Installable app (PWA): home-screen icon, offline lessons, splash screen

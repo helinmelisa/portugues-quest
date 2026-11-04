@@ -5,6 +5,9 @@ import { AchievementList } from '../../components/gamification/AchievementList'
 import { WeeklyChallengeCard } from '../../components/gamification/WeeklyChallengeCard'
 import { WeeklyStreak } from '../../components/gamification/WeeklyStreak'
 import { isLessonAvailable, lessons } from '../../data/curriculum'
+import { destinations } from '../../data/destinations'
+import { isDestinationUnlocked } from '../../features/progress/destinationProgress'
+import { vidaLessons } from '../../data/curriculum/vida'
 import { questForDay } from '../../data/quests'
 import { rankFor } from '../../features/progress/progress'
 import { useProgress } from '../../hooks/useProgress'
@@ -12,7 +15,7 @@ import { dayKey } from '../../utils/date'
 import { DailyQuestCard } from './DailyQuestCard'
 import { noteForDay } from '../../data/ptNotes'
 import { dueWordIds } from '../../features/vocabulary/srs'
-import { checkpointAvailable } from '../../features/learning/practice'
+import { a2CheckpointAvailable, checkpointAvailable } from '../../features/learning/practice'
 
 function greeting() {
   const h = new Date().getHours()
@@ -32,9 +35,9 @@ export default function DashboardPage() {
   const { next } = rankFor(stats.totalXp)
   const minutesToday = progress.minutesByDay[today] ?? 0
 
-  const a0Lessons = lessons.filter((l) => ['lisboa', 'porto'].includes(l.destinationId))
+  const a0Lessons = lessons.filter((l) => ['lisboa', 'porto'].includes(l.destinationId) && l.level !== 'A2')
   const a0Done = a0Lessons.filter((l) => l.id in progress.completedLessons).length
-  const nextLesson = lessons.find((l) => isLessonAvailable(l) && !(l.id in progress.completedLessons))
+  const nextLesson = lessons.find((l) => isLessonAvailable(l) && !(l.id in progress.completedLessons) && (l.destinationId === 'vida' || destinations.some((d) => d.id === l.destinationId && isDestinationUnlocked(d, progress))))
   const lastDoneId = Object.entries(progress.completedLessons).sort(([, a], [, b]) => b.localeCompare(a))[0]?.[0]
   const lastDone = lessons.find((l) => l.id === lastDoneId)
 
@@ -107,6 +110,13 @@ export default function DashboardPage() {
             <div className="mb-1.5 flex justify-between"><h2 className="font-display text-xl">Road to A1</h2><span className="text-sm">{a0Done}/{a0Lessons.length} lessons</span></div>
             <ProgressBar value={a0Done} max={a0Lessons.length} label="Progress to A1" />
           </div>
+          <div>
+            <h2 className="mb-1.5 font-display text-xl">Life in Portugal · A2</h2>
+            <ProgressBar value={vidaLessons.filter((l) => l.id in progress.completedLessons).length} max={vidaLessons.length} label="Vida em Portugal progress" color="sage" />
+            <Link to="/app/explore/vida" className="mt-2 inline-block text-sm font-medium text-terracotta-dark hover:underline">Continue your A2 chapter →</Link>
+          </div>
+          {progress.certificates.A2 ? <Link to="/app/certificate/A2" className="block rounded-2xl bg-sky/20 p-3 font-medium">🎓 A2 Explorer — view your certificate</Link>
+            : a2CheckpointAvailable(progress) ? <Link to="/lesson/checkpoint-A2" className="block rounded-2xl bg-sun/30 p-3 font-medium">🎓 Take the A2 checkpoint (16 questions) →</Link> : null}
           {next && <p className="text-sm opacity-70">{next.minXp - stats.totalXp} XP until {next.name}</p>}
           {progress.certificates.A1 ? (
             <Link to="/app/certificate/A1" className="block rounded-2xl bg-sky/20 p-3 font-medium hover:bg-sky/30">🎓 A1 Explorer — view your certificate</Link>

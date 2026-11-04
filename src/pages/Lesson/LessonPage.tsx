@@ -61,10 +61,10 @@ export default function LessonPage() {
     if (rest.length === 0) {
       if (lesson.id.startsWith('checkpoint-')) {
         const passed = total - missed.size >= Math.ceil(total * CHECKPOINT_PASS)
-        if (passed) passCheckpoint(lesson.id.replace('checkpoint-', ''))
         setCheckpointPassed(passed)
       }
       setResult(completeLesson(lesson))
+      if (lesson.id.startsWith('checkpoint-') && total - missed.size >= Math.ceil(total * CHECKPOINT_PASS)) passCheckpoint(lesson.id.replace('checkpoint-', ''))
       setStage('complete')
     }
     setQueue(rest)
@@ -85,7 +85,7 @@ export default function LessonPage() {
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
         {stage === 'complete' && result && (
-          <LessonComplete result={result} checkpoint={checkpointPassed} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
+          <LessonComplete result={result} checkpoint={checkpointPassed} checkpointLevel={lesson.id.replace('checkpoint-', '')} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
         )}
       </main>
 

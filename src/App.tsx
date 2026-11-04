@@ -6,6 +6,8 @@ import { ProgressProvider } from './features/progress/ProgressProvider'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import DestinationPage from './pages/Explore/DestinationPage'
 import VidaPage from './pages/Explore/VidaPage'
+import TextsPage from './pages/Practice/TextsPage'
+import TextPage from './pages/Practice/TextPage'
 import ExplorePage from './pages/Explore/ExplorePage'
 import LandingPage from './pages/Landing/LandingPage'
 import LessonPage from './pages/Lesson/LessonPage'
@@ -35,6 +37,8 @@ export default function App() {
             <Route path="explore/vida" element={<VidaPage />} />
             <Route path="explore/:destinationId" element={<DestinationPage />} />
             <Route path="practice" element={<PracticePage />} />
+            <Route path="practice/texts" element={<TextsPage />} />
+            <Route path="practice/texts/:textId" element={<TextPage />} />
             <Route path="practice/words" element={<WordGardenPage />} />
             <Route path="practice/grammar" element={<GrammarPage />} />
             <Route path="practice/stories" element={<StoriesPage />} />

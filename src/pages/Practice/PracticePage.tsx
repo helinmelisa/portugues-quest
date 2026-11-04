@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
 import { useProgress } from '../../hooks/useProgress'
 import { grammarBites } from '../../data/grammar'
+import { a2CheckpointAvailable } from '../../features/learning/practice'
 import { speech } from '../../services/speech'
 
 interface Corner {
@@ -19,6 +20,7 @@ export default function PracticePage() {
 
   const corners: Corner[] = [
     { to: '/app/explore/vida', icon: BookOpen, title: 'Vida em Portugal', text: 'A2 Portuguese for papers, home, health, work and a second visit.', badge: '10 lessons · A2', tone: 'text-terracotta' },
+    { to: '/app/practice/texts', icon: Library, title: 'Real-life texts', text: 'Read signs, notices, a rental ad, a doctor’s SMS, a bill and an email.', badge: '6 texts · +15 XP', tone: 'text-sky' },
     { to: '/lesson/practice-quick', icon: Zap, title: 'Quick Challenge', text: 'Five mixed questions from your lessons. Perfect for a coffee break.', badge: '1–3 min · +10 XP', tone: 'text-sun' },
     { to: '/app/practice/words', icon: Sprout, title: 'Word Garden', text: 'Every word you’ve learned, ready to review and listen to again.', badge: `${progress.learnedWords.length} words`, tone: 'text-sage' },
     { to: '/lesson/practice-listening', icon: Headphones, title: 'Listening Nook', text: 'Listen, replay slowly and pick what you heard.', badge: '3 min · +10 XP', tone: 'text-sky' },
@@ -48,6 +50,12 @@ export default function PracticePage() {
           </li>
         ))}
       </ul>
+      <Card className="mt-6 space-y-2 bg-sun/15">
+        <h2 className="font-display text-xl">Your A2 goal</h2>
+        <p className="text-sm opacity-75">Complete the 10 Vida em Portugal lessons and 2 Madeira lessons to unlock a mixed checkpoint. Pass with 12 of 16 right first try.</p>
+        {progress.certificates.A2 ? <Link to="/app/certificate/A2" className="inline-block font-medium text-terracotta-dark underline">🎓 View your A2 certificate</Link>
+          : a2CheckpointAvailable(progress) ? <Link to="/lesson/checkpoint-A2" className="inline-block font-medium text-terracotta-dark underline">Take the A2 checkpoint →</Link> : <p className="text-sm opacity-70">Keep exploring — your checkpoint will be here when you’re ready.</p>}
+      </Card>
       <p className="mt-6 text-sm opacity-70">
         {speech.supported
           ? 'Audio uses your device’s Portuguese voice for now. Recordings by native speakers are planned.'

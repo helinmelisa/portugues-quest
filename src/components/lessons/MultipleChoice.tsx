@@ -8,7 +8,7 @@ export function MultipleChoice({ exercise, checked, onChange }: ExerciseProps<Mu
 
   return (
     <fieldset>
-      <legend className="mb-6 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+      <legend className="mb-6 whitespace-pre-line font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
       <div className="grid gap-3">
         {exercise.options.map((option, i) => (
           <OptionButton

@@ -38,6 +38,7 @@ export default function VidaPage() {
           </ul>
         </section>
       ))}
+      <Link to="/app/practice/texts" className="block font-medium text-terracotta-dark hover:underline">Read real-life texts →</Link>
     </div>
   )
 }

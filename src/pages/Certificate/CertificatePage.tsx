@@ -41,8 +41,11 @@ export default function CertificatePage() {
           <p className="mt-6 opacity-80">This certifies that</p>
           <p className="mt-1 font-display text-3xl text-terracotta-dark">{name}</p>
           <p className="mx-auto mt-4 max-w-md opacity-80">
-            passed the {level} checkpoint in European Portuguese and can greet people, order at a café, get around, shop and talk about daily life in Portugal.
+            {level === 'A2'
+              ? 'passed the A2 checkpoint in European Portuguese, practising everyday services, housing, health, work, past events and real-life reading.'
+              : 'passed the A1 checkpoint in European Portuguese and can greet people, order at a café, get around, shop and talk about daily life in Portugal.'}
           </p>
+          <p className="mt-3 text-xs opacity-60">A learning milestone from Português Quest · Not an official language qualification</p>
           <dl className="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-3">
             <div><dt className="text-xs opacity-70">Lessons</dt><dd className="font-display text-2xl">{stats.lessonsCompleted}</dd></div>
             <div><dt className="text-xs opacity-70">Words</dt><dd className="font-display text-2xl">{stats.wordsLearned}</dd></div>

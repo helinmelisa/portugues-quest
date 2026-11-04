@@ -14,6 +14,7 @@ export const achievements: AchievementRule[] = [
   { id: 'quest-seeker', title: 'Quest Seeker', description: 'Finish a daily quest.', icon: '🧭', unlocked: (p) => p.questDays.length > 0 },
   { id: 'first-conversation', title: 'First Conversation', description: 'Finish a conversation with Inês.', icon: '💬', unlocked: (p) => p.conversations > 0 },
   { id: 'weekly-champion', title: 'Weekly Champion', description: 'Complete a weekly challenge.', icon: '🏆', unlocked: (p) => p.weeklyClaimed.length > 0 },
+  { id: 'a2-explorer', title: 'A2 Explorer', description: 'Pass the A2 checkpoint.', icon: '🎓', unlocked: (p) => 'A2' in p.certificates },
   { id: 'a1-explorer', title: 'A1 Explorer', description: 'Pass the A1 checkpoint.', icon: '🎓', unlocked: (p) => 'A1' in p.certificates },
   { id: 'consistent-explorer', title: 'Consistent Explorer', description: 'Learn five days in a row.', icon: '🔥', unlocked: (p) => computeStreak(p.activeDays) >= 5 },
   { id: 'palavra-collector', title: 'Palavra Collector', description: 'Learn 50 words.', icon: '🌿', unlocked: (p) => p.learnedWords.length >= 50 },
