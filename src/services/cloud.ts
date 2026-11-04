@@ -14,6 +14,27 @@ export const cloud = {
     const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}/app` } })
     return error?.message ?? null
   },
+  async signInPassword(email: string, password: string) {
+    if (!supabase) return 'Sign-in is not configured.'
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    return error ? 'Couldn’t sign in. Check your email and password, or reset your password.' : null
+  },
+  async signUp(email: string, password: string) {
+    if (!supabase) return { error: 'Sign-in is not configured.', confirmationRequired: false }
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/app` } })
+    return { error: error?.message ?? null, confirmationRequired: !data.session }
+  },
+  async resetPassword(email: string) {
+    if (!supabase) return 'Sign-in is not configured.'
+    // Reuse the existing /app callback; the recovery event opens the password screen.
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/app` })
+    return error?.message ?? null
+  },
+  async setPassword(password: string) {
+    if (!supabase) return 'Sign-in is not configured.'
+    const { error } = await supabase.auth.updateUser({ password })
+    return error?.message ?? null
+  },
   async verifyCode(email: string, token: string) {
     if (!supabase) return 'Sync is not configured.'
     const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })

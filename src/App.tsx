@@ -1,4 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { RecoveryRedirect } from './components/layout/RecoveryRedirect'
+import PasswordPage from './pages/Auth/PasswordPage'
 import { AppStatus } from './components/layout/AppStatus'
 import { AppLayout } from './components/layout/AppLayout'
 import { RequireAccount } from './components/layout/RequireAccount'
@@ -29,8 +31,10 @@ export default function App() {
     <ProgressProvider>
       <BrowserRouter>
         <AppStatus />
+        <RecoveryRedirect />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/password" element={<RequireAccount onboarded={false}><PasswordPage /></RequireAccount>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/onboarding" element={<RequireAccount onboarded={false}><OnboardingPage /></RequireAccount>} />
           <Route path="/app" element={<RequireAccount><AppLayout /></RequireAccount>}>

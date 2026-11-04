@@ -10,13 +10,21 @@ same code, curriculum and Supabase account.
 
 1. Open the website in **Safari**.
 2. Tap **Share → Add to Home Screen**. Keep **Open as Web App** enabled if shown.
-3. Open the new icon and sign in with the same email you use on the website.
+3. Open the new icon and sign in with the same email and password you use on the website.
 4. Stay online for the first download. Settings confirms when lessons and reading are ready offline.
 
-Safari and the home-screen app may have separate sessions. If an email link opens Safari, request
-a fresh email in the installed app, copy its original sign-in link without opening it, then paste
-it into **Signing in to the home-screen app?** on the login screen. The link is verified directly
-with this project's Supabase Auth. Never share sign-in links.
+Safari and the home-screen app may have separate sessions. Sign in with email and password directly
+inside each app window; the session is saved and refreshed on that device.
+
+Already used email links? While signed in, open **Settings → Set or change password**. If signed out,
+choose **Set a password or forgot password?** on the login screen and use the setup email once.
+Use the same email to keep existing progress. New accounts can choose **Create an account** and may
+need to confirm their email once. Passwords go directly to Supabase Auth; they are not stored in
+learning progress, backups or the offline queue.
+
+Email-link sign-in remains an optional fallback. If its link opens Safari, copy a fresh, unopened
+sign-in link and paste it into **Signing in to the home-screen app?** on the link confirmation screen.
+Never share sign-in or password recovery links.
 
 Lessons, grammar, reading and saved vocabulary work offline after the initial download. Account
 sign-in needs a connection the first time. Inês, transcription and call feedback need the network;
@@ -62,6 +70,7 @@ npm run dev
 npm run build             # type-check, bundle and generate versioned offline worker
 npm run preview           # production PWA checks; dev mode does not register a worker
 npm run lint
+npm run test:auth
 npm run test:milestone5
 npm run test:milestone6    # run after build; includes offline worker and sync regressions
 ```

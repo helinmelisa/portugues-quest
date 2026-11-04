@@ -1,7 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cloud } from '../../services/cloud'
-import { supabase } from '../../services/supabase'
+import { initialPasswordRecovery, supabase } from '../../services/supabase'
 import { learningStore } from './learningStore'
 import { synchronize } from './synchronize'
 
@@ -11,6 +11,12 @@ export interface CloudSync {
   status: SyncStatus
   ready: boolean
   retry: () => void
+  passwordRecovery: boolean
+  finishPasswordRecovery: () => void
+  signInPassword: typeof cloud.signInPassword
+  signUp: typeof cloud.signUp
+  resetPassword: typeof cloud.resetPassword
+  setPassword: typeof cloud.setPassword
   signIn: (email: string) => Promise<string | null>
   redeemLink: (link: string) => Promise<string | null>
   verifyCode: (email: string, token: string) => Promise<string | null>
@@ -23,6 +29,7 @@ const cachedUser = () => {
 
 export function useCloudSync(): CloudSync {
   const [user, setUser] = useState<Pick<User, 'id' | 'email'> | null | undefined>(() => cloud.enabled ? (navigator.onLine ? undefined : cachedUser()) : null)
+  const [passwordRecovery, setPasswordRecovery] = useState(initialPasswordRecovery)
   const [status, setStatus] = useState<SyncStatus>(cloud.enabled ? 'loading' : 'off')
   const [accountReady, setAccountReady] = useState(!cloud.enabled)
   const retryRef = useRef<() => void>(() => {})
@@ -39,6 +46,8 @@ export function useCloudSync(): CloudSync {
     }
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       observed = true
+      if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true)
+      if (event === 'SIGNED_OUT') setPasswordRecovery(false)
       const identity = session?.user ?? (event !== 'SIGNED_OUT' && !navigator.onLine ? cachedUser() : null)
       remember(identity)
       if (alive) setUser(identity)
@@ -124,6 +133,8 @@ export function useCloudSync(): CloudSync {
   }, [])
 
   return {
+    passwordRecovery: passwordRecovery && !!user?.id, finishPasswordRecovery: () => setPasswordRecovery(false),
+    signInPassword: cloud.signInPassword, signUp: cloud.signUp, resetPassword: cloud.resetPassword, setPassword: cloud.setPassword,
     email: user?.email ?? null, status: learningStore.persistenceError ? 'storage-error' : status,
     ready: cloud.enabled ? user !== undefined && (!userId || (accountReady && learningStore.getAccount() === userId)) : accountReady,
     retry: () => retryRef.current(), signIn: cloud.signIn, verifyCode: cloud.verifyCode, redeemLink: cloud.redeemLink, signOut,

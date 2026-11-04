@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build && node scripts/build-worker.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
+    "test:auth": "node scripts/check-password-auth.mjs",
     "test:milestone6": "node scripts/check-milestone6.mjs && node scripts/check-worker.mjs && node scripts/check-sync-identity.mjs",
     "test:milestone5": "node scripts/check-milestone5.mjs && node scripts/check-call-recorder.mjs"
   },

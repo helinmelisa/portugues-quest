@@ -149,6 +149,8 @@ Implementation progress: installable shell and assets are implemented. Account i
 
 Mobile overflow follow-up: the header now wraps its status chips and keeps Settings visible, shared buttons/badges wrap long labels, and grid/form children can shrink inside cards. Target device: the user’s iPhone 15 Pro Max. Lesson metadata, saved-word and correction actions now stack on phones; grammar/example text, speaking cards and certificate stats retain readable widths. Nine representative screens passed viewport checks at 430 × 932 and 932 × 430, with no page overflow or clipped buttons. Fourteen screens also passed at 320px and 390px. These are browser layout checks; physical iPhone validation remains open.
 
+Password sign-in follow-up: email/password is now the default, with new-account signup, one-time password setup/recovery for existing email-link accounts, and Set or change password in Settings. Sessions explicitly persist and refresh on-device. Passwords go only to Supabase Auth; existing progress and account IDs are retained. Optional email-link sign-in remains available. The browser forms were checked at the iPhone 15 Pro Max viewport; credential-service regression checks use mocks, not real user passwords.
+
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.
 - iPhone and desktop playtest/polish moved to Milestone 6.

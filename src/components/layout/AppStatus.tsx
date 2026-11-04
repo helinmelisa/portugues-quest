@@ -10,7 +10,7 @@ export function AppStatus() {
   const { cloud } = useProgress()
   const online = useOnline()
   const pwa = usePwa()
-  const busy = pathname.startsWith('/lesson/') || pathname.startsWith('/app/tutor')
+  const busy = pathname.startsWith('/lesson/') || pathname.startsWith('/app/tutor') || pathname === '/login' || pathname === '/password'
   useEffect(() => { setUpdateBusy(busy || cloud.status === 'storage-error'); return () => setUpdateBusy(false) }, [busy, cloud.status])
   if (pwa.updating) return <div role="status" className="fixed inset-0 z-50 grid place-items-center bg-cream p-6 text-center">Preparing your update… Your saved progress stays on this device.</div>
   return (
