@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Card } from '../../components/common'
 import type { LessonResult } from '../../features/progress/progressContext'
 import type { ConversationSummary, Scenario, TutorMessage, TutorReply, TutorSession } from '../../features/tutor/types'
+import { useOnline } from '../../hooks/useOnline'
 import { useCallRecorder } from '../../hooks/useCallRecorder'
 import { useProgress } from '../../hooks/useProgress'
 import { speech } from '../../services/speech'
@@ -19,9 +20,11 @@ interface Props {
   scenario: Scenario
   createSession: () => TutorSession
   onBack: () => void
+  onChat: () => void
 }
 
-export function CallView({ scenario, createSession, onBack }: Props) {
+export function CallView({ scenario, createSession, onBack, onChat }: Props) {
+  const online = useOnline()
   const [session] = useState(createSession)
   const { completeConversation, addMistakes } = useProgress()
   const [networkBusy, setNetworkBusy] = useState(false)
@@ -111,6 +114,8 @@ export function CallView({ scenario, createSession, onBack }: Props) {
 
   const begin = async () => {
     if (pending.current) return
+    if (!online) { setError('Reconnect to start a call. Lessons and reading are available offline.'); return }
+    speech.unlock()
     setError(null)
     running.current = true
     if (started.current) {
@@ -165,12 +170,15 @@ export function CallView({ scenario, createSession, onBack }: Props) {
   useEffect(() => {
     alive.current = true
     const hide = () => { if (document.hidden && running.current) pauseRef.current('Call paused while the app was in the background.') }
+    const disconnected = () => pauseRef.current('Your connection dropped. Reconnect, then resume or use chat.')
+    window.addEventListener('offline', disconnected)
     document.addEventListener('visibilitychange', hide)
     return () => {
       alive.current = false
       running.current = false
       window.clearTimeout(watchdog.current)
       speech.cancel()
+      window.removeEventListener('offline', disconnected)
       document.removeEventListener('visibilitychange', hide)
     }
   }, [])
@@ -188,12 +196,13 @@ export function CallView({ scenario, createSession, onBack }: Props) {
         <p role="status" aria-live="polite">{labels[phase]}</p>
         <p className="text-sm opacity-75">Hands-free practice: speak after Inês finishes. A short silence sends your turn. Your recording is sent for transcription, just like voice input in chat. Use invented personal details.</p>
         <div className="flex flex-wrap justify-center gap-3">
-          {(phase === 'ready' || phase === 'paused') && <Button disabled={networkBusy} onClick={begin}><Play className="size-4" aria-hidden /> {phase === 'ready' ? 'Start call' : 'Resume call'}</Button>}
+          {(phase === 'ready' || phase === 'paused') && <Button disabled={networkBusy || !online} onClick={begin}><Play className="size-4" aria-hidden /> {phase === 'ready' ? 'Start call' : 'Resume call'}</Button>}
           {['listening', 'speaking', 'waiting', 'transcribing'].includes(phase) && <Button variant="secondary" onClick={() => pause()}><Pause className="size-4" aria-hidden /> Pause</Button>}
           {userTurns >= 2 && phase !== 'done' && <Button variant="secondary" disabled={networkBusy || phase === 'ending'} onClick={end}>{phase === 'ending' ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <PhoneOff className="size-4" aria-hidden />} End call & get feedback</Button>}
         </div>
         {userTurns < 2 && phase !== 'ready' && <p className="text-xs opacity-70">Try at least two replies to get your call feedback.</p>}
       </Card>
+      <Button className="mt-4" variant="ghost" onClick={onChat}>Use chat instead</Button>
       {error && <p role="alert" className="mt-4 text-sm text-terracotta-dark">{error}</p>}
       {messages.length > 0 && <details className="mt-5 rounded-2xl border border-line p-4"><summary className="cursor-pointer font-medium">Call transcript</summary><ol className="mt-3 space-y-3">{messages.map((m, i) => <li key={`${m.id}-${i}`}><p className="text-xs font-medium opacity-60">{m.from === 'tutor' ? 'Inês' : 'You'}</p><p lang="pt-PT">{m.text}</p>{m.translation && <p className="text-sm opacity-70">{m.translation}</p>}</li>)}</ol></details>}
       {phase === 'done' && <WrapUp summary={summary} reward={reward} onBack={onBack} />}

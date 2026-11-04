@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Button, SpeakButton } from '../../components/common'
 import type { LessonResult } from '../../features/progress/progressContext'
 import type { ConversationSummary, Scenario, TutorMessage, TutorSession } from '../../features/tutor/types'
+import { useOnline } from '../../hooks/useOnline'
 import { useProgress } from '../../hooks/useProgress'
 import { recorderSupported, useRecorder } from '../../hooks/useRecorder'
 import { speech } from '../../services/speech'
@@ -45,6 +46,7 @@ interface ChatViewProps {
 }
 
 export function ChatView({ scenario, createSession, voice = false, onBack }: ChatViewProps) {
+  const online = useOnline()
   const [session] = useState(createSession)
   const [messages, setMessages] = useState<TutorMessage[]>([])
   const [suggestions, setSuggestions] = useState<string[]>([])
@@ -86,6 +88,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
   const readAloud = voice && profile.tutorVoice === true
 
   const recorder = useRecorder(async (audio) => {
+    speech.cancel()
     setTranscribing(true)
     const result = await transcribe(audio)
     setTranscribing(false)
@@ -100,6 +103,8 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
     speech.speak(last.text)
   }, [messages, readAloud])
 
+  useEffect(() => () => speech.cancel(), [])
+
   useEffect(() => {
     session.start().then((r) => {
       setMessages(r.messages)
@@ -113,7 +118,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
   }, [messages, typing])
 
   const send = async (text: string) => {
-    if (!text.trim() || typing || done) return
+    if (!online || !text.trim() || typing || done) return
     setInput('')
     setMessages((m) => [...m, { id: crypto.randomUUID(), from: 'user', text }])
     setTyping(true)
@@ -177,10 +182,10 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
           <WrapUp summary={summary} reward={reward} onBack={onBack} />
         </>
       ) : (
-        <div className="sticky bottom-20 mt-6 space-y-3 bg-cream py-3 md:bottom-0">
+        <div className="chat-composer sticky bottom-20 mt-6 space-y-3 bg-cream py-3 md:bottom-0">
           <div className="flex flex-wrap gap-2">
             {suggestions.map((s) => (
-              <button key={s} type="button" disabled={typing} onClick={() => send(s)} className="rounded-full border border-line bg-card px-3 py-1.5 text-sm hover:border-sage disabled:opacity-50">
+              <button key={s} type="button" disabled={!online || typing} onClick={() => send(s)} className="rounded-full border border-line bg-card px-3 py-1.5 text-sm hover:border-sage disabled:opacity-50">
                 {s}
               </button>
             ))}
@@ -200,19 +205,19 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
                 type="button"
                 variant={recorder.recording ? 'primary' : 'secondary'}
                 aria-label={recorder.recording ? 'Stop recording' : 'Speak your reply'}
-                disabled={typing || transcribing}
-                onClick={recorder.recording ? recorder.stop : recorder.start}
+                disabled={!online || typing || transcribing}
+                onClick={() => { speech.cancel(); if (recorder.recording) recorder.stop(); else void recorder.start() }}
                 className={cn('px-4', recorder.recording && 'animate-pulse')}
               >
                 {transcribing ? <Loader2 className="size-5 animate-spin" aria-hidden /> : recorder.recording ? <Square className="size-5" aria-hidden /> : <Mic className="size-5" aria-hidden />}
               </Button>
             )}
-            <Button type="submit" aria-label="Send" disabled={typing || !input.trim()} className={cn('px-4')}>
+            <Button type="submit" aria-label="Send" disabled={!online || typing || !input.trim()} className={cn('px-4')}>
               <Send className="size-5" aria-hidden />
             </Button>
           </form>
           {session.summarize && userTurns >= 2 && (
-            <Button variant="ghost" size="sm" disabled={typing || ending} onClick={end}>
+            <Button variant="ghost" size="sm" disabled={!online || typing || ending} onClick={end}>
               {ending ? <><Loader2 className="size-4 animate-spin" aria-hidden /> Preparing your feedback…</> : 'End conversation & get feedback'}
             </Button>
           )}

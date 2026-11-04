@@ -24,11 +24,11 @@ const cachedUser = () => {
 export function useCloudSync(): CloudSync {
   const [user, setUser] = useState<Pick<User, 'id' | 'email'> | null | undefined>(() => cloud.enabled ? (navigator.onLine ? undefined : cachedUser()) : null)
   const [status, setStatus] = useState<SyncStatus>(cloud.enabled ? 'loading' : 'off')
-  const [accountReady, setAccountReady] = useState(false)
+  const [accountReady, setAccountReady] = useState(!cloud.enabled)
   const retryRef = useRef<() => void>(() => {})
 
   useEffect(() => {
-    if (!supabase) { learningStore.select(null); setAccountReady(true); return }
+    if (!supabase) return
     let alive = true
     let observed = false
     const remember = (user: Pick<User, 'id' | 'email'> | null) => {

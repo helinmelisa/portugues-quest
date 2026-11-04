@@ -45,8 +45,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [progress],
   )
 
-  const completeLesson = useCallback((lesson: Lesson) => finish(applyLesson(learningStore.getSnapshot().progress, lesson, questForDay())), [progress, finish])
-  const completeConversation = useCallback(() => finish(applyConversation(learningStore.getSnapshot().progress, questForDay())), [progress, finish])
+  const completeLesson = useCallback((lesson: Lesson) => finish(applyLesson(learningStore.getSnapshot().progress, lesson, questForDay())), [finish])
+  const completeConversation = useCallback(() => finish(applyConversation(learningStore.getSnapshot().progress, questForDay())), [finish])
 
   const addCustomWord = useCallback(
     (word: { pt: string; en: string }) =>

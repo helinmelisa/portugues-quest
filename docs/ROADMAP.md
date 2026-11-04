@@ -135,7 +135,7 @@ The first release is installed from Safari onto the Home Screen. An App Store re
 - [x] **7. Safe app updates**: version caches and persisted data, offer an “Update available” action between activities, and preserve in-progress lessons and pending sync. Recover gracefully if cached assets are unavailable or removed; avoid forcing an update during a lesson or call
 
 ### D. Feel right on iPhone
-- [ ] **8. Mobile polish**: safe-area spacing, bottom navigation, on-screen keyboard, tap targets, text scaling, contrast and reduced motion. Verify narrow screens, landscape and desktop layouts with the existing cozy visual style
+- [x] **8. Mobile polish**: safe-area spacing, bottom navigation, on-screen keyboard, tap targets, text scaling, contrast and reduced motion. Verify narrow screens, landscape and desktop layouts with the existing cozy visual style
 - [ ] **9. Safari voice and calls**: validate the redeployed tutor, pt-PT playback, microphone permission, silence detection, pause/resume, headphones, backgrounding and interruptions in Safari and the installed app. Prevent overlapping playback/recording and provide a clear recovery path to chat
 - [ ] **10. Release verification**: automate sync conflict/retry/account-switch regression checks; finish a physical iPhone plus desktop smoke test; refresh the README and installation instructions. Deploy the web release and verify installation, updates and sync against the hosted app
 
@@ -145,7 +145,7 @@ Suggested commits: (1) installable shell and installation guide; (2) account-saf
 
 Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
 
-Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed. Public-asset offline caching, saved lesson drafts and explicit cross-tab-safe updates are implemented and tested in the production preview.
+Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed. Public-asset offline caching, saved lesson drafts and explicit cross-tab-safe updates are implemented and tested in the production preview. Mobile layout and voice recovery are implemented. Steps 1, 3, 9 and 10 remain open for physical iPhone, authenticated hosted sync and final release checks; see [release evidence](RELEASE-M6.md).
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.

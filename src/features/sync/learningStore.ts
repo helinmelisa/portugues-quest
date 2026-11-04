@@ -82,3 +82,6 @@ export class LearningStore {
 }
 
 export const learningStore = new LearningStore(typeof localStorage === 'undefined' ? null : localStorage)
+
+// Hydrate guest storage before the first route guard runs. Account data is selected after auth.
+learningStore.select(null)

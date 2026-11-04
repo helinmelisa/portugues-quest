@@ -9,7 +9,7 @@ export function AppLayout() {
   const { stats } = useProgress()
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-dvh">
       <a href="#content" className="sr-only z-20 rounded-full bg-card px-4 py-2 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
         Skip to content
       </a>
@@ -22,12 +22,12 @@ export function AppLayout() {
           <div className="flex gap-2">
             <StreakChip days={stats.streak} />
             <XpChip xp={stats.totalXp} />
-            <Link to="/app/settings" aria-label="Settings" className="grid size-9 place-items-center rounded-full border border-line bg-card hover:border-sage">
+            <Link to="/app/settings" aria-label="Settings" className="grid size-11 place-items-center rounded-full border border-line bg-card hover:border-sage">
               <Settings className="size-4" aria-hidden />
             </Link>
           </div>
         </header>
-        <main id="content" className="flex-1 px-4 pb-24 md:px-8 md:pb-10">
+        <main id="content" className="flex-1 px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] md:px-8 md:pb-10">
           <Outlet />
         </main>
       </div>

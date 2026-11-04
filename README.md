@@ -1,94 +1,87 @@
 # Português Quest 🇵🇹
 
-A cozy, gamified way to learn **European Portuguese (pt-PT)** — by exploring Portugal one little
-adventure at a time. Start in Lisboa with your first “Olá”, travel to Porto and order your first
-coffee, and build a gentle daily habit along the way.
+A cozy, gamified way to learn **European Portuguese (pt-PT)** through destinations, everyday
+situations and conversations with Inês. The website and installable iPhone web app share the
+same code, curriculum and Supabase account.
 
-See [docs/VISION.md](docs/VISION.md) for the product direction and [docs/ROADMAP.md](docs/ROADMAP.md) for progress.
+[Live website](https://portugues-quest.vercel.app) · [Roadmap](docs/ROADMAP.md) · [Vision](docs/VISION.md)
 
-## Features (MVP)
+## Use it on iPhone
 
-- **Landing page and onboarding**: goals, level and daily target; the optional questions can be skipped
-- **Dashboard**: daily quest, XP, streak, daily goal, road to A1, weekly activity and achievements
-- **Explore Portugal**: clickable illustrated map; Lisboa and Porto are playable, the other places are locked
-- **Lessons**: vocabulary intro with audio, then multiple choice, fill-in-the-blank, matching, sentence
-  building and listening, with feedback that explains each answer. Missed questions come back at the end of the lesson
-- **Gamification**: XP, a gentle streak, ranks (Newcomer → Portuguese Companion), achievements, celebrations
-- **Practice Corner**: Quick Challenge, Listening Nook, Build a Sentence and Word Garden (a word list where you can mark tricky words)
-- **Inês tutor (demo)**: scripted roleplay conversations with tips specific to European Portuguese
+1. Open the website in **Safari**.
+2. Tap **Share → Add to Home Screen**. Keep **Open as Web App** enabled if shown.
+3. Open the new icon and sign in with the same email you use on the website.
+4. Stay online for the first download. Settings confirms when lessons and reading are ready offline.
 
-## Getting started
+Safari and the home-screen app may have separate sessions. If an email link opens Safari, request
+a fresh email in the installed app, copy its original sign-in link without opening it, then paste
+it into **Signing in to the home-screen app?** on the login screen. The link is verified directly
+with this project's Supabase Auth. Never share sign-in links.
+
+Lessons, grammar, reading and saved vocabulary work offline after the initial download. Account
+sign-in needs a connection the first time. Inês, transcription and call feedback need the network;
+availability of device voices offline varies. This is a Home Screen web app; App Store distribution
+is a separate future step.
+
+## Learning
+
+- Eight destinations, ten A2 Vida em Portugal lessons and second visits to Lisboa and Porto
+- Vocabulary, listening, matching, translations, sentence building and optional speaking
+- Spaced repetition, Word Garden, stories, real-life reading and a mistake notebook
+- A1/A2 checkpoints and learning certificates, XP, achievements, quests and weekly challenges
+- Inês: free chat, custom scenarios and hands-free phone role-plays with transcript-based feedback
+
+## Progress and sync
+
+Progress is stored per account on the device. Each edit is saved to a durable activity outbox before
+updating the screen. Online sync runs after edits, on focus/reconnect, through account-filtered
+Realtime updates and a 30-second foreground fallback. “Saved on this device” means upload is pending;
+Settings provides a retry action. If storage is unavailable, keep the page open and export a backup.
+
+The server serializes writes using a revision and acknowledges unique activity IDs. Retrying a
+request after an uncertain network failure cannot award its XP again. Counters add across devices;
+completed lessons and certificate dates keep their earliest date; collections merge by item ID;
+settings, deletions and each word-review record use the last accepted edit. Explicit reset/import
+replaces the relevant snapshot at its accepted position in the queue. Changes made later on another
+offline device can still arrive afterwards. Replayed receipts are retained to preserve deduplication.
+
+Signing out hides account data and keeps its unsynced work scoped to that account for the next
+sign-in. Old unscoped v1 caches are preserved as a **Previous device backup** in Settings; they are
+never automatically merged into a different account. Import only backups belonging to you.
+
+The worker caches only public app assets and curriculum, never Supabase/auth/private API responses.
+Updates wait between activities and check other open tabs before activation. Unfinished lesson drafts
+and pending sync remain on the device. Browser storage may be evicted by the OS; export is still useful.
+
+## Development
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # type-check + production build
-```
-
-Requires Node 20+.
-
-## Stack
-
-React · TypeScript · Vite · Tailwind CSS v4 · React Router · Framer Motion · Lucide
-
-## Project structure
-
-```
-src/
-  components/   common UI, layout, navigation, lessons, map, gamification
-  data/         curriculum (lessons per destination), destinations, quests
-  features/     progress, achievements, practice generation, tutor
-  hooks/        useProgress
-  pages/        Landing, Onboarding, Dashboard, Explore, Lesson, Practice, Tutor
-  services/     storage (localStorage), speech (text-to-speech)
-  types/        shared domain types
-```
-
-Lessons live in `src/data/curriculum/`. A new exercise type only needs a type in `src/types`,
-a component in `src/components/lessons/` and a case in `ExerciseView`.
-
-## Current limitations and future integrations
-
-| Area | Now | Planned |
-|---|---|---|
-| Accounts and sync | Progress is saved in the browser's `localStorage` (`src/services/storage.ts`) | Supabase Auth + Postgres. Replace the storage service; components stay the same |
-| Audio | Browser text-to-speech (`src/services/speech.ts`), which prefers a pt-PT voice | Native European Portuguese recordings in Supabase Storage via `VocabularyItem.audioUrl` |
-| Tutor | `createScriptedTutor` with simple matching rules on replies | An AI-backed `TutorSession` behind a Supabase Edge Function. The API key stays on the server |
-| Pronunciation | Listen only | Voice recording and pronunciation feedback |
-| Review | Word Garden lets you mark tricky words | Spaced repetition |
-
-No external services or API keys are needed to run the app.
-
-## Milestone 5 — Life in Portugal
-
-- **Vida em Portugal**: ten A2 lessons for papers, home, health, work, banking and a second visit
-  to Lisboa and Porto. Open this chapter from Explore Portugal or Practice Corner.
-- **Grammar bites**: the imperfect, reflexive verbs, object pronouns and comparisons, linked
-  from the new lessons.
-- **Real-life texts**: six authored examples (sign, notice, rental ad, appointment SMS, utility
-  bill and interview email), with English support and three questions each.
-- **A2 checkpoint**: complete all ten Vida lessons and two Madeira lessons to unlock sixteen
-  mixed questions. Twelve correct on the first try earns the A2 Explorer certificate and achievement.
-- **Call mode**: switch it on in Inês’s scenario picker, then choose a phone scenario or describe
-  your own situation. Inês speaks, the mic listens, and a short silence submits your turn.
-  Pause/resume and backgrounding release the microphone; failed requests pause the call.
-- **Speaking feedback**: after at least two replies, end the call for vocabulary, accuracy and
-  transcript-based fluency estimates (1–5), plus one concrete practice suggestion. These are
-  language estimates, not an acoustic assessment of pronunciation or speaking speed.
-
-The existing Supabase `tutor` Edge Function must be redeployed for the A2 prompts and call
-feedback payload. Use the same project and existing `GROQ_API_KEY` / optional `GROQ_MODEL` secrets:
-
-```bash
-supabase functions deploy tutor --project-ref <your-project-ref>
+cp .env.example .env
+npm run dev
+npm run build             # type-check, bundle and generate versioned offline worker
+npm run preview           # production PWA checks; dev mode does not register a worker
+npm run lint
 npm run test:milestone5
+npm run test:milestone6    # run after build; includes offline worker and sync regressions
 ```
 
-No database migration or new paid service is needed. Calls use the existing Groq transcription
-and chat integration, and browser text-to-speech. A secure context (HTTPS or localhost), microphone
-permission, MediaRecorder, AudioContext and speech synthesis are required. Browser speech support
-varies, especially on mobile; chat remains available. Live microphone playback and hosted AI calls
-still need a device check after deployment.
+Node 20+; React, TypeScript, Vite, Tailwind, React Router, Framer Motion and Lucide.
+Only `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` belong in the frontend environment.
+Set them in Vercel as well as locally. Without them the app uses device-only guest progress.
+Never put service-role keys or Groq secrets in Vite variables or Git.
 
-Reading samples use fictional dates, amounts and payment details. The curriculum teaches language;
-service requirements, banking products and treatment decisions are not supplied by these examples.
+## Supabase and deployment
+
+1. Apply migrations in `supabase/migrations/` in order. For an existing installation, apply
+   `20261104000000_sync_revisions.sql` before using the new sync client. It preserves existing data,
+   adds an authenticated RPC and receipt table, and removes old unrestricted snapshot-write policies.
+2. Keep the existing `tutor` Edge Function deployed with its Groq secrets; Milestone 6 needs no new tutor deployment.
+3. Set the production site URL and allowed redirect URLs in Supabase Auth to the deployed origin plus `/app`.
+4. Deploy to Vercel using the included SPA rewrites and non-cacheable worker headers. Older app tabs
+   must refresh after the sync migration; their outdated snapshot writes are intentionally rejected.
+5. Follow [the release checklist](docs/RELEASE-M6.md), including a physical iPhone and two-account test.
+
+`supabase/tests/sync.sql` is a rollback-only fixture for an **empty local PostgreSQL database**. It
+mocks Auth, then tests revisions, duplicate receipts, RLS and privileges. Do not run the fixture on
+hosted Supabase; only the files in `supabase/migrations/` are deployment migrations.

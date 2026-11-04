@@ -1,6 +1,7 @@
 import { Loader2, Mic, Snail, Square } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useOnline } from '../../hooks/useOnline'
 import { useProgress } from '../../hooks/useProgress'
 import { recorderSupported, useRecorder } from '../../hooks/useRecorder'
 import { speech } from '../../services/speech'
@@ -21,12 +22,13 @@ function verdict(score: number) {
 }
 
 export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<PronunciationExercise>) {
+  const online = useOnline()
   const { cloud } = useProgress()
   const [result, setResult] = useState<{ heard: string; score: number } | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [skipped, setSkipped] = useState(false)
-  const canRecord = recorderSupported && cloud.email !== null
+  const canRecord = online && recorderSupported && cloud.email !== null
 
   const recorder = useRecorder(async (audio) => {
     setBusy(true)
@@ -72,7 +74,7 @@ export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<Pro
           <button
             type="button"
             disabled={checked || busy}
-            onClick={recorder.recording ? recorder.stop : recorder.start}
+            onClick={() => { speech.cancel(); if (recorder.recording) recorder.stop(); else void recorder.start() }}
             aria-label={recorder.recording ? 'Stop recording' : 'Record yourself'}
             className={cn(
               'grid size-20 place-items-center rounded-full text-white shadow-soft transition active:scale-95 disabled:opacity-50',
@@ -99,7 +101,7 @@ export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<Pro
 
       {!canRecord && (
         <p className="mb-4 rounded-2xl bg-line/60 p-3 text-sm">
-          {recorderSupported ? (
+          {!online ? 'Pronunciation feedback needs a connection. Say the phrase out loud and continue offline.' : recorderSupported ? (
             <><Link to="/app/settings" className="font-medium underline">Sign in</Link> to get feedback on your pronunciation. For now, listen and repeat out loud!</>
           ) : (
             'Recording isn’t supported in this browser. Listen and repeat out loud!'

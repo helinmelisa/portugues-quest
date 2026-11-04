@@ -10,10 +10,12 @@ import { useProgress } from '../../hooks/useProgress'
 import { onboardingSteps } from '../Onboarding/steps'
 import { speech } from '../../services/speech'
 import { recorderSupported } from '../../hooks/useRecorder'
+import { useOnline } from '../../hooks/useOnline'
 import { CallView } from './CallView'
 import { ChatView } from './ChatView'
 
 export default function TutorPage() {
+  const online = useOnline()
   const { cloud, profile, progress } = useProgress()
   const [params] = useSearchParams()
   const [activeId, setActiveId] = useState<string | null>(params.get('scenario'))
@@ -25,6 +27,8 @@ export default function TutorPage() {
   const canCall = ai && recorderSupported && speech.supported && typeof AudioContext !== 'undefined'
   const active = activeId === 'custom' ? custom : scenarios.find((s) => s.id === activeId && (ai || s.steps))
 
+  if (!online && ai && !active) return <div className="mx-auto max-w-2xl"><h1 className="font-display text-3xl">Inês is online-only</h1><p className="my-4 opacity-80">Reconnect for conversations, transcription and calls. Your lessons and reading are ready offline after download.</p><Link to="/app/practice" className="font-medium text-terracotta-dark underline">Open Practice Corner →</Link></div>
+
   if (active) {
     const learner: LearnerContext = {
       name: profile.name,
@@ -33,7 +37,7 @@ export default function TutorPage() {
       mistakes: progress.mistakes.slice(-5).map((m) => `“${m.said}” → “${m.better}”`),
     }
     const createSession = () => (ai ? createAiTutor(active, active.level === 'A2' ? 'A2' : profile.level, learner, callMode) : createScriptedTutor(active))
-    if (callMode && canCall) return <CallView key={active.id} scenario={active} createSession={createSession} onBack={() => setActiveId(null)} />
+    if (callMode && canCall) return <CallView key={active.id} scenario={active} createSession={createSession} onBack={() => setActiveId(null)} onChat={() => setCallMode(false)} />
     return <ChatView key={active.id} scenario={active} createSession={createSession} voice={ai} onBack={() => setActiveId(null)} />
   }
 

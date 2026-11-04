@@ -10,6 +10,13 @@ function findVoice() {
 export const speech = {
   supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
   rate: 0.9,
+  unlock() {
+    if (!this.supported) return
+    const primer = new SpeechSynthesisUtterance(' ')
+    primer.lang = 'pt-PT'
+    primer.volume = 0
+    speechSynthesis.speak(primer)
+  },
   cancel() { if (this.supported) speechSynthesis.cancel() },
   speak(text: string, rate?: number, onEnd?: () => void, onError?: () => void) {
     if (!this.supported) return
