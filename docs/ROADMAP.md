@@ -123,7 +123,7 @@ The first release is installed from Safari onto the Home Screen. An App Store re
 
 ### A. Make it an iPhone app
 - [ ] **1. Phone baseline**: test the current deployed website in iPhone Safari and Home Screen mode; record login, navigation, lesson, reading and call issues before changing behaviour
-- [ ] **2. Installable app**: manifest, app icons, Apple touch icon, standalone display, theme and launch screen; add a short Safari installation guide in Settings. Keep normal browser URLs and desktop use working
+- [x] **2. Installable app**: manifest, app icons, Apple touch icon, standalone display, theme and launch screen; add a short Safari installation guide in Settings. Keep normal browser URLs and desktop use working
 
 ### B. One account, one learning journey
 - [ ] **3. Sign-in and account isolation**: test magic-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
@@ -144,6 +144,8 @@ Done when: a learner can install the app, use the same account on iPhone and des
 Suggested commits: (1) installable shell and installation guide; (2) account-safe sync and durable offline activity; (3) offline curriculum and safe updates; (4) iPhone layout and voice fixes; (5) release checks and docs. Update this checklist in each implementation commit. If activity deduplication requires a schema change, include the Supabase migration with the sync commit.
 
 Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
+
+Implementation progress: installable shell and assets are implemented.
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.

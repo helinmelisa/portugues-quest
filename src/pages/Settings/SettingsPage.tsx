@@ -6,6 +6,7 @@ import { speech } from '../../services/speech'
 import type { CefrLevel, UserProfile } from '../../types'
 import { cn } from '../../utils/cn'
 import { dayKey } from '../../utils/date'
+import { InstallCard } from './InstallCard'
 import { AccountCard } from './AccountCard'
 import { ResetProgress } from './ResetProgress'
 
@@ -69,6 +70,7 @@ export default function SettingsPage() {
       <h1 className="font-display text-3xl md:text-4xl">Settings</h1>
 
       <AccountCard />
+      <InstallCard />
 
       <Card className="space-y-5">
         <h2 className="font-display text-xl">Learning</h2>
