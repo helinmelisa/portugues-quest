@@ -40,8 +40,12 @@ export const cloud = {
     if (error) throw error
     return data ?? { progress: {}, profile: {}, revision: 0 }
   },
-  async commit(revision: number, ids: string[], next: UserData): Promise<SyncReply> {
+  async commit(userId: string, revision: number, ids: string[], next: UserData): Promise<SyncReply> {
+    const { data: { session }, error: sessionError } = await supabase!.auth.getSession()
+    if (sessionError || !session || session.user.id !== userId) throw new Error('Account changed before sync. Sign in again to resume.')
+    // Pin the request to this identity: an account switch must not attach the next account's token.
     const { data, error } = await supabase!.rpc('sync_learning', { expected_revision: revision, activity_ids: ids, next_progress: next.progress, next_profile: next.profile })
+      .setHeader('Authorization', `Bearer ${session.access_token}`)
     if (error) throw error
     return data as SyncReply
   },

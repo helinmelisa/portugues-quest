@@ -8,6 +8,8 @@
 - Sync regressions passed concurrent device activity, response loss after commit, reopen/retry, separate-account outboxes, multi-tab queues, unrelated profile edits, removals, storage quota failure and certificate dates.
 - Worker regressions passed offline navigation, API/auth exclusions, unrelated-cache preservation, cache eviction recovery and cross-tab update consent.
 - Production preview in the desktop in-app browser: first-run setup, installation instructions and offline-ready status verified. A waiting worker update activated through the UI. With the preview server stopped, a lesson reloaded and resumed the saved exercise at a 390 × 844 viewport.
+- Identity race regression passed: an in-flight RPC keeps the originating account’s bearer token; an already switched or missing session refuses to submit.
+- Vercel reported a successful initial deployment; manifest and worker served HTTP 200 with the correct types. The production bundle lacked Supabase environment configuration, so account sync must be enabled before hosted acceptance.
 - The user reported applying `20261104000000_sync_revisions.sql` to hosted Supabase. Public endpoint checks confirmed the revision column responds successfully and anonymous sync/tutor calls remain denied (401). Authenticated hosted sync still needs the account/device check.
 
 ## Physical iPhone and account checks still required

@@ -72,7 +72,7 @@ export function useCloudSync(): CloudSync {
       busy = true
       setStatus('syncing')
       try {
-        await synchronize(learningStore, { pull: () => cloud.pull(userId), commit: cloud.commit }, current)
+        await synchronize(learningStore, { pull: () => cloud.pull(userId), commit: (revision, ids, next) => cloud.commit(userId, revision, ids, next) }, current)
         if (current()) setStatus(learningStore.persistenceError ? 'error' : learningStore.pending().length ? 'saved' : 'synced')
       } catch {
         if (current()) setStatus(navigator.onLine ? 'error' : 'saved')
