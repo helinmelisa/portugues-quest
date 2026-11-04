@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, ProgressBar } from '../../components/common'
 import { FeedbackPanel } from '../../components/lessons/FeedbackPanel'
@@ -9,6 +9,7 @@ import { LessonIntro } from '../../components/lessons/LessonIntro'
 import { ExerciseView } from '../../components/lessons/ExerciseView'
 import type { ExerciseResponse } from '../../components/lessons/types'
 import { isLessonAvailable } from '../../data/curriculum'
+import { draftKey, loadDraft } from '../../features/learning/lessonDraft'
 import { CHECKPOINT_PASS, resolveLesson } from '../../features/learning/practice'
 import { useProgress } from '../../hooks/useProgress'
 import type { Exercise } from '../../types'
@@ -19,15 +20,24 @@ export default function LessonPage() {
   const { lessonId = '' } = useParams()
   const navigate = useNavigate()
   const { completeLesson, progress, reviewWord, passCheckpoint } = useProgress()
-  const [lesson] = useState(() => resolveLesson(lessonId, progress))
+  const [draft] = useState(() => loadDraft(lessonId))
+  const [lesson] = useState(() => draft?.lesson ?? resolveLesson(lessonId, progress))
 
-  const [stage, setStage] = useState<Stage>(lesson?.vocabulary.length ? 'intro' : 'exercises')
-  const [queue, setQueue] = useState<Exercise[]>(lesson?.exercises ?? [])
-  const [missed, setMissed] = useState(new Set<string>())
+  const [stage, setStage] = useState<Stage>(draft?.stage ?? (lesson?.vocabulary.length ? 'intro' : 'exercises'))
+  const [queue, setQueue] = useState<Exercise[]>(draft?.queue ?? lesson?.exercises ?? [])
+  const [missed, setMissed] = useState(new Set<string>(draft?.missed))
   const [response, setResponse] = useState<ExerciseResponse>({ ready: false, correct: false })
   const [checked, setChecked] = useState(false)
   const [result, setResult] = useState<LessonResult | null>(null)
   const [checkpointPassed, setCheckpointPassed] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (!lesson) return
+    try {
+      if (stage === 'complete') localStorage.removeItem(draftKey(lessonId))
+      else localStorage.setItem(draftKey(lessonId), JSON.stringify({ version: 1, lesson, queue, missed: [...missed], stage }))
+    } catch { /* Completed progress has its own durable outbox and storage warning. */ }
+  }, [lesson, lessonId, queue, missed, stage])
 
   const exit = () => navigate(-1)
 
@@ -80,6 +90,7 @@ export default function LessonPage() {
       </header>
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-8">
+        {draft && stage !== 'complete' && <p className="mb-4 text-sm opacity-70">Continuing your saved lesson on this device.</p>}
         {stage === 'intro' && <LessonIntro lesson={lesson} onStart={() => setStage('exercises')} />}
         {stage === 'exercises' && current && (
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />

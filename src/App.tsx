@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { AppStatus } from './components/layout/AppStatus'
 import { AppLayout } from './components/layout/AppLayout'
 import { RequireAccount } from './components/layout/RequireAccount'
 import LoginPage from './pages/Auth/LoginPage'
@@ -27,6 +28,7 @@ export default function App() {
   return (
     <ProgressProvider>
       <BrowserRouter>
+        <AppStatus />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />

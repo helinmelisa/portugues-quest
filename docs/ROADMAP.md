@@ -131,8 +131,8 @@ The first release is installed from Safari onto the Home Screen. An App Store re
 - [x] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
 
 ### C. Learn without a connection
-- [ ] **6. Offline lessons and reading**: cache the app shell and bundled curriculum after an online visit, then support lessons, grammar, Word Garden and reading offline for the last signed-in account. Keep AI chat, transcription and calls clearly online-only. Do not service-worker-cache auth responses, tokens or private API responses; treat device speech availability separately
-- [ ] **7. Safe app updates**: version caches and persisted data, offer an “Update available” action between activities, and preserve in-progress lessons and pending sync. Recover gracefully if cached assets are unavailable or removed; avoid forcing an update during a lesson or call
+- [x] **6. Offline lessons and reading**: cache the app shell and bundled curriculum after an online visit, then support lessons, grammar, Word Garden and reading offline for the last signed-in account. Keep AI chat, transcription and calls clearly online-only. Do not service-worker-cache auth responses, tokens or private API responses; treat device speech availability separately
+- [x] **7. Safe app updates**: version caches and persisted data, offer an “Update available” action between activities, and preserve in-progress lessons and pending sync. Recover gracefully if cached assets are unavailable or removed; avoid forcing an update during a lesson or call
 
 ### D. Feel right on iPhone
 - [ ] **8. Mobile polish**: safe-area spacing, bottom navigation, on-screen keyboard, tap targets, text scaling, contrast and reduced motion. Verify narrow screens, landscape and desktop layouts with the existing cozy visual style
@@ -145,7 +145,7 @@ Suggested commits: (1) installable shell and installation guide; (2) account-saf
 
 Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
 
-Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed.
+Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed. Public-asset offline caching, saved lesson drafts and explicit cross-tab-safe updates are implemented and tested in the production preview.
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.
