@@ -5,6 +5,7 @@ import LoginPage from './pages/Auth/LoginPage'
 import { ProgressProvider } from './features/progress/ProgressProvider'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import DestinationPage from './pages/Explore/DestinationPage'
+import VidaPage from './pages/Explore/VidaPage'
 import ExplorePage from './pages/Explore/ExplorePage'
 import LandingPage from './pages/Landing/LandingPage'
 import LessonPage from './pages/Lesson/LessonPage'
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/app" element={<RequireAccount><AppLayout /></RequireAccount>}>
             <Route index element={<DashboardPage />} />
             <Route path="explore" element={<ExplorePage />} />
+            <Route path="explore/vida" element={<VidaPage />} />
             <Route path="explore/:destinationId" element={<DestinationPage />} />
             <Route path="practice" element={<PracticePage />} />
             <Route path="practice/words" element={<WordGardenPage />} />

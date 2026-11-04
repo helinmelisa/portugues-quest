@@ -48,6 +48,11 @@ export default function DestinationPage() {
           return <li key={lesson.id}>{available ? <Link to={`/lesson/${lesson.id}`}>{content}</Link> : content}</li>
         })}
       </ol>
+      {['lisboa', 'porto'].includes(destination.id) && (
+        <Link to={`/lesson/${destination.id}-return`} className="mt-6 block rounded-3xl">
+          <Card className="bg-sun/15 hover:border-sage"><Badge tone="terracotta">A2 · A second visit</Badge><h2 className="mt-3 font-display text-xl">Back to {destination.name}</h2><p className="mt-1 opacity-80">Tell the story of your last visit with past events, descriptions and comparisons. →</p></Card>
+        </Link>
+      )}
     </div>
   )
 }

@@ -96,14 +96,14 @@ Goal: the practical Portuguese that expats actually need (paperwork, housing, he
 Still free to run: Groq free tier + Supabase free tier.
 
 ### A. "Vida em Portugal": a new world for everyday admin
-- [ ] **1. Papers**: getting a NIF at Finanças, Segurança Social, booking at the Loja do Cidadão
-- [ ] **2. Home**: renting a flat (renda, caução, contrato, T1/T2), talking to the senhorio, utilities
-- [ ] **3. Health**: the centro de saúde, número de utente, describing symptoms, the farmácia, 112
-- [ ] **4. Work and bank**: opening a bank account, a simple job interview, emails and formal register
+- [x] **1. Papers**: getting a NIF at Finanças, Segurança Social, booking at the Loja do Cidadão
+- [x] **2. Home**: renting a flat (renda, caução, contrato, T1/T2), talking to the senhorio, utilities
+- [x] **3. Health**: the centro de saúde, número de utente, describing symptoms, the farmácia, 112
+- [x] **4. Work and bank**: opening a bank account, a simple job interview, emails and formal register
 
 ### B. A2 grammar and a second visit
-- [ ] **5. New grammar bites**: the imperfect (eu costumava / era), reflexive verbs, object pronouns (o, a, lhe), comparisons
-- [ ] **6. Second visit to Lisboa and Porto**: A2 lessons using the past tense (what happened, how it was)
+- [x] **5. New grammar bites**: the imperfect (eu costumava / era), reflexive verbs, object pronouns (o, a, lhe), comparisons
+- [x] **6. Second visit to Lisboa and Porto**: A2 lessons using the past tense (what happened, how it was)
 
 ### C. Speaking like real life
 - [ ] **7. Call mode with Inês**: hands-free voice conversation (you speak, she answers aloud, repeat) for phone-call scenarios

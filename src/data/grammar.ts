@@ -98,6 +98,46 @@ export const grammarBites: GrammarBite[] = [
       { text: '“Ir” (go) and “ser” (be) share the same irregular past: fui, foste, foi, fomos, foram.', examples: [{ pt: 'Fui ao Funchal.', en: 'I went to Funchal.' }, { pt: 'Foi incrível!', en: 'It was amazing!' }] },
     ],
   },
+  {
+    id: 'imperfect',
+    title: 'The imperfect: how things used to be',
+    summary: 'Background, habits and descriptions in the past: era, havia, costumava.',
+    sections: [
+      { text: 'Use the imperfect for repeated habits and background. Use the pretérito perfeito for a finished event.', examples: [{ pt: 'Antes costumava ir a pé.', en: 'Before, I used to walk.' }, { pt: 'A rua era calma. Ontem houve uma festa.', en: 'The street used to be quiet. Yesterday there was a party.' }, { pt: 'Enquanto esperava, li o jornal.', en: 'While I was waiting, I read the newspaper.' }] },
+      { text: 'Regular forms:', table: [['', 'falar', 'comer', 'abrir'], ['eu', 'falava', 'comia', 'abria'], ['tu', 'falavas', 'comias', 'abrias'], ['ele / ela', 'falava', 'comia', 'abria'], ['nós', 'falávamos', 'comíamos', 'abríamos'], ['eles / elas', 'falavam', 'comiam', 'abriam']] },
+      { text: 'Useful irregular forms: eu era (ser), eu tinha (ter), eu ia (ir). “Havia” means there was / were.', examples: [{ pt: 'Quando era criança, ia à praia todos os dias.', en: 'When I was a child, I went to the beach every day.' }] },
+    ],
+  },
+  {
+    id: 'reflexive',
+    title: 'Reflexive verbs',
+    summary: 'Getting up, registering and feeling well: levanto-me, inscrevo-me, sinto-me.',
+    sections: [
+      { text: 'Reflexive verbs use a pronoun that matches the subject.', table: [['', 'levantar-se'], ['eu', 'levanto-me'], ['tu', 'levantas-te'], ['ele / ela', 'levanta-se'], ['nós', 'levantamo-nos'], ['eles / elas', 'levantam-se']] },
+      { text: 'In affirmative sentences the pronoun usually follows the verb with a hyphen. “Nós” drops the final s before nos.', examples: [{ pt: 'Inscrevo-me no curso.', en: 'I register for the course.' }, { pt: 'Quero inscrever-me.', en: 'I want to register.' }] },
+      { text: 'With “não” or a question word, put the pronoun before the conjugated verb.', examples: [{ pt: 'Não me sinto bem.', en: 'I do not feel well.' }, { pt: 'Como te sentes?', en: 'How do you feel?' }] },
+    ],
+  },
+  {
+    id: 'object-pronouns',
+    title: 'Object pronouns: o, a and lhe',
+    summary: 'Avoid repeating a thing or person: it, him, her, to him / her / you.',
+    sections: [
+      { text: 'Direct objects: o (masculine), a (feminine), os / as (plural). Indirect objects: lhe (to him / her / polite you), lhes (to them / polite plural you).', examples: [{ pt: 'Tenho a chave. Guardo-a aqui.', en: 'I have the key. I keep it here.' }, { pt: 'Envio-lhe o contrato.', en: 'I send him / her / you the contract.' }] },
+      { text: 'After an infinitive ending in r, drop the r and use lo / la / los / las. An accent may be needed.', examples: [{ pt: 'Vou entregar o documento. Vou entregá-lo.', en: 'I am going to hand in the document. I am going to hand it in.' }, { pt: 'Vou mostrar a receita. Vou mostrá-la.', en: 'I am going to show the prescription. I am going to show it.' }] },
+      { text: 'With “não”, the pronoun goes before the verb and keeps its normal form.', examples: [{ pt: 'Não o tenho.', en: 'I do not have it.' }, { pt: 'Não lhe enviei o email.', en: 'I did not send him / her / you the email.' }] },
+    ],
+  },
+  {
+    id: 'comparisons',
+    title: 'Comparing things',
+    summary: 'More, less, as good as, better and worse.',
+    sections: [
+      { text: 'Use mais / menos + adjective + (do) que for unequal comparisons.', examples: [{ pt: 'Este T1 é mais barato do que o T2.', en: 'This one-bedroom flat is cheaper than the two-bedroom flat.' }, { pt: 'A casa é menos luminosa do que esperava.', en: 'The house is less bright than I expected.' }] },
+      { text: 'Use tão + adjective + como for equality. With nouns, use tanto / tanta / tantos / tantas.', examples: [{ pt: 'É tão bom como o outro.', en: 'It is as good as the other one.' }, { pt: 'Tenho tantas perguntas como tu.', en: 'I have as many questions as you.' }] },
+      { text: 'Bom → melhor; mau → pior. Do not add “mais” before melhor or pior.', examples: [{ pt: 'Este café é melhor do que o anterior.', en: 'This coffee is better than the previous one.' }] },
+    ],
+  },
 ]
 
 export const getGrammarBite = (id: string) => grammarBites.find((g) => g.id === id)

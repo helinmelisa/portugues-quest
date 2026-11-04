@@ -84,6 +84,7 @@ export interface Lesson {
   skills: Skill[]
   vocabulary: VocabularyItem[]
   exercises: Exercise[]
+  level?: CefrLevel
   grammarId?: string // optional grammar bite shown in the intro
 }
 

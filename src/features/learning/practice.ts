@@ -20,7 +20,7 @@ export type PracticeMode = keyof typeof modes
 const availableLessons = (progress?: LearningProgress) =>
   lessons.filter((l) => {
     const destination = destinations.find((d) => d.id === l.destinationId)
-    return isLessonAvailable(l) && (!progress || (destination !== undefined && isDestinationUnlocked(destination, progress)))
+    return isLessonAvailable(l) && (!progress || (l.destinationId === 'vida' || (destination !== undefined && isDestinationUnlocked(destination, progress))))
   })
 export const allVocabulary = () => availableLessons().flatMap((l) => l.vocabulary)
 export const vocabularyFor = (progress: LearningProgress) => [...allVocabulary(), ...progress.customWords]
