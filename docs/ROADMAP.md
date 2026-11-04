@@ -113,12 +113,43 @@ Still free to run: Groq free tier + Supabase free tier.
 - [x] **9. Real-life texts**: signs, notices, a rental ad, an SMS from the doctor, a utility bill, each with questions
 - [x] **10. A2 checkpoint and certificate**
 
-Implementation notes: call feedback and the A2 tutor prompts require redeploying the existing `tutor` Edge Function. Live microphone/audio and hosted AI calls still need a device check after deployment; the full phone playtest remains below. No new database migration is needed.
+Implementation notes: the user reported redeploying the `tutor` Edge Function on 4 November 2026 at [the existing tutor endpoint](https://embwiettleplfacmudzj.supabase.co/functions/v1/tutor). Live microphone/audio and hosted AI calls still need a device check; this is included in Milestone 6. Milestone 5 needs no new database migration.
+
+## Milestone 6 — Portuguese in your pocket
+
+Goal: keep the website and add an installable iPhone app experience, with the same account and reliable progress sync between both. Use a PWA built from the existing React app and Supabase backend, with one curriculum and one release to maintain.
+
+The first release is installed from Safari onto the Home Screen. An App Store release is a separate future decision. Existing Supabase sync is the starting point: it currently pulls at sign-in and pushes local edits, so foreground refresh, conflict handling and reconnect recovery need work.
+
+### A. Make it an iPhone app
+- [ ] **1. Phone baseline**: test the current deployed website in iPhone Safari and Home Screen mode; record login, navigation, lesson, reading and call issues before changing behaviour
+- [ ] **2. Installable app**: manifest, app icons, Apple touch icon, standalone display, theme and launch screen; add a short Safari installation guide in Settings. Keep normal browser URLs and desktop use working
+
+### B. One account, one learning journey
+- [ ] **3. Sign-in and account isolation**: test magic-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
+- [ ] **4. Cross-device sync**: pull and merge on foreground/reconnect, and refresh while both clients are open through account-scoped realtime updates with a fallback refresh. Prevent stale whole-profile writes from erasing newer progress. Preserve lesson completion, XP, streaks, word reviews, settings, mistakes and certificates; define how edits and deletions resolve
+- [ ] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
+
+### C. Learn without a connection
+- [ ] **6. Offline lessons and reading**: cache the app shell and bundled curriculum after an online visit, then support lessons, grammar, Word Garden and reading offline for the last signed-in account. Keep AI chat, transcription and calls clearly online-only. Do not service-worker-cache auth responses, tokens or private API responses; treat device speech availability separately
+- [ ] **7. Safe app updates**: version caches and persisted data, offer an “Update available” action between activities, and preserve in-progress lessons and pending sync. Recover gracefully if cached assets are unavailable or removed; avoid forcing an update during a lesson or call
+
+### D. Feel right on iPhone
+- [ ] **8. Mobile polish**: safe-area spacing, bottom navigation, on-screen keyboard, tap targets, text scaling, contrast and reduced motion. Verify narrow screens, landscape and desktop layouts with the existing cozy visual style
+- [ ] **9. Safari voice and calls**: validate the redeployed tutor, pt-PT playback, microphone permission, silence detection, pause/resume, headphones, backgrounding and interruptions in Safari and the installed app. Prevent overlapping playback/recording and provide a clear recovery path to chat
+- [ ] **10. Release verification**: automate sync conflict/retry/account-switch regression checks; finish a physical iPhone plus desktop smoke test; refresh the README and installation instructions. Deploy the web release and verify installation, updates and sync against the hosted app
+
+Done when: a learner can install the app, use the same account on iPhone and desktop, complete a lesson offline, reconnect and see that progress on the website, then continue on either surface without losing or duplicating learning activity. Certificates, saved words and settings must agree after sync. Call mode must work or provide a clear supported fallback on the tested iPhone. Record device/iOS/browser versions and evidence rather than assuming a desktop preview covers Safari.
+
+Suggested commits: (1) installable shell and installation guide; (2) account-safe sync and durable offline activity; (3) offline curriculum and safe updates; (4) iPhone layout and voice fixes; (5) release checks and docs. Update this checklist in each implementation commit. If activity deduplication requires a schema change, include the Supabase migration with the sync commit.
+
+Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
 
 ## Later
-- [ ] Installable app (PWA): home-screen icon, offline lessons, splash screen
-- [ ] Full playtest and polish pass on iPhone and desktop
+- Installable app (PWA), offline lessons and app updates moved to Milestone 6.
+- iPhone and desktop playtest/polish moved to Milestone 6.
 - [ ] Daily reminder notifications (needs the PWA + web push)
 - [ ] Recorded native audio
+- [ ] More A2 practice: targeted review, short writing tasks and longer listening dialogues
 - [ ] B1 path
 - [ ] More interface languages
