@@ -140,19 +140,32 @@ Done when: a learner can install the app, use the same account on iPhone and des
 
 ## Milestone 7 — A clearer journey and deeper practice
 
-Goal: make the next learning step obvious, strengthen A2 skills, and introduce a small B1 chapter while keeping progress synced across phone and website.
+Goal: make the next step obvious, strengthen everyday A2 Portuguese, and introduce B1 through a small first chapter. Keep the same progress on the website and installed app.
 
-- [x] **1. Destination handoff**: after Lisboa, recommend Porto on the lesson result, dashboard and map. Follow the learning route through all eight destinations, retain completed lessons for revisits, and reset lesson state when continuing directly to another lesson.
-- [x] **2. Shared UX polish**: consistent layouts and line icons throughout the app, clear navigation and primary actions, Practice filters, vocabulary and grammar search, organised Settings, chat/call selection and a route list alongside the map.
-- [ ] **3. Focus review and writing**: prioritise corrections, due and saved words; add six short writing tasks with self-checks and synced drafts.
-- [ ] **4. Longer A2 listening**: four eight-turn dialogues with transcripts, glossary, slow device playback and comprehension checks. Recorded native audio remains separate.
-- [ ] **5. B1 starter chapter**: four introductory lessons and grammar bites; label this as a starter rather than a complete B1 course or certificate.
-- [ ] **6. Optional daily reminders**: per-device opt-in Web Push, secure scheduled delivery and an off switch. Verify hosted backend and installed iPhone delivery before marking complete.
-- [ ] **7. Release checks**: build, regression tests, mobile UI checks and deployment; keep physical device results separate from browser simulations.
+### A. Make the journey easy to follow
+- [x] **1. Destination handoff**: recommend Porto after Lisboa and continue through all eight destinations. Keep completed lessons available for revisits
+- [x] **2. Consistent UX**: shared layouts and line icons, clear primary actions, Practice filters, vocabulary and grammar search, organised Settings and chat/call selection
+
+### B. Strengthen A2 skills
+- [ ] **3. Focus review**: a short session prioritising recent corrections, due words and saved tricky words. Fall back to suitable learned material when there is nothing due
+- [ ] **4. Writing desk**: six everyday messages with a clear prompt, useful phrases, word guidance, a model answer and a self-checklist. Save drafts offline and sync them across devices. Explain that self-checking is not automatic grammar grading
+- [ ] **5. Longer listening**: four eight-turn dialogues with normal/slow playback, optional transcripts, glossary and comprehension checks. Clearly label device-generated audio
+
+### C. Introduce the next level
+- [ ] **6. B1 starter**: four lessons covering opinions, suggestions, future plans and hopes, with supporting grammar bites. Recommend this after A2 and clearly label it as the first chapter, without a full-course or proficiency claim
+
+### D. Support a gentle daily habit
+- [ ] **7. Optional reminders**: choose a time, enable notifications on each device and turn them off easily. Skip reminders when synced progress shows practice that day. Keep notification text free of account details and explain device/connection limits
+
+### E. Release reliably
+- [ ] **8. Learning checks**: valid questions and answers, suitable review priorities, no duplicate rewards on reconnect, and durable writing drafts
+- [ ] **9. Phone and website release**: verify new screens on iPhone and desktop, offline learning and draft sync, backend reminder setup and installed-app notification delivery
+
+Delivery order: Focus review → Writing desk → Longer listening → B1 starter → Optional reminders. Verify each part before releasing it.
+
+Done when: each new activity is easy to find, usable on the phone, and retains progress after reopening or reconnecting. Writing drafts agree across devices after sync. The B1 chapter has a clear starting point. Reminders are opt-in, can be disabled, and have been verified on the installed app.
 
 ## Later
-- [ ] Daily reminder notifications (needs the PWA + web push)
 - [ ] Recorded native audio
-- [ ] More A2 practice: targeted review, short writing tasks and longer listening dialogues
-- [ ] B1 path
+- [ ] Full B1 curriculum and checkpoint
 - [ ] More interface languages
