@@ -1,4 +1,4 @@
-import { BookOpen, Flame, Leaf, Lightbulb, RotateCcw, Sparkles } from 'lucide-react'
+import { BookOpen, Flame, GraduationCap, Leaf, Lightbulb, RotateCcw, Sparkles, Sun } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Badge, Button, Card, ProgressBar } from '../../components/common'
 import { AchievementList } from '../../components/gamification/AchievementList'
@@ -53,7 +53,7 @@ export default function DashboardPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <header>
-        <h1 className="font-display text-3xl md:text-4xl">{greeting()}, explorer ☀️</h1>
+        <Sun className="mb-3 size-8 text-terracotta-dark" strokeWidth={1.5} aria-hidden /><h1 className="font-display text-3xl md:text-4xl">{greeting()}, explorer</h1>
         <p className="mt-2 opacity-80">Ready to make a little Portuguese progress today?</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Badge tone="terracotta">{stats.rank}</Badge>
@@ -114,13 +114,13 @@ export default function DashboardPage() {
             <ProgressBar value={vidaLessons.filter((l) => l.id in progress.completedLessons).length} max={vidaLessons.length} label="Vida em Portugal progress" color="sage" />
             <Link to="/app/explore/vida" className="mt-2 inline-block text-sm font-medium text-terracotta-dark hover:underline">Continue your A2 chapter →</Link>
           </div>
-          {progress.certificates.A2 ? <Link to="/app/certificate/A2" className="block rounded-2xl bg-sky/20 p-3 font-medium">🎓 A2 Explorer — view your certificate</Link>
-            : a2CheckpointAvailable(progress) ? <Link to="/lesson/checkpoint-A2" className="block rounded-2xl bg-sun/30 p-3 font-medium">🎓 Take the A2 checkpoint (16 questions) →</Link> : null}
+          {progress.certificates.A2 ? <Link to="/app/certificate/A2" className="block rounded-2xl bg-sky/20 p-3 font-medium"><GraduationCap className="mb-2 size-6 text-terracotta-dark" aria-hidden />A2 Explorer — view your certificate</Link>
+            : a2CheckpointAvailable(progress) ? <Link to="/lesson/checkpoint-A2" className="block rounded-2xl bg-sun/30 p-3 font-medium"><GraduationCap className="mb-2 size-6 text-terracotta-dark" aria-hidden />Take the A2 checkpoint (16 questions) →</Link> : null}
           {next && <p className="text-sm opacity-70">{next.minXp - stats.totalXp} XP until {next.name}</p>}
           {progress.certificates.A1 ? (
-            <Link to="/app/certificate/A1" className="block rounded-2xl bg-sky/20 p-3 font-medium hover:bg-sky/30">🎓 A1 Explorer — view your certificate</Link>
+            <Link to="/app/certificate/A1" className="block rounded-2xl bg-sky/20 p-3 font-medium hover:bg-sky/30"><GraduationCap className="mb-2 size-6 text-terracotta-dark" aria-hidden />A1 Explorer — view your certificate</Link>
           ) : checkpointAvailable(progress) ? (
-            <Link to="/lesson/checkpoint-A1" className="block rounded-2xl bg-sun/30 p-3 font-medium hover:bg-sun/40">🎓 Ready? Take the A1 checkpoint (12 questions) →</Link>
+            <Link to="/lesson/checkpoint-A1" className="block rounded-2xl bg-sun/30 p-3 font-medium hover:bg-sun/40"><GraduationCap className="mb-2 size-6 text-terracotta-dark" aria-hidden />Ready? Take the A1 checkpoint (12 questions) →</Link>
           ) : null}
         </Card>
       </div>

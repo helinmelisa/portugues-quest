@@ -26,10 +26,10 @@ export default function PortugalVsBrazilPage() {
             <Card className="h-full p-4 md:p-5">
               <p className="text-sm opacity-70">{n.en}</p>
               <div className="mt-1 flex items-center gap-2">
-                <p className="font-display text-xl">🇵🇹 {n.pt}</p>
+                <p className="font-display text-xl"><span className="mb-1 block font-sans text-xs font-bold uppercase tracking-wider text-terracotta-dark">Portugal</span>{n.pt}</p>
                 <SpeakButton text={n.pt.split(' / ')[0]} className="size-8" />
               </div>
-              <p className="mt-1 text-sm opacity-60 line-through decoration-terracotta/60">🇧🇷 {n.br}</p>
+              <p className="mt-1 text-sm opacity-60 line-through decoration-terracotta/60"><span className="mr-1 no-underline">Brazil:</span> {n.br}</p>
               {n.note && <p className="mt-2 text-sm">{n.note}</p>}
             </Card>
           </li>

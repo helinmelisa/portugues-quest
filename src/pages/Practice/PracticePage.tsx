@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { PageHeader } from '../../components/common/PageHeader'
 import {
   BookOpen,
+  GraduationCap,
   Headphones,
   Languages,
   Library,
@@ -182,7 +183,7 @@ export default function PracticePage() {
         </p>
         {progress.certificates.A2 ? (
           <Link to="/app/certificate/A2" className="inline-block font-medium text-terracotta-dark underline">
-            🎓 View your A2 certificate
+            <GraduationCap className="mr-2 inline-block size-5" aria-hidden />View your A2 certificate
           </Link>
         ) : a2CheckpointAvailable(progress) ? (
           <Link to="/lesson/checkpoint-A2" className="inline-block font-medium text-terracotta-dark underline">

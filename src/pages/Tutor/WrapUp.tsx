@@ -1,4 +1,5 @@
-import { Check, Plus, Sparkles } from 'lucide-react'
+import { AchievementIcon } from '../../components/gamification/AchievementIcon'
+import { Check, CircleCheck, Plus, Sparkles, Trophy } from 'lucide-react'
 import { Button, SpeakButton } from '../../components/common'
 import type { LessonResult } from '../../features/progress/progressContext'
 import { customWordId } from '../../features/progress/progress'
@@ -16,13 +17,13 @@ export function WrapUp({ summary, reward, onBack }: Props) {
 
   return (
     <section aria-label="Conversation feedback" className="mt-8 space-y-4 rounded-3xl bg-sun/20 p-5 md:p-6">
-      <h2 className="font-display text-2xl">Conversa completa! 🎉</h2>
+      <h2 className="flex items-center gap-3 font-display text-2xl"><CircleCheck className="size-7 shrink-0 text-terracotta-dark" aria-hidden />Conversa completa!</h2>
       {reward && (
         <p className="flex flex-wrap items-center gap-2 font-medium">
           <Sparkles className="size-4 text-terracotta" aria-hidden /> +{reward.xpEarned} XP
-          {reward.achievements.map((a) => <span key={a.id}> · {a.icon} {a.title}</span>)}
+          {reward.achievements.map((a) => <span key={a.id} className="inline-flex items-center gap-1"><AchievementIcon name={a.icon} className="size-4 shrink-0" />{a.title}</span>)}
           {reward.newRank && <span> · New rank: {reward.newRank}</span>}
-          {reward.weeklyBonus > 0 && <span> · 🏆 Weekly challenge complete!</span>}
+          {reward.weeklyBonus > 0 && <span className="inline-flex items-center gap-1"><Trophy className="size-4 shrink-0" aria-hidden />Weekly challenge complete!</span>}
         </p>
       )}
 

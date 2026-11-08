@@ -1,4 +1,4 @@
-import { ArrowLeft, Printer, Share2 } from 'lucide-react'
+import { ArrowLeft, GraduationCap, Printer, Share2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/common'
@@ -14,7 +14,7 @@ export default function CertificatePage() {
 
   const name = profile.name || cloud.email?.split('@')[0] || 'Explorer'
   const when = new Date(`${date}T12:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-  const text = `🇵🇹 I passed the ${level} checkpoint in European Portuguese on Português Quest! ${stats.lessonsCompleted} lessons, ${stats.wordsLearned} words. ${window.location.origin}`
+  const text = `I passed the ${level} checkpoint in European Portuguese on Português Quest! ${stats.lessonsCompleted} lessons, ${stats.wordsLearned} words. ${window.location.origin}`
 
   const share = async () => {
     if (navigator.share) {
@@ -35,7 +35,7 @@ export default function CertificatePage() {
         <div aria-hidden className="absolute -left-10 -top-10 size-32 rounded-full bg-sky/30" />
         <div aria-hidden className="absolute -bottom-12 -right-8 size-36 rounded-full bg-sun/30" />
         <div className="relative">
-          <p className="text-5xl" aria-hidden>🎓</p>
+          <GraduationCap className="mx-auto size-16 text-terracotta-dark" strokeWidth={1.5} aria-hidden />
           <p className="mt-4 text-sm font-medium uppercase tracking-[0.2em] opacity-70">Português Quest · Certificado</p>
           <h1 className="mt-2 font-display text-4xl md:text-5xl">{level} Explorer</h1>
           <p className="mt-6 opacity-80">This certifies that</p>

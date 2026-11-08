@@ -12,7 +12,7 @@ export function WeeklyChallengeCard({ progress }: { progress: LearningProgress }
         <h3 className="flex items-center gap-2 font-medium">
           <Trophy className="size-4 text-sun" aria-hidden /> Weekly challenge: {challenge.title}
         </h3>
-        <Badge tone={claimed ? 'sage' : 'sun'}>{claimed ? 'Complete! 🎉' : `+${WEEKLY_BONUS_XP} XP`}</Badge>
+        <Badge tone={claimed ? 'sage' : 'sun'}>{claimed ? 'Complete!' : `+${WEEKLY_BONUS_XP} XP`}</Badge>
       </div>
       <p className="text-sm opacity-75">{challenge.description}</p>
       {goals.map((g) => (

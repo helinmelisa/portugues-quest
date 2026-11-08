@@ -1,5 +1,6 @@
+import { AchievementIcon } from '../gamification/AchievementIcon'
 import { motion } from 'framer-motion'
-import { PartyPopper } from 'lucide-react'
+import { CircleCheck, GraduationCap, MapPin, Trophy } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { LessonResult } from '../../features/progress/progressContext'
 import { Button } from '../common'
@@ -19,7 +20,7 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
   return (
     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="py-10 text-center">
       <Confetti />
-      <PartyPopper className="mx-auto size-16 text-terracotta" aria-hidden />
+      <CircleCheck className="mx-auto size-16 text-terracotta-dark" strokeWidth={1.5} aria-hidden />
       <h1 className="mt-4 font-display text-4xl">Parabéns!</h1>
       <p className="mt-2 text-lg opacity-80">Lesson complete. You’re one step closer to feeling at home.</p>
       <div className="mx-auto mt-8 grid max-w-sm grid-cols-2 gap-3">
@@ -35,7 +36,7 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
 
       {result.newRank && (
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 font-medium">
-          New rank unlocked: <span className="text-terracotta-dark">{result.newRank}</span> 🎉
+          New rank unlocked: <span className="text-terracotta-dark">{result.newRank}</span>
         </motion.p>
       )}
 
@@ -43,7 +44,7 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
         <div className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-4">
           {checkpoint ? (
             <>
-              <p className="font-medium">🎓 You passed the {checkpointLevel} checkpoint!</p>
+              <p className="font-medium"><GraduationCap className="mx-auto mb-2 size-7 text-terracotta-dark" aria-hidden />You passed the {checkpointLevel} checkpoint!</p>
               <Link to={`/app/certificate/${checkpointLevel}`} className="mt-1 inline-block font-medium text-terracotta-dark underline">See your certificate →</Link>
             </>
           ) : (
@@ -54,13 +55,13 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
 
       {result.weeklyBonus > 0 && (
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mx-auto mt-6 max-w-sm rounded-2xl bg-sun/30 p-3 font-medium">
-          🏆 Weekly challenge complete! +{result.weeklyBonus} bonus XP
+          <Trophy className="mx-auto mb-2 size-6 text-terracotta-dark" aria-hidden />Weekly challenge complete! +{result.weeklyBonus} bonus XP
         </motion.p>
       )}
 
       {result.unlockedDestinations.map((name) => (
         <motion.p key={name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mx-auto mt-6 max-w-sm rounded-2xl bg-sky/30 p-3 font-medium">
-          🗺️ New destination unlocked: {name}!
+          <MapPin className="mx-auto mb-2 size-6 text-terracotta-dark" aria-hidden />New destination unlocked: {name}!
         </motion.p>
       ))}
 
@@ -74,7 +75,7 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
               transition={{ delay: 0.6 + i * 0.2, type: 'spring' }}
               className="flex items-center gap-3 rounded-2xl border border-line bg-card p-3 text-left"
             >
-              <span className="text-3xl" aria-hidden>{a.icon}</span>
+              <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-sun/20 text-terracotta-dark"><AchievementIcon name={a.icon} /></span>
               <div>
                 <p className="font-medium">Achievement: {a.title}</p>
                 <p className="text-sm opacity-75">{a.description}</p>

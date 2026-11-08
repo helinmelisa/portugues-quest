@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react'
 import { PageHeader } from '../../components/common/PageHeader'
 import { Link } from 'react-router-dom'
 import { Card, Badge } from '../../components/common'
@@ -52,7 +53,7 @@ export default function ExplorePage() {
                   className={`flex w-full items-center gap-3 rounded-2xl border p-4 text-left transition ${selectedId === destination.id ? 'border-sage bg-sage/15' : 'border-line bg-card hover:border-sage'}`}
                 >
                   <span className="grid size-9 shrink-0 place-items-center rounded-full bg-cream text-sm">
-                    {completion === 100 ? '✓' : index + 1}
+                    {completion === 100 ? <Check className="size-5" aria-label="Completed" /> : index + 1}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-medium">{destination.name}</span>

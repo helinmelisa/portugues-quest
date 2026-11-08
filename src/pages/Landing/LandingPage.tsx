@@ -33,7 +33,7 @@ export default function LandingPage() {
       <main>
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 md:grid-cols-2 md:px-8 md:py-20">
           <div>
-            <p className="mb-4 inline-block rounded-full bg-sage/25 px-3 py-1 text-sm font-medium">European Portuguese 🇵🇹</p>
+            <p className="mb-4 inline-block rounded-full bg-sage/25 px-3 py-1 text-sm font-medium">European Portuguese · Portugal</p>
             <h1 className="font-display text-[2.5rem] leading-tight md:text-6xl">
               Fall in love with Portuguese, one little adventure at a time.
             </h1>
