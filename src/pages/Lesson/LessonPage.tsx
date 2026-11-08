@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, ProgressBar } from '../../components/common'
 import { FeedbackPanel } from '../../components/lessons/FeedbackPanel'
@@ -30,6 +30,13 @@ export default function LessonPage() {
   const [checked, setChecked] = useState(false)
   const [result, setResult] = useState<LessonResult | null>(null)
   const [checkpointPassed, setCheckpointPassed] = useState<boolean | null>(null)
+  const bodyRef = useRef<HTMLElement>(null)
+  const currentExerciseId = queue[0]?.id
+
+  useEffect(() => {
+    bodyRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+    if (stage === 'exercises') bodyRef.current?.querySelector('h1')?.focus({ preventScroll: true })
+  }, [currentExerciseId, stage])
 
   useEffect(() => {
     if (!lesson) return
@@ -81,15 +88,15 @@ export default function LessonPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="mx-auto flex w-full max-w-2xl items-center gap-4 px-4 py-5">
-        <button type="button" onClick={exit} aria-label="Leave lesson" className="rounded-full p-1 hover:bg-line/60">
+    <div className="lesson-shell">
+      <header className="mx-auto flex w-full min-w-0 max-w-2xl shrink-0 items-center gap-4 px-4 py-5">
+        <button type="button" onClick={exit} aria-label="Leave lesson" className="shrink-0 rounded-full p-1 hover:bg-line/60">
           <X className="size-6" />
         </button>
         {stage !== 'intro' && <ProgressBar value={stage === 'complete' ? total : done} max={total} label="Lesson progress" color="sage" />}
       </header>
 
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-8">
+      <main ref={bodyRef} className="lesson-body mx-auto w-full min-w-0 max-w-2xl flex-1 px-4 pb-6">
         {draft && stage !== 'complete' && <p className="mb-4 text-sm opacity-70">Continuing your saved lesson on this device.</p>}
         {stage === 'intro' && <LessonIntro lesson={lesson} onStart={() => setStage('exercises')} />}
         {stage === 'exercises' && current && (
@@ -104,7 +111,7 @@ export default function LessonPage() {
         checked ? (
           <FeedbackPanel correct={correct} explanation={current.explanation} note={response.note} onContinue={next} />
         ) : (
-          <div className="border-t border-line px-4 py-5">
+          <div className="lesson-actions shrink-0 border-t border-line bg-cream px-4 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
             <div className="mx-auto flex max-w-2xl justify-end">
               <Button onClick={check} disabled={!response.ready} className="w-full sm:w-auto">Check</Button>
             </div>

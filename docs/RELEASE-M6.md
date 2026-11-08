@@ -38,3 +38,11 @@ The local fixture uses long Portuguese phrases and an eight-digit XP value. Dash
 Added password-first sign-in, signup, existing-account password setup/recovery, and a signed-in password form in Settings. Recovery callbacks use the already configured `/app` URL and route authenticated recovery sessions to `/password`. SDK session persistence and token refresh are explicit. Auth forms defer app updates while credentials are being entered; passwords are never added to the learning store or backups.
 
 `npm run test:auth` checks direct password sign-in without OTP email, invalid-credential handling, signup confirmation, recovery callback URLs and updating an existing identity. These checks use a synthetic SDK fixture; no real account was created and no real password was entered or changed by the agent. Existing sync regressions passed. Login, signup and password-setup request forms were checked at 430px with no page overflow. An expired recovery session does not force the login/password redirect loop.
+
+## Question title and action visibility — 8 November 2026
+
+The user clarified that some questions put the title and Check button on different screens, rather than reporting horizontal overflow. Lessons now fill the dynamic viewport with a shrinking, independently scrollable question body. Check/Continue stays outside that scroll region and includes bottom safe-area padding. Feedback is capped to part of the viewport; its explanation can scroll without pushing Continue out of view. Changing exercises resets the question scroll and focuses the heading without an animated jump.
+
+A shared semantic question heading replaces the fieldset/legend layout for all seven exercise types. Reading passages remain body text beneath the question. Answer text has an explicit shrinking/wrapping container separate from feedback icons, and fill gaps/sentence tiles cannot exceed the available width.
+
+The local browser fixture selected long real examples of all seven exercise types plus six reading texts, in unchecked and feedback states. Feedback was additionally stressed with repeated long explanations. All 78 geometry checks at 430 × 932, 430 × 740 and 932 × 430 placed the title and Check/Continue inside the viewport with no horizontal overflow. This is a browser viewport check, not a physical iPhone test.

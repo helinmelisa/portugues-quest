@@ -19,10 +19,10 @@ export function FeedbackPanel({ correct, explanation, note, onContinue }: Props)
       initial={{ y: 40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       role="status"
-      className={cn('border-t-2 px-4 py-5 md:px-8', correct ? 'border-sage bg-sage/25' : 'border-terracotta bg-terracotta/10')}
+      className={cn('lesson-feedback flex min-w-0 shrink-0 flex-col overflow-hidden border-t-2 px-4 pt-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:px-8', correct ? 'border-sage bg-sage/25' : 'border-terracotta bg-terracotta/10')}
     >
-      <div className="mx-auto flex max-w-2xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
+      <div className="mx-auto flex min-h-0 w-full min-w-0 max-w-2xl flex-1 flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto [overflow-wrap:anywhere]">
           <p className="font-display text-xl">{correct ? pick(praise) : pick(comfort)}</p>
           {note && <p className="mt-1 font-medium">{note}</p>}
           <p className="mt-1 opacity-85">{explanation}</p>

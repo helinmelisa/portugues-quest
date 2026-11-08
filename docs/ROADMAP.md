@@ -151,7 +151,7 @@ Mobile overflow follow-up: the header now wraps its status chips and keeps Setti
 
 Password sign-in follow-up: email/password is now the default, with new-account signup, one-time password setup/recovery for existing email-link accounts, and Set or change password in Settings. Sessions explicitly persist and refresh on-device. Passwords go only to Supabase Auth; existing progress and account IDs are retained. Optional email-link sign-in remains available. The browser forms were checked at the iPhone 15 Pro Max viewport; credential-service regression checks use mocks, not real user passwords.
 
-Question-screen follow-up (8 November 2026): shared question headings replace fieldset/legend sizing, long reading passages use body text, and answer labels/tiles wrap within their available width.
+Question-screen follow-up (8 November 2026): the user clarified the issue was vertical visibility of the title and Check button on iPhone 15 Pro Max. The lesson fills the dynamic viewport; its question body scrolls while Check/Continue stays visible, including safe-area spacing. Long feedback scrolls independently of Continue, and each new exercise returns to the top. Shared question headings replace fieldset/legend sizing, reading passages use body text below the question, and answer labels/tiles wrap. Seventy-eight browser checks across seven exercise types and six reading texts passed unchecked/feedback states at 430 × 932, 430 × 740 and 932 × 430: title and action were in the viewport with no horizontal overflow.
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.

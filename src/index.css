@@ -52,3 +52,15 @@ main { overflow-wrap: anywhere; }
 /* Flex and form children must be allowed to shrink inside narrow cards. */
 fieldset { min-inline-size: 0; }
 h1, h2, h3 { overflow-wrap: break-word; text-wrap: balance; }
+
+/* Keep lesson actions on screen while long questions scroll independently. */
+#root:has(> .lesson-shell) {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - env(safe-area-inset-top));
+  min-height: 0;
+}
+.lesson-shell { display: flex; flex: 1 1 0%; flex-direction: column; min-height: 0; min-width: 0; }
+.lesson-body { min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
+.lesson-actions { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+.lesson-feedback { max-height: 45dvh; }
