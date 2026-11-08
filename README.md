@@ -1,4 +1,4 @@
-# Português Quest 🇵🇹
+# Português Quest
 
 A cozy, gamified way to learn **European Portuguese (pt-PT)** through destinations, everyday
 situations and conversations with Inês. The website and installable iPhone web app share the
@@ -70,6 +70,7 @@ npm run dev
 npm run build             # type-check, bundle and generate versioned offline worker
 npm run preview           # production PWA checks; dev mode does not register a worker
 npm run lint
+npm run test:journey
 npm run test:auth
 npm run test:milestone5
 npm run test:milestone6    # run after build; includes offline worker and sync regressions

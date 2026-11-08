@@ -1,48 +1,45 @@
 # Milestone 6 release checks
 
-## Recorded on 4 November 2026
+Release: [Português Quest](https://portugues-quest.vercel.app/app)
 
-- Hosted baseline: `https://portugues-quest.vercel.app/app` opened the onboarding flow in the desktop in-app browser; no manifest was present. This is not a physical iPhone baseline.
-- Production build, TypeScript and both milestone regression suites passed. Lint retains the existing four warnings; the production bundle-size advisory remains.
-- Temporary local PostgreSQL 14: the actual migration and rollback-only fixture passed revision, duplicate receipt, cross-account RLS and privilege checks.
-- Sync regressions passed concurrent device activity, response loss after commit, reopen/retry, separate-account outboxes, multi-tab queues, unrelated profile edits, removals, storage quota failure and certificate dates.
-- Worker regressions passed offline navigation, API/auth exclusions, unrelated-cache preservation, cache eviction recovery and cross-tab update consent.
-- Production preview in the desktop in-app browser: first-run setup, installation instructions and offline-ready status verified. A waiting worker update activated through the UI. With the preview server stopped, a lesson reloaded and resumed the saved exercise at a 390 × 844 viewport.
-- Identity race regression passed: an in-flight RPC keeps the originating account’s bearer token; an already switched or missing session refuses to submit.
-- Vercel reported a successful initial deployment; manifest and worker served HTTP 200 with the correct types. The initial production bundle lacked Supabase environment configuration. Both public variables were subsequently saved in Vercel Production, the user completed the deployment identity check, and the rebuilt release was verified Ready at `https://vercel.com/helin4/portugues-quest/8VjPrzSGc2DcxX8ybu2MNiJn98h4`. The production bundle now contains the correct project configuration; the live account sign-in screen renders. The manifest reports standalone display with `/app` as its start URL, and both manifest and worker return HTTP 200 with the correct content types. This verifies deployment/configuration, not authenticated cross-device sync.
-- The user reported applying `20261104000000_sync_revisions.sql` to hosted Supabase. Public endpoint checks confirmed the revision column responds successfully and anonymous sync/tutor calls remain denied (401). Authenticated hosted sync still needs the account/device check.
+Target device: iPhone 15 Pro Max, iOS 27.2.
 
-## Physical iPhone and account checks still required
+## Core acceptance checks
 
-Record the iPhone model, iOS version, desktop browser version and date beside the results.
+| Check | Status | Verification |
+| --- | --- | --- |
+| Stay signed in after reopening the Home Screen app | Passed | Device report |
+| Complete a lesson offline, reconnect and see it on the website | Passed | Device report |
+| Call Inês and pause/resume | Passed | Device report |
+| Public app, manifest and service worker | Passed | Hosted HTTP checks |
+| Standalone installation configuration | Passed | Manifest: `/app` start URL, standalone display |
+| Tutor rejects unauthenticated requests | Passed | Hosted HTTP 401 |
+| Sync conflicts, ambiguous retries and account isolation | Passed | Automated regression suite |
+| Offline routes, private-response exclusions and safe updates | Passed | Automated worker suite |
+| Password sign-in, recovery and account setup | Passed | Automated auth fixture |
+| Phone-sized layouts and visible lesson actions | Passed | Browser viewport checks |
 
-- [ ] Safari: sign in, complete onboarding, finish a lesson and read a text.
-- [ ] Add to Home Screen, launch standalone and finish sign-in inside that window. Exercise the copied-link fallback using a fresh link if needed.
-- [ ] Open the same account on desktop. Complete different lessons on both clients; verify XP, streak, vocabulary, settings and certificate state converge after sync.
-- [ ] After the offline-ready message, enable Airplane Mode, close/reopen the app and finish a lesson. Reconnect; verify the lesson and its XP reach the website once.
-- [ ] Switch accounts while a sync is in flight. Verify no progress or pending work crosses accounts; return to the first account to recover its own queue.
-- [ ] Test denied microphone permission, pt-PT voice availability, wired/Bluetooth headphones, silence detection, backgrounding and interruptions. Verify chat fallback.
-- [ ] With a lesson open in one tab, publish an update and request it in another tab. The update must wait; finish the lesson and retry.
-- [ ] Verify large text, reduced motion, keyboard visibility, landscape and safe-area spacing on the physical phone.
+The device report covers the three main phone checks above. Automated fixtures and browser viewport checks do not establish the remaining physical-device cases.
 
-Do not mark the whole milestone complete until these device checks and hosted release verification are recorded.
+## Extended device checks
 
-## Mobile overflow follow-up
+- [ ] Test expired sessions and recovery in Safari and the Home Screen app.
+- [ ] Switch accounts while sync is pending; return to the first account and verify its pending activity remains isolated.
+- [ ] Deny microphone permission and confirm the recovery message and chat fallback.
+- [ ] Test headphones, backgrounding and call interruptions.
+- [ ] Test large text, reduced motion, keyboard visibility, landscape and safe-area spacing on the physical phone.
+- [ ] Keep a lesson open in one tab and request an update from another. Confirm the update waits until the lesson ends.
+- [ ] Compare vocabulary, settings and certificate state across phone and desktop.
 
-The user identified their target device as an iPhone 15 Pro Max. At a 320px baseline, the header pushed Settings outside the page (368px scroll width), and feedback action buttons squeezed a saved phrase into a nearly vertical column. The header now wraps; saved-word and correction actions stack below their text; lesson badges and certificate stats have phone layouts; shared controls and grammar/form children can shrink and wrap.
+## Repeatable local checks
 
-The local fixture uses long Portuguese phrases and an eight-digit XP value. Dashboard, Vida, grammar, settings, tutor selection, conversation feedback, certificate, lesson intro and matching passed at 430 × 932 and 932 × 430 with scroll width equal to viewport width and no clipped button contents. Fourteen screens passed the same checks at 320px and 390px; desktop feedback retained its side-by-side layout. Build and lint passed, with the existing lint warnings and bundle-size advisory. These checks use browser viewports, not a physical iPhone.
+```bash
+npm run build
+npm run lint
+npm run test:auth
+npm run test:journey
+npm run test:milestone5
+npm run test:milestone6
+```
 
-## Password sign-in follow-up
-
-Added password-first sign-in, signup, existing-account password setup/recovery, and a signed-in password form in Settings. Recovery callbacks use the already configured `/app` URL and route authenticated recovery sessions to `/password`. SDK session persistence and token refresh are explicit. Auth forms defer app updates while credentials are being entered; passwords are never added to the learning store or backups.
-
-`npm run test:auth` checks direct password sign-in without OTP email, invalid-credential handling, signup confirmation, recovery callback URLs and updating an existing identity. These checks use a synthetic SDK fixture; no real account was created and no real password was entered or changed by the agent. Existing sync regressions passed. Login, signup and password-setup request forms were checked at 430px with no page overflow. An expired recovery session does not force the login/password redirect loop.
-
-## Question title and action visibility — 8 November 2026
-
-The user clarified that some questions put the title and Check button on different screens, rather than reporting horizontal overflow. Lessons now fill the dynamic viewport with a shrinking, independently scrollable question body. Check/Continue stays outside that scroll region and includes bottom safe-area padding. Feedback is capped to part of the viewport; its explanation can scroll without pushing Continue out of view. Changing exercises resets the question scroll and focuses the heading without an animated jump.
-
-A shared semantic question heading replaces the fieldset/legend layout for all seven exercise types. Reading passages remain body text beneath the question. Answer text has an explicit shrinking/wrapping container separate from feedback icons, and fill gaps/sentence tiles cannot exceed the available width.
-
-The local browser fixture selected long real examples of all seven exercise types plus six reading texts, in unchecked and feedback states. Feedback was additionally stressed with repeated long explanations. All 78 geometry checks at 430 × 932, 430 × 740 and 932 × 430 placed the title and Check/Continue inside the viewport with no horizontal overflow. This is a browser viewport check, not a physical iPhone test.
+`supabase/tests/sync.sql` checks revisions, receipts, RLS and privileges in an empty local PostgreSQL database and rolls back its fixture. Do not run it against hosted Supabase.

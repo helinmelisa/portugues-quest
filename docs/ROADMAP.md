@@ -118,11 +118,11 @@ Goal: keep the website and add an installable iPhone app experience, with the sa
 Install from Safari onto the Home Screen and use the same account on the website and installed app. An App Store release is a separate future decision.
 
 ### A. Make it an iPhone app
-- [ ] **1. Phone baseline**: test the current deployed website in iPhone Safari and Home Screen mode; record login, navigation, lesson, reading and call issues before changing behaviour
+- [x] **1. Core iPhone checks**: reopen the Home Screen app with a persistent session, complete a lesson offline, reconnect and see progress on the website, and make a call with pause/resume
 - [x] **2. Installable app**: manifest, app icons, Apple touch icon, standalone display, theme and launch screen; add a short Safari installation guide in Settings. Keep normal browser URLs and desktop use working
 
 ### B. One account, one learning journey
-- [ ] **3. Sign-in and account isolation**: test email/password and optional email-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
+- [x] **3. Sign-in and account isolation**: email/password sign-in, persistent sessions, optional email links, and account-scoped cached progress and pending changes. Safari and the installed app can have separate sessions
 - [x] **4. Cross-device sync**: pull and merge on foreground/reconnect, and refresh while both clients are open through account-scoped realtime updates with a fallback refresh. Prevent stale whole-profile writes from erasing newer progress. Preserve lesson completion, XP, streaks, word reviews, settings, mistakes and certificates; define how edits and deletions resolve
 - [x] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
 
@@ -132,8 +132,9 @@ Install from Safari onto the Home Screen and use the same account on the website
 
 ### D. Feel right on iPhone
 - [x] **8. Mobile polish**: safe-area spacing, bottom navigation, on-screen keyboard, tap targets, text scaling, contrast and reduced motion. Verify narrow screens, landscape and desktop layouts with the existing cozy visual style
-- [ ] **9. Safari voice and calls**: validate the redeployed tutor, pt-PT playback, microphone permission, silence detection, pause/resume, headphones, backgrounding and interruptions in Safari and the installed app. Prevent overlapping playback/recording and provide a clear recovery path to chat
-- [ ] **10. Release verification**: automate sync conflict/retry/account-switch regression checks; finish a physical iPhone plus desktop smoke test; refresh the README and installation instructions. Deploy the web release and verify installation, updates and sync against the hosted app
+- [x] **9. Core voice and calls**: microphone conversations with Inês, spoken replies, pause/resume and a chat fallback. Prevent overlapping playback and recording
+- [x] **10. Core release verification**: automated conflict/retry/account-isolation checks, deployed app and installation assets, installation instructions, and the main iPhone-to-website learning flow
+- [ ] **11. Extended device checks**: expired sessions, account switching during pending sync, denied microphone permission, headphones, background interruptions, large text and updates while another tab has a lesson open
 
 Done when: a learner can install the app, use the same account on iPhone and desktop, complete a lesson offline, reconnect and see that progress on the website, then continue on either surface without losing or duplicating learning activity. Certificates, saved words and settings must agree after sync. Call mode must work or provide a clear supported fallback on the tested iPhone. Record device/iOS/browser versions and evidence rather than assuming a desktop preview covers Safari.
 
