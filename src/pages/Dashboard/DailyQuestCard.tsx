@@ -12,16 +12,16 @@ export function DailyQuestCard({ quest, claimed }: { quest: DailyQuest; claimed:
   const xp = lesson?.xp ?? CONVERSATION_XP
   const skills = lesson?.skills ?? ['speaking']
   const target = lesson ? `/lesson/${lesson.id}` : `/app/tutor?scenario=${quest.scenarioId ?? 'coffee'}`
-  const chip = 'bg-white/20 text-white'
+  const chip = 'bg-card text-ink'
 
   return (
-    <section aria-labelledby="quest-title" className="relative overflow-hidden rounded-[2rem] bg-terracotta p-6 text-white shadow-soft md:p-8">
+    <section aria-labelledby="quest-title" className="relative overflow-hidden rounded-[2rem] bg-sky/20 p-6 text-ink shadow-soft md:p-8">
       <div aria-hidden className="absolute -right-10 -top-10 size-40 rounded-full bg-sun/40" />
       <div aria-hidden className="absolute -bottom-16 right-16 size-32 rounded-full bg-white/10" />
       <div className="relative">
-        <p className="text-sm font-medium uppercase tracking-wide opacity-90">Daily quest</p>
-        <h2 id="quest-title" className="mt-1 font-display text-3xl md:text-4xl">{quest.title}</h2>
-        <p className="mt-2 max-w-md opacity-90">{quest.description}</p>
+        <p className="text-sm font-medium uppercase tracking-wide opacity-80">Daily quest</p>
+        <h2 id="quest-title" className="mt-1 font-display text-2xl md:text-3xl">{quest.title}</h2>
+        <p className="mt-2 max-w-md opacity-80">{quest.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Badge className={chip}><Clock className="size-3.5" aria-hidden /> {minutes} min</Badge>
           <Badge className={chip}><Gauge className="size-3.5" aria-hidden /> {quest.difficulty}</Badge>

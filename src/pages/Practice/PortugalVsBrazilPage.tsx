@@ -1,3 +1,4 @@
+import { PageHeader } from '../../components/common/PageHeader'
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Card, SpeakButton } from '../../components/common'
@@ -9,10 +10,16 @@ export default function PortugalVsBrazilPage() {
       <Link to="/app/practice" className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100">
         <ArrowLeft className="size-4" aria-hidden /> Practice Corner
       </Link>
-      <h1 className="font-display text-3xl md:text-4xl">In Portugal, we say…</h1>
-      <p className="mb-6 mt-2 opacity-80">
-        Brazilian Portuguese is everywhere online. Here’s what you’ll actually hear in Portugal. Brazilians and Portuguese understand each other, but these words give you away!
-      </p>
+      <PageHeader
+        eyebrow="Practice Corner"
+        title="In Portugal, we say…"
+        description={
+          <>
+            Brazilian Portuguese is everywhere online. Here’s what you’ll actually hear in Portugal. Brazilians and
+            Portuguese understand each other, but these words give you away!
+          </>
+        }
+      />
       <ul className="grid gap-3 sm:grid-cols-2">
         {ptNotes.map((n) => (
           <li key={n.id}>

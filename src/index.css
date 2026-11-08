@@ -9,7 +9,7 @@
   --color-sky: #a9c4c4;
   --color-sun: #e8c477;
   --color-card: #fffefa;
-  --color-line: #eae7dc;
+  --color-line: #deded2;
 
   --font-display: 'Fraunces', serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
@@ -73,3 +73,20 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select { min-height:
 @media (max-width: 767px) {
   #content > div > h1, #content > div > header > h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); }
 }
+
+/* One visual language for libraries, activities, forms and account screens. */
+.page-heading { background: linear-gradient(115deg, var(--color-card) 55%, #edf0e6); }
+.filter-chip { min-height: 44px; border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-card); padding: 0.6rem 1rem; font-size: 0.875rem; font-weight: 500; }
+.filter-chip:hover { border-color: var(--color-sage); }
+.filter-chip-active { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-cream); }
+.section-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.section-links a { display: flex; min-height: 44px; align-items: center; border: 1px solid var(--color-line); border-radius: 999px; padding: 0.5rem 1rem; background: var(--color-card); font-size: 0.875rem; }
+.section-links a:hover { border-color: var(--color-sage); background: #edf0e6; }
+.action-link { display: inline-flex; min-height: 44px; max-width: 100%; align-items: center; justify-content: center; border-radius: 999px; background: var(--color-terracotta-dark); color: white; padding: 0.75rem 1.5rem; font-weight: 500; text-align: center; }
+.action-link:hover { filter: brightness(0.9); }
+.auth-screen { background: radial-gradient(ellipse at top, #e5eadc 0, transparent 60%); }
+input:not([type="checkbox"]):not([type="radio"]), textarea, select { transition: border-color 150ms; }
+input:hover, textarea:hover, select:hover { border-color: var(--color-sage); }
+.activity-card { display: flex; flex-direction: column; }
+.activity-card > p { flex: 1; }
+@media (max-width: 767px) { .action-link { width: 100%; } }

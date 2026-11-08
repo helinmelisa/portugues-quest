@@ -4,7 +4,7 @@ import { navItems } from './navItems'
 
 export function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-line bg-card px-4 py-6 md:flex">
+    <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line bg-card px-4 py-6 md:flex">
       <NavLink to="/" className="mb-8 px-3 font-display text-2xl">
         Português <span className="text-terracotta">Quest</span>
       </NavLink>
@@ -16,7 +16,7 @@ export function Sidebar() {
             end={to === '/app'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-2xl px-3 py-2.5 font-medium transition',
+                'flex items-center gap-3 rounded-2xl px-4 py-3.5 font-medium transition',
                 isActive ? 'bg-terracotta/15 text-terracotta-dark' : 'hover:bg-line/60',
               )
             }
@@ -26,6 +26,7 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
+      <div className="mt-auto rounded-3xl border border-line bg-cream p-4"><p className="font-display text-lg">Devagar se vai longe.</p><p className="mt-2 text-sm text-ink/70">A little Portuguese, every day.</p></div>
     </aside>
   )
 }

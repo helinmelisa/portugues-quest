@@ -44,8 +44,14 @@ export default function LessonPage() {
     if (!lesson) return
     try {
       if (stage === 'complete') localStorage.removeItem(draftKey(lessonId))
-      else localStorage.setItem(draftKey(lessonId), JSON.stringify({ version: 1, lesson, queue, missed: [...missed], stage }))
-    } catch { /* Completed progress has its own durable outbox and storage warning. */ }
+      else
+        localStorage.setItem(
+          draftKey(lessonId),
+          JSON.stringify({ version: 1, lesson, queue, missed: [...missed], stage }),
+        )
+    } catch {
+      /* Completed progress has its own durable outbox and storage warning. */
+    }
   }, [lesson, lessonId, queue, missed, stage])
 
   const exit = () => navigate(-1)
@@ -56,7 +62,9 @@ export default function LessonPage() {
         <div>
           <h1 className="font-display text-3xl">This lesson is still being written</h1>
           <p className="mt-2 opacity-80">Check back soon — boa sorte!</p>
-          <Button className="mt-6" onClick={exit}>Go back</Button>
+          <Button className="mt-6" onClick={exit}>
+            Go back
+          </Button>
         </div>
       </main>
     )
@@ -65,12 +73,14 @@ export default function LessonPage() {
   const destination = destinations.find((item) => item.id === lesson.destinationId)
   const nextJourney = destination && nextJourneyLesson(progress)
   const destinationComplete = !!destination && destination.lessonIds.every((id) => id in progress.completedLessons)
-  const nextStop = nextJourney ? {
-    name: nextJourney.destination.name,
-    title: nextJourney.lesson.title,
-    to: destinationComplete ? `/app/explore/${nextJourney.destination.id}` : `/lesson/${nextJourney.lesson.id}`,
-    destinationComplete,
-  } : undefined
+  const nextStop = nextJourney
+    ? {
+        name: nextJourney.destination.name,
+        title: nextJourney.lesson.title,
+        to: destinationComplete ? `/app/explore/${nextJourney.destination.id}` : `/lesson/${nextJourney.lesson.id}`,
+        destinationComplete,
+      }
+    : undefined
 
   const total = lesson.exercises.length
   const done = total - new Set(queue.map((e) => e.id)).size
@@ -93,7 +103,8 @@ export default function LessonPage() {
         setCheckpointPassed(passed)
       }
       setResult(completeLesson(lesson))
-      if (lesson.id.startsWith('checkpoint-') && total - missed.size >= Math.ceil(total * CHECKPOINT_PASS)) passCheckpoint(lesson.id.replace('checkpoint-', ''))
+      if (lesson.id.startsWith('checkpoint-') && total - missed.size >= Math.ceil(total * CHECKPOINT_PASS))
+        passCheckpoint(lesson.id.replace('checkpoint-', ''))
       setStage('complete')
     }
     setQueue(rest)
@@ -102,34 +113,62 @@ export default function LessonPage() {
   return (
     <div className="lesson-shell">
       <header className="mx-auto flex w-full min-w-0 max-w-2xl shrink-0 items-center gap-4 px-4 py-5">
-        <button type="button" onClick={exit} aria-label="Leave lesson" className="shrink-0 rounded-full p-1 hover:bg-line/60">
+        <button
+          type="button"
+          onClick={exit}
+          aria-label="Leave lesson"
+          className="grid size-11 shrink-0 place-items-center rounded-full p-1 hover:bg-line/60"
+        >
           <X className="size-6" />
         </button>
-        {stage !== 'intro' && <ProgressBar value={stage === 'complete' ? total : done} max={total} label="Lesson progress" color="sage" />}
+        {stage !== 'intro' && (
+          <ProgressBar value={stage === 'complete' ? total : done} max={total} label="Lesson progress" color="sage" />
+        )}
       </header>
 
       <main ref={bodyRef} className="lesson-body mx-auto w-full min-w-0 max-w-2xl flex-1 px-4 pb-6">
-        {draft && stage !== 'complete' && <p className="mb-4 text-sm opacity-70">Continuing your saved lesson on this device.</p>}
-        {stage === 'intro' && <LessonIntro lesson={lesson} onStart={() => setStage('exercises')} />}
+        {draft && stage !== 'complete' && (
+          <p className="mb-4 text-sm opacity-70">Continuing your saved lesson on this device.</p>
+        )}
+        {stage === 'intro' && <LessonIntro lesson={lesson} />}
         {stage === 'exercises' && current && (
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
         {stage === 'complete' && result && (
-          <LessonComplete nextStop={nextStop} result={result} checkpoint={checkpointPassed} checkpointLevel={lesson.id.replace('checkpoint-', '')} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
+          <LessonComplete
+            nextStop={nextStop}
+            result={result}
+            checkpoint={checkpointPassed}
+            checkpointLevel={lesson.id.replace('checkpoint-', '')}
+            correctFirstTry={total - missed.size}
+            total={total}
+            onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')}
+          />
         )}
       </main>
 
-      {stage === 'exercises' && current && (
-        checked ? (
+      {stage === 'intro' && (
+        <footer className="lesson-actions shrink-0 border-t border-line bg-cream px-4 pt-4">
+          <div className="mx-auto max-w-2xl">
+            <Button size="lg" className="w-full" onClick={() => setStage('exercises')}>
+              Let’s practise →
+            </Button>
+          </div>
+        </footer>
+      )}
+      {stage === 'exercises' &&
+        current &&
+        (checked ? (
           <FeedbackPanel correct={correct} explanation={current.explanation} note={response.note} onContinue={next} />
         ) : (
           <div className="lesson-actions shrink-0 border-t border-line bg-cream px-4 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
             <div className="mx-auto flex max-w-2xl justify-end">
-              <Button onClick={check} disabled={!response.ready} className="w-full sm:w-auto">Check</Button>
+              <Button onClick={check} disabled={!response.ready} className="w-full sm:w-auto">
+                Check
+              </Button>
             </div>
           </div>
-        )
-      )}
+        ))}
     </div>
   )
 }

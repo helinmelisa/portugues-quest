@@ -23,7 +23,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 md:px-8">
+      <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-5 md:px-8">
         <Link to="/" className="font-display text-xl md:text-2xl">
           Português <span className="text-terracotta">Quest</span>
         </Link>
@@ -34,13 +34,13 @@ export default function LandingPage() {
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 md:grid-cols-2 md:px-8 md:py-20">
           <div>
             <p className="mb-4 inline-block rounded-full bg-sage/25 px-3 py-1 text-sm font-medium">European Portuguese 🇵🇹</p>
-            <h1 className="font-display text-4xl leading-tight md:text-6xl">
+            <h1 className="font-display text-[2.5rem] leading-tight md:text-6xl">
               Fall in love with Portuguese, one little adventure at a time.
             </h1>
             <p className="mt-5 max-w-lg text-lg opacity-80">
               Learn the language people speak in Portugal through cozy quests, real-life moments and friendly practice.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button size="lg" onClick={start}>Start your journey</Button>
               <Button size="lg" variant="secondary" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}>
                 See how it works
@@ -83,7 +83,7 @@ export default function LandingPage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-12 md:px-8">
-          <div className="rounded-[2rem] bg-terracotta px-6 py-12 text-center text-white md:py-16">
+          <div className="rounded-[2rem] bg-terracotta-dark px-6 py-12 text-center text-white md:py-16">
             <h2 className="font-display text-3xl md:text-4xl">Your first “Bom dia” is waiting.</h2>
             <p className="mx-auto mt-3 max-w-md opacity-90">Five minutes today. A little more Portugal tomorrow.</p>
             <Button size="lg" variant="secondary" className="mt-8" onClick={start}>Start your journey</Button>

@@ -1,3 +1,4 @@
+import { PageHeader } from '../../components/common/PageHeader'
 import { ArrowLeft, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
@@ -6,9 +7,14 @@ import { realTexts } from '../../data/realTexts'
 export default function TextsPage() {
   return (
     <div className="mx-auto max-w-4xl">
-      <Link to="/app/practice" className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100"><ArrowLeft className="size-4" aria-hidden /> Practice Corner</Link>
-      <h1 className="font-display text-3xl md:text-4xl">Real-life texts</h1>
-      <p className="mb-6 mt-2 opacity-80">Little pieces of everyday Portugal. These are fictional examples for reading practice.</p>
+      <Link to="/app/practice" className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100">
+        <ArrowLeft className="size-4" aria-hidden /> Practice Corner
+      </Link>
+      <PageHeader
+        eyebrow="Practice Corner"
+        title="Real-life texts"
+        description={<>Little pieces of everyday Portugal. These are fictional examples for reading practice.</>}
+      />
       <ul className="grid gap-4 sm:grid-cols-2">
         {realTexts.map((text) => (
           <li key={text.id}>

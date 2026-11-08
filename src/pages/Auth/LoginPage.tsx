@@ -45,7 +45,7 @@ export default function LoginPage() {
   const passwordMode = mode === 'password' || mode === 'signup'
   const field = 'w-full rounded-2xl border border-line bg-cream px-4 py-3'
   return (
-    <main className="grid min-h-dvh place-items-center px-4 py-10">
+    <main className="auth-screen grid min-h-dvh place-items-center px-4 py-10">
       <div className="w-full max-w-md">
         <Link to="/" className="mb-8 block text-center font-display text-2xl">Português <span className="text-terracotta">Quest</span></Link>
         <Card className="space-y-5 p-6 md:p-8">
@@ -66,7 +66,7 @@ export default function LoginPage() {
             </div>
           ) : (
             <form onSubmit={submit} className="space-y-4">
-              <h1 className="font-display text-3xl">{titles[mode]}</h1>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-terracotta-dark">Your next little adventure</p><h1 className="font-display text-3xl">{titles[mode]}</h1>
               <p className="text-sm opacity-80">{mode === 'password' ? 'Use your email and password. You’ll stay signed in on this device.' : mode === 'reset' ? 'Already used email links? Set a password for that same email to keep your existing progress.' : mode === 'signup' ? 'One account for the website and your iPhone app.' : 'A sign-in link is still available if you prefer.'}</p>
               <div className="space-y-1"><label htmlFor="login-email" className="text-sm font-medium">Email</label><input id="login-email" type="email" required autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} className={field} placeholder="you@example.com" /></div>
               {passwordMode && <div className="space-y-1"><label htmlFor="login-password" className="text-sm font-medium">Password</label><input id="login-password" type="password" required minLength={mode === 'signup' ? 8 : undefined} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} value={password} onChange={(e) => setPassword(e.target.value)} className={field} />{mode === 'signup' && <p className="text-xs opacity-70">At least 8 characters.</p>}</div>}

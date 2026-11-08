@@ -26,7 +26,7 @@ export default function PasswordPage() {
   }
   const field = 'w-full rounded-2xl border border-line bg-cream px-4 py-3'
   return (
-    <main className="grid min-h-dvh place-items-center px-4 py-10">
+    <main className="auth-screen grid min-h-dvh place-items-center px-4 py-10">
       <Card className="w-full max-w-md space-y-4">
         <h1 className="font-display text-3xl">{saved ? 'Password saved!' : 'Set your password'}</h1>
         {saved ? <><p role="status">Next time, sign in with your email and password. Your existing progress stays with this account.</p><Button className="w-full" onClick={() => navigate('/app', { replace: true })}>Continue learning</Button></> : <>

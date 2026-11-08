@@ -12,7 +12,10 @@ export default function OnboardingPage() {
   const navigate = useNavigate()
   const { profile, updateProfile } = useProgress()
   const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState<Partial<UserProfile>>({ interfaceLanguage: 'en', dailyGoalMinutes: profile.dailyGoalMinutes })
+  const [answers, setAnswers] = useState<Partial<UserProfile>>({
+    interfaceLanguage: 'en',
+    dailyGoalMinutes: profile.dailyGoalMinutes,
+  })
 
   const step = onboardingSteps[index]
   const value = answers[step.key]
@@ -25,8 +28,8 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-xl flex-col px-4 py-6">
-      <header className="flex items-center gap-4">
+    <div className="lesson-shell mx-auto w-full max-w-xl px-4">
+      <header className="flex shrink-0 items-center gap-4 py-5">
         <button
           type="button"
           onClick={() => (index ? setIndex(index - 1) : navigate('/'))}
@@ -39,16 +42,22 @@ export default function OnboardingPage() {
       </header>
 
       <AnimatePresence mode="wait">
-        <motion.fieldset
+        <motion.section
           key={step.key}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
-          className="flex-1 py-10"
+          aria-labelledby="onboarding-title"
+          className="lesson-body flex-1 py-4"
         >
-          <legend className="font-display text-3xl">{step.title}</legend>
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-terracotta-dark">
+            A journey made for you · {index + 1}/{onboardingSteps.length}
+          </p>
+          <h1 id="onboarding-title" className="font-display text-3xl">
+            {step.title}
+          </h1>
           {step.subtitle && <p className="mt-2 opacity-75">{step.subtitle}</p>}
-          <div className="mt-8 grid gap-3">
+          <div className="mt-5 grid gap-3">
             {step.options.map((o) => (
               <OptionButton
                 key={o.value}
@@ -62,12 +71,18 @@ export default function OnboardingPage() {
               </OptionButton>
             ))}
           </div>
-        </motion.fieldset>
+        </motion.section>
       </AnimatePresence>
 
-      <footer className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        {step.optional && <Button variant="ghost" onClick={next}>Skip</Button>}
-        <Button size="lg" onClick={next} disabled={value === undefined}>{last ? 'Start learning' : 'Continue'}</Button>
+      <footer className="lesson-actions flex shrink-0 flex-col-reverse gap-3 border-t border-line pt-4 sm:flex-row sm:justify-end">
+        {step.optional && (
+          <Button variant="ghost" onClick={next}>
+            Skip
+          </Button>
+        )}
+        <Button size="lg" onClick={next} disabled={value === undefined}>
+          {last ? 'Start learning' : 'Continue'}
+        </Button>
       </footer>
     </div>
   )

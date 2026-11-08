@@ -1,3 +1,4 @@
+import { PageHeader } from '../../components/common/PageHeader'
 import { ArrowLeft, CheckCircle2, Clock, Sparkles } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Badge, Card } from '../../components/common'
@@ -24,10 +25,19 @@ export default function DestinationPage() {
       <Link to="/app/explore" className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100">
         <ArrowLeft className="size-4" aria-hidden /> Back to map
       </Link>
-      <h1 className="font-display text-3xl md:text-4xl">{destination.name}</h1>
-      <p className="mb-6 mt-2 opacity-80">{destination.theme} · {destination.description}</p>
+      <PageHeader
+        eyebrow="Explore Portugal"
+        title={destination.name}
+        description={
+          <>
+            {destination.theme} · {destination.description}
+          </>
+        }
+      />
 
-      <p className="mb-4 text-sm font-medium">{doneCount} of {destination.lessonIds.length} lessons complete</p>
+      <p className="mb-4 text-sm font-medium">
+        {doneCount} of {destination.lessonIds.length} lessons complete
+      </p>
       {finished && following && isDestinationUnlocked(following, progress) && (
         <Link to={`/app/explore/${following.id}`} className="mb-6 block rounded-3xl">
           <Card className="border-sage bg-sage/15">
@@ -44,7 +54,12 @@ export default function DestinationPage() {
           const done = lesson.id in progress.completedLessons
           const content = (
             <Card className={cn('flex items-center gap-4 p-4 md:p-5', available ? 'hover:border-sage' : 'opacity-60')}>
-              <span className={cn('grid size-10 shrink-0 place-items-center rounded-full font-display', done ? 'bg-sage/40' : 'bg-sun/40')}>
+              <span
+                className={cn(
+                  'grid size-10 shrink-0 place-items-center rounded-full font-display',
+                  done ? 'bg-sage/40' : 'bg-sun/40',
+                )}
+              >
                 {done ? <CheckCircle2 className="size-5" aria-label="Completed" /> : i + 1}
               </span>
               <div className="min-w-0 flex-1">
@@ -53,8 +68,12 @@ export default function DestinationPage() {
               </div>
               {available ? (
                 <div className="hidden gap-2 sm:flex">
-                  <Badge tone="sky"><Clock className="size-3.5" aria-hidden /> {lesson.minutes} min</Badge>
-                  <Badge tone="sun"><Sparkles className="size-3.5" aria-hidden /> {lesson.xp} XP</Badge>
+                  <Badge tone="sky">
+                    <Clock className="size-3.5" aria-hidden /> {lesson.minutes} min
+                  </Badge>
+                  <Badge tone="sun">
+                    <Sparkles className="size-3.5" aria-hidden /> {lesson.xp} XP
+                  </Badge>
                 </div>
               ) : (
                 <Badge>Coming soon</Badge>
@@ -66,7 +85,13 @@ export default function DestinationPage() {
       </ol>
       {['lisboa', 'porto'].includes(destination.id) && (
         <Link to={`/lesson/${destination.id}-return`} className="mt-6 block rounded-3xl">
-          <Card className="bg-sun/15 hover:border-sage"><Badge tone="terracotta">A2 · A second visit</Badge><h2 className="mt-3 font-display text-xl">Back to {destination.name}</h2><p className="mt-1 opacity-80">Tell the story of your last visit with past events, descriptions and comparisons. →</p></Card>
+          <Card className="bg-sun/15 hover:border-sage">
+            <Badge tone="terracotta">A2 · A second visit</Badge>
+            <h2 className="mt-3 font-display text-xl">Back to {destination.name}</h2>
+            <p className="mt-1 opacity-80">
+              Tell the story of your last visit with past events, descriptions and comparisons. →
+            </p>
+          </Card>
         </Link>
       )}
     </div>

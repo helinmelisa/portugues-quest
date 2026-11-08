@@ -14,9 +14,9 @@ import { cn } from '../../utils/cn'
 function TutorBubble({ message }: { message: TutorMessage }) {
   const [showEnglish, setShowEnglish] = useState(false)
   return (
-    <li className="flex max-w-[85%] gap-2">
+    <li className="flex min-w-0 max-w-[95%] gap-2 sm:max-w-[85%]">
       <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-terracotta font-display text-white">I</span>
-      <div className="space-y-2">
+      <div className="min-w-0 space-y-2">
         {message.tip && (
           <p className="flex gap-2 rounded-2xl bg-sage/25 px-3 py-2 text-sm">
             <Lightbulb className="mt-0.5 size-4 shrink-0" aria-hidden /> {message.tip}
@@ -24,7 +24,7 @@ function TutorBubble({ message }: { message: TutorMessage }) {
         )}
         <div className="rounded-2xl rounded-tl-sm border border-line bg-card px-4 py-3">
           <div className="flex items-start gap-2">
-            <p className="flex-1 text-lg">{message.text}</p>
+            <p className="min-w-0 flex-1 text-base leading-relaxed sm:text-lg">{message.text}</p>
             <SpeakButton text={message.text} className="size-8" />
           </div>
           {message.translation && (
@@ -169,7 +169,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
           m.from === 'tutor' ? (
             <TutorBubble key={m.id} message={m} />
           ) : (
-            <li key={m.id} className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-tr-sm bg-terracotta px-4 py-3 text-lg text-white">{m.text}</li>
+            <li key={m.id} className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-tr-sm bg-terracotta-dark px-4 py-3 text-base leading-relaxed text-white sm:text-lg">{m.text}</li>
           ),
         )}
         {typing && <li className="ml-11 text-sm opacity-60">Inês is typing…</li>}
@@ -182,7 +182,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
           <WrapUp summary={summary} reward={reward} onBack={onBack} />
         </>
       ) : (
-        <div className="chat-composer sticky bottom-20 mt-6 space-y-3 bg-cream py-3 md:bottom-0">
+        <div className="chat-composer sticky bottom-20 mt-6 space-y-3 rounded-3xl border border-line bg-cream p-3 shadow-soft md:bottom-0">
           <div className="flex flex-wrap gap-2">
             {suggestions.map((s) => (
               <button key={s} type="button" disabled={!online || typing} onClick={() => send(s)} className="rounded-full border border-line bg-card px-3 py-1.5 text-sm hover:border-sage disabled:opacity-50">
@@ -196,7 +196,7 @@ export function ChatView({ scenario, createSession, voice = false, onBack }: Cha
               id="chat-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Escreve aqui… (type in Portuguese)"
+              placeholder="Escreve aqui…"
               autoComplete="off"
               className="min-w-0 flex-1 rounded-full border border-line bg-card px-4 py-3"
             />

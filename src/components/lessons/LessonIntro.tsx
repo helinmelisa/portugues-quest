@@ -1,10 +1,10 @@
 import { Clock, Sparkles } from 'lucide-react'
 import type { Lesson } from '../../types'
 import { getGrammarBite } from '../../data/grammar'
-import { Badge, Button, Card, SpeakButton } from '../common'
+import { Badge, Card, SpeakButton } from '../common'
 import { GrammarBiteCard } from './GrammarBiteCard'
 
-export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) {
+export function LessonIntro({ lesson }: { lesson: Lesson }) {
   return (
     <div className="space-y-6">
       <div>
@@ -46,7 +46,7 @@ export function LessonIntro({ lesson, onStart }: { lesson: Lesson; onStart: () =
         </section>
       )}
 
-      <Button size="lg" onClick={onStart} className="w-full sm:w-auto">Let’s practise</Button>
+
     </div>
   )
 }

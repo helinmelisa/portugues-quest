@@ -1,3 +1,4 @@
+import { PageHeader } from '../../components/common/PageHeader'
 import { ArrowLeft, Loader2, Mic, Pause, Phone, PhoneOff, Play, Volume2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Card } from '../../components/common'
@@ -186,8 +187,7 @@ export function CallView({ scenario, createSession, onBack, onChat }: Props) {
   return (
     <div className="mx-auto max-w-2xl">
       <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100"><ArrowLeft className="size-4" aria-hidden /> All scenarios</button>
-      <h1 className="font-display text-3xl">{scenario.title}</h1>
-      <p className="mb-6 mt-2 opacity-75">{scenario.description}</p>
+      <PageHeader eyebrow="Phone practice" title={scenario.title} description={scenario.description} />
       <Card className="space-y-5 bg-sky/15 text-center">
         <div className="mx-auto grid size-20 place-items-center rounded-full bg-terracotta text-white">
           {phase === 'listening' ? <Mic className="size-8 animate-pulse" aria-hidden /> : phase === 'speaking' ? <Volume2 className="size-8" aria-hidden /> : <Phone className="size-8" aria-hidden />}
