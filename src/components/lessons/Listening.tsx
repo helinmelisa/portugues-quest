@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { Snail, Volume2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { speech } from '../../services/speech'
@@ -14,8 +15,7 @@ export function Listening({ exercise, checked, onChange }: ExerciseProps<Listeni
   }, [exercise.audioText])
 
   return (
-    <fieldset>
-      <legend className="mb-6 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt}>
       {speech.supported ? (
         <div className="mb-8 flex items-center gap-3">
           <button type="button" onClick={() => speech.speak(exercise.audioText)} aria-label="Play audio" className="grid size-20 place-items-center rounded-full bg-sky/40 transition hover:bg-sky/60 active:scale-95">
@@ -44,6 +44,6 @@ export function Listening({ exercise, checked, onChange }: ExerciseProps<Listeni
           </OptionButton>
         ))}
       </div>
-    </fieldset>
+    </ExerciseFrame>
   )
 }

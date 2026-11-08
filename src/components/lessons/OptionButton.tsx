@@ -17,12 +17,12 @@ export function OptionButton({ state, className, children, ...props }: { state: 
     <button
       type="button"
       aria-pressed={state === 'selected'}
-      className={cn('flex items-center justify-between gap-3 rounded-2xl border-2 bg-card px-5 py-4 text-left text-lg transition', styles[state], className)}
+      className={cn('flex min-w-0 max-w-full items-start justify-between gap-3 rounded-2xl border-2 bg-card px-4 py-3 text-left text-base leading-relaxed sm:px-5 sm:py-4 sm:text-lg transition', styles[state], className)}
       {...props}
     >
-      {children}
-      {state === 'correct' && <Check className="size-5 shrink-0" aria-label="Correct" />}
-      {state === 'wrong' && <X className="size-5 shrink-0 text-terracotta-dark" aria-label="Incorrect" />}
+      <span className="min-w-0 flex-1 whitespace-normal [overflow-wrap:anywhere]">{children}</span>
+      {state === 'correct' && <Check className="mt-0.5 size-5 shrink-0" aria-label="Correct" />}
+      {state === 'wrong' && <X className="mt-0.5 size-5 shrink-0 text-terracotta-dark" aria-label="Incorrect" />}
     </button>
   )
 }

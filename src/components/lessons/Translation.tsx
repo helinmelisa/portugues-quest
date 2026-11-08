@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { useState } from 'react'
 import type { TranslationExercise } from '../../types'
 import type { ExerciseProps } from './types'
@@ -18,8 +19,7 @@ export function Translation({ exercise, checked, onChange }: ExerciseProps<Trans
   const toPortuguese = exercise.direction === 'en-pt'
 
   return (
-    <fieldset>
-      <legend className="mb-2 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt} compact>
       <p className="mb-6 rounded-2xl bg-sun/20 px-4 py-3 text-xl">{exercise.source}</p>
       <label htmlFor="translation" className="sr-only">Your translation</label>
       <textarea
@@ -39,6 +39,6 @@ export function Translation({ exercise, checked, onChange }: ExerciseProps<Trans
         className="w-full resize-none rounded-2xl border-2 border-line bg-card px-4 py-3 text-lg focus:border-terracotta"
       />
       {checked && <p className="mt-4">Answer: <strong>{exercise.answers[0]}</strong></p>}
-    </fieldset>
+    </ExerciseFrame>
   )
 }

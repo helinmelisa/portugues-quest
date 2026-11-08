@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { useState } from 'react'
 import type { SentenceBuildExercise } from '../../types'
 import { cn } from '../../utils/cn'
@@ -14,11 +15,10 @@ export function SentenceBuild({ exercise, checked, onChange }: ExerciseProps<Sen
     onChange({ ready: next.length > 0, correct: sentence === exercise.words.join(' ') })
   }
 
-  const tileClass = 'rounded-xl border-2 border-line bg-card px-3 py-2 text-lg shadow-soft transition active:scale-95 disabled:shadow-none'
+  const tileClass = 'min-w-0 max-w-full whitespace-normal [overflow-wrap:anywhere] rounded-xl border-2 border-line bg-card px-3 py-2 text-lg shadow-soft transition active:scale-95 disabled:shadow-none'
 
   return (
-    <fieldset>
-      <legend className="mb-2 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt} compact>
       <p className="mb-6 opacity-70">“{exercise.translation}”</p>
 
       <div aria-label="Your sentence" className="mb-6 flex min-h-16 flex-wrap gap-2 border-b-2 border-line pb-3">
@@ -47,6 +47,6 @@ export function SentenceBuild({ exercise, checked, onChange }: ExerciseProps<Sen
         })}
       </div>
       {checked && <p className="mt-6 font-medium">Answer: {exercise.words.join(' ')}</p>}
-    </fieldset>
+    </ExerciseFrame>
   )
 }

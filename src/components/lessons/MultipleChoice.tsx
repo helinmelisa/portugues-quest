@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { useState } from 'react'
 import type { MultipleChoiceExercise } from '../../types'
 import { OptionButton, optionState } from './OptionButton'
@@ -7,8 +8,7 @@ export function MultipleChoice({ exercise, checked, onChange }: ExerciseProps<Mu
   const [selected, setSelected] = useState<number | null>(null)
 
   return (
-    <fieldset>
-      <legend className="mb-6 whitespace-pre-line font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt}>
       <div className="grid gap-3">
         {exercise.options.map((option, i) => (
           <OptionButton
@@ -24,6 +24,6 @@ export function MultipleChoice({ exercise, checked, onChange }: ExerciseProps<Mu
           </OptionButton>
         ))}
       </div>
-    </fieldset>
+    </ExerciseFrame>
   )
 }

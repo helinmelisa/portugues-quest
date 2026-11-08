@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { Loader2, Mic, Snail, Square } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -47,8 +48,7 @@ export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<Pro
   }
 
   return (
-    <fieldset>
-      <legend className="mb-6 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt}>
 
       <div className="mb-6 rounded-3xl bg-sun/20 p-5">
         <div className="flex flex-wrap items-start gap-3">
@@ -114,6 +114,6 @@ export function Pronunciation({ exercise, checked, onChange }: ExerciseProps<Pro
           {canRecord ? 'I can’t speak right now' : 'I said it out loud'}
         </button>
       )}
-    </fieldset>
+    </ExerciseFrame>
   )
 }

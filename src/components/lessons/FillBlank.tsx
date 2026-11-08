@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { useState } from 'react'
 import type { FillBlankExercise } from '../../types'
 import { cn } from '../../utils/cn'
@@ -9,12 +10,11 @@ export function FillBlank({ exercise, checked, onChange }: ExerciseProps<FillBla
   const [before, after] = exercise.sentence.split('___')
 
   return (
-    <fieldset>
-      <legend className="mb-2 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt} compact>
       <p className="mb-6 opacity-70">{exercise.translation}</p>
       <p className="mb-8 text-2xl">
         {before}
-        <span className={cn('mx-1 inline-block min-w-16 border-b-2 px-2 text-center font-medium', selected === null ? 'border-ink/40' : 'border-terracotta text-terracotta-dark')}>
+        <span className={cn('mx-1 inline-block min-w-16 max-w-full whitespace-normal [overflow-wrap:anywhere] border-b-2 px-2 text-center font-medium', selected === null ? 'border-ink/40' : 'border-terracotta text-terracotta-dark')}>
           {selected === null ? ' ' : exercise.options[selected]}
         </span>
         {after}
@@ -34,6 +34,6 @@ export function FillBlank({ exercise, checked, onChange }: ExerciseProps<FillBla
           </OptionButton>
         ))}
       </div>
-    </fieldset>
+    </ExerciseFrame>
   )
 }

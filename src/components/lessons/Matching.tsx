@@ -1,3 +1,4 @@
+import { ExerciseFrame } from './ExerciseFrame'
 import { useState } from 'react'
 import type { MatchingExercise } from '../../types'
 import { cn } from '../../utils/cn'
@@ -43,13 +44,12 @@ export function Matching({ exercise, checked, onChange }: ExerciseProps<Matching
   )
 
   return (
-    <fieldset>
-      <legend className="mb-2 font-display text-2xl md:text-3xl">{exercise.prompt}</legend>
+    <ExerciseFrame prompt={exercise.prompt} compact>
       <p className="mb-6 opacity-70">Tap a Portuguese word, then its meaning.</p>
       <div className="grid grid-cols-2 gap-3">
         <div className="grid min-w-0 gap-3">{left.map((p) => tile(p, 0, () => setActive(p), active === p))}</div>
         <div className="grid min-w-0 gap-3">{right.map((p) => tile(p, 1, () => pickRight(p), false))}</div>
       </div>
-    </fieldset>
+    </ExerciseFrame>
   )
 }
