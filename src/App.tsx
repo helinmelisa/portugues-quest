@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { RecoveryRedirect } from './components/layout/RecoveryRedirect'
 import PasswordPage from './pages/Auth/PasswordPage'
 import { AppStatus } from './components/layout/AppStatus'
@@ -25,6 +25,11 @@ import WordGardenPage from './pages/Practice/WordGardenPage'
 import SettingsPage from './pages/Settings/SettingsPage'
 import CertificatePage from './pages/Certificate/CertificatePage'
 import TutorPage from './pages/Tutor/TutorPage'
+
+function LessonRoute() {
+  const { lessonId } = useParams()
+  return <LessonPage key={lessonId} />
+}
 
 export default function App() {
   return (
@@ -55,7 +60,7 @@ export default function App() {
             <Route path="certificate/:level" element={<CertificatePage />} />
             <Route path="tutor" element={<TutorPage />} />
           </Route>
-          <Route path="/lesson/:lessonId" element={<RequireAccount><LessonPage /></RequireAccount>} />
+          <Route path="/lesson/:lessonId" element={<RequireAccount><LessonRoute /></RequireAccount>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

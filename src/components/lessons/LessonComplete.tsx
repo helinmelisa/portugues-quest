@@ -11,10 +11,11 @@ interface Props {
   total: number
   checkpoint?: boolean | null
   checkpointLevel?: string
+  nextStop?: { name: string; title: string; to: string; destinationComplete: boolean }
   onDone: () => void
 }
 
-export function LessonComplete({ result, correctFirstTry, total, checkpoint = null, checkpointLevel = 'A1', onDone }: Props) {
+export function LessonComplete({ result, correctFirstTry, total, checkpoint = null, checkpointLevel = 'A1', nextStop, onDone }: Props) {
   return (
     <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="py-10 text-center">
       <Confetti />
@@ -83,7 +84,15 @@ export function LessonComplete({ result, correctFirstTry, total, checkpoint = nu
         </section>
       )}
 
-      <Button size="lg" className="mt-10" onClick={onDone}>Continue</Button>
+      {nextStop && (
+        <div className="mx-auto mt-6 max-w-sm rounded-3xl border border-sage bg-sage/15 p-5 text-left">
+          <p className="text-sm font-medium">{nextStop.destinationComplete ? 'Destination complete · next stop' : 'Up next'}</p>
+          <h2 className="mt-1 font-display text-2xl">{nextStop.name}</h2>
+          <p className="mt-2 text-sm opacity-80">{nextStop.title}</p>
+          <Link to={nextStop.to} className="mt-4 flex min-h-11 items-center justify-center rounded-full bg-terracotta-dark px-5 py-3 text-center font-medium text-white">{nextStop.destinationComplete ? `Explore ${nextStop.name}` : 'Next lesson'} →</Link>
+        </div>
+      )}
+      <Button size="lg" variant={nextStop ? 'secondary' : 'primary'} className="mt-6" onClick={onDone}>{nextStop ? 'Back to journey' : 'Continue'}</Button>
     </motion.div>
   )
 }

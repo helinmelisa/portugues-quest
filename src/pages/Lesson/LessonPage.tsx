@@ -11,6 +11,8 @@ import type { ExerciseResponse } from '../../components/lessons/types'
 import { isLessonAvailable } from '../../data/curriculum'
 import { draftKey, loadDraft } from '../../features/learning/lessonDraft'
 import { CHECKPOINT_PASS, resolveLesson } from '../../features/learning/practice'
+import { nextJourneyLesson } from '../../features/progress/journey'
+import { destinations } from '../../data/destinations'
 import { useProgress } from '../../hooks/useProgress'
 import type { Exercise } from '../../types'
 
@@ -60,6 +62,16 @@ export default function LessonPage() {
     )
   }
 
+  const destination = destinations.find((item) => item.id === lesson.destinationId)
+  const nextJourney = destination && nextJourneyLesson(progress)
+  const destinationComplete = !!destination && destination.lessonIds.every((id) => id in progress.completedLessons)
+  const nextStop = nextJourney ? {
+    name: nextJourney.destination.name,
+    title: nextJourney.lesson.title,
+    to: destinationComplete ? `/app/explore/${nextJourney.destination.id}` : `/lesson/${nextJourney.lesson.id}`,
+    destinationComplete,
+  } : undefined
+
   const total = lesson.exercises.length
   const done = total - new Set(queue.map((e) => e.id)).size
   const current = queue[0]
@@ -103,7 +115,7 @@ export default function LessonPage() {
           <ExerciseView key={current.id + queue.length} exercise={current} checked={checked} onChange={setResponse} />
         )}
         {stage === 'complete' && result && (
-          <LessonComplete result={result} checkpoint={checkpointPassed} checkpointLevel={lesson.id.replace('checkpoint-', '')} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
+          <LessonComplete nextStop={nextStop} result={result} checkpoint={checkpointPassed} checkpointLevel={lesson.id.replace('checkpoint-', '')} correctFirstTry={total - missed.size} total={total} onDone={() => navigate(lesson.destinationId === 'practice' ? '/app/practice' : '/app')} />
         )}
       </main>
 

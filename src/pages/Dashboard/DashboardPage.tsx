@@ -6,6 +6,7 @@ import { WeeklyChallengeCard } from '../../components/gamification/WeeklyChallen
 import { WeeklyStreak } from '../../components/gamification/WeeklyStreak'
 import { isLessonAvailable, lessons } from '../../data/curriculum'
 import { destinations } from '../../data/destinations'
+import { nextJourneyLesson } from '../../features/progress/journey'
 import { isDestinationUnlocked } from '../../features/progress/destinationProgress'
 import { vidaLessons } from '../../data/curriculum/vida'
 import { questForDay } from '../../data/quests'
@@ -38,6 +39,7 @@ export default function DashboardPage() {
   const a0Lessons = lessons.filter((l) => ['lisboa', 'porto'].includes(l.destinationId) && l.level !== 'A2')
   const a0Done = a0Lessons.filter((l) => l.id in progress.completedLessons).length
   const nextLesson = lessons.find((l) => isLessonAvailable(l) && !(l.id in progress.completedLessons) && (l.destinationId === 'vida' || destinations.some((d) => d.id === l.destinationId && isDestinationUnlocked(d, progress))))
+  const nextJourney = nextJourneyLesson(progress)
   const lastDoneId = Object.entries(progress.completedLessons).sort(([, a], [, b]) => b.localeCompare(a))[0]?.[0]
   const lastDone = lessons.find((l) => l.id === lastDoneId)
 
@@ -58,6 +60,15 @@ export default function DashboardPage() {
           <Badge tone="sky">Level {profile.level}</Badge>
         </div>
       </header>
+
+      <Card className="border-sage/60 bg-sage/10 p-5 md:p-7">
+        <p className="text-sm font-medium text-terracotta-dark">Your next adventure</p>
+        <h2 className="mt-2 font-display text-3xl">{nextJourney?.destination.name ?? 'Keep exploring'}</h2>
+        <p className="mt-2 opacity-80">{nextJourney?.lesson.title ?? nextLesson?.title ?? 'Every available lesson complete. Revisit your favourite places or practise your words.'}</p>
+        {(nextJourney?.lesson ?? nextLesson) && <Button className="mt-5 w-full sm:w-auto" onClick={() => navigate(`/lesson/${(nextJourney?.lesson ?? nextLesson)!.id}`)}>Continue learning →</Button>}
+        <Link to="/app/explore" className="mt-3 flex min-h-11 items-center text-sm font-medium text-terracotta-dark hover:underline">See your journey →</Link>
+        {lastDone && <p className="mt-1 text-sm opacity-70">Last completed: {lastDone.title}</p>}
+      </Card>
 
       <DailyQuestCard quest={quest} claimed={progress.questDays.includes(today)} />
 
@@ -87,19 +98,7 @@ export default function DashboardPage() {
       </ul>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="space-y-3">
-          <h2 className="font-display text-xl">Continue learning</h2>
-          {nextLesson ? (
-            <Link to={`/lesson/${nextLesson.id}`} className="block rounded-2xl border border-line p-4 hover:border-sage">
-              <p className="text-sm opacity-70">Up next</p>
-              <p className="font-medium">{nextLesson.title}</p>
-            </Link>
-          ) : (
-            <p className="opacity-80">You’ve finished every available lesson. New ones are on the way!</p>
-          )}
-          {lastDone && <p className="text-sm opacity-70">Last completed: {lastDone.title}</p>}
-          <Link to="/app/explore" className="inline-block text-sm font-medium text-terracotta-dark hover:underline">Open the map →</Link>
-        </Card>
+
 
         <Card className="space-y-4">
           <div>
