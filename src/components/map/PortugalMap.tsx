@@ -26,6 +26,7 @@ export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
       </svg>
 
       {destinations.map((d) => {
+        const marker = d.id === 'sintra' ? { x: 14, y: 57 } : d.id === 'lisboa' ? { x: 28, y: 70 } : d.map
         const selected = d.id === selectedId
         const unlocked = isDestinationUnlocked(d, progress)
         return (
@@ -35,13 +36,14 @@ export function PortugalMap({ destinations, selectedId, onSelect }: Props) {
             onClick={() => onSelect(d.id)}
             aria-pressed={selected}
             aria-label={`${d.name}${unlocked ? '' : ' (locked)'}`}
-            style={{ left: `${d.map.x}%`, top: `${d.map.y}%` }}
-            className="group absolute -translate-x-1/2 -translate-y-full"
+            style={{ left: `${marker.x}%`, top: `${12 + marker.y * 0.84}%` }}
+            className="group absolute grid size-11 -translate-x-1/2 -translate-y-1/2 place-items-center"
           >
-            <span className="flex flex-col items-center">
+            <span className="flex items-center">
               <span
                 className={cn(
-                  'mb-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium shadow-soft transition',
+                  'absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium shadow-soft transition',
+                  d.id === 'madeira' ? 'right-full mr-1' : 'left-full ml-1',
                   selected ? 'bg-ink text-cream' : 'bg-card',
                   !unlocked && 'opacity-70',
                 )}

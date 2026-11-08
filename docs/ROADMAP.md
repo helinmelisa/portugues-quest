@@ -158,7 +158,7 @@ Question-screen follow-up (8 November 2026): the user clarified the issue was ve
 Goal: make the next learning step obvious, strengthen A2 skills, and introduce a small B1 chapter while keeping progress synced across phone and website.
 
 - [x] **1. Destination handoff**: after Lisboa, recommend Porto on the lesson result, dashboard and map. Follow the learning route through all eight destinations, retain completed lessons for revisits, and reset lesson state when continuing directly to another lesson.
-- [ ] **2. Shared UX polish**: clearer navigation, accessible primary actions, readable spacing, consistent mobile layouts and a route list alongside the map.
+- [x] **2. Shared UX polish**: clearer navigation, accessible primary actions, readable spacing, consistent mobile layouts and a route list alongside the map.
 - [ ] **3. Focus review and writing**: prioritise corrections, due and saved words; add six short writing tasks with self-checks and synced drafts.
 - [ ] **4. Longer A2 listening**: four eight-turn dialogues with transcripts, glossary, slow device playback and comprehension checks. Recorded native audio remains separate.
 - [ ] **5. B1 starter chapter**: four introductory lessons and grammar bites; label this as a starter rather than a complete B1 course or certificate.
@@ -168,6 +168,8 @@ Goal: make the next learning step obvious, strengthen A2 skills, and introduce a
 Suggested separate commits: journey handoff; shared UX; review and writing; dialogues; B1 starter; reminders and backend setup. Update this checklist with each delivered change.
 
 Journey verification (8 November 2026): automated progression checks passed through all eight stops, including Lisboa → Porto and a completed route. Browser fixtures confirmed the completed Lisboa page links to Porto, and Explore selects Porto after Lisboa is complete. No account progress was changed during these checks. Device reported by the user: iPhone 15 Pro Max, iOS 27.2. Sign-in/offline sync/call outcomes still await the user's physical checks.
+
+UX verification (8 November 2026): the dashboard puts Continue learning before secondary activities; Explore presents the selected destination before the map on phones and offers an ordered route list. Completed destinations link to the following stop. Shared primary buttons use a darker terracotta for readable white text, active navigation has a background and border, the header uses available horizontal space, and route changes reset page scroll. Map labels sit beside pins to avoid overlap and clipping. Fifteen dashboard/Explore/Practice browser geometry checks passed at 430 × 932, 430 × 740, 320 × 740, 932 × 430 and 1440 × 900, with no horizontal overflow or controls outside the page. Build and existing auth, content, voice lifecycle, sync and worker regressions passed. Physical Safari checks remain open.
 
 ## Later
 - Installable app (PWA), offline lessons and app updates moved to Milestone 6.

@@ -14,7 +14,7 @@ export function BottomNav() {
           to={to}
           end={to === '/app'}
           className={({ isActive }) =>
-            cn('flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium', isActive ? 'text-terracotta-dark' : 'opacity-70')
+            cn('flex flex-col items-center justify-center gap-1 border-t-2 border-transparent px-1 py-3 text-xs font-medium transition', isActive ? 'border-terracotta-dark bg-terracotta/10 text-terracotta-dark' : 'text-ink/75 hover:bg-line/40')
           }
         >
           <Icon className="size-5" aria-hidden />

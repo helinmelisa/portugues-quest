@@ -1,11 +1,14 @@
 import { Settings } from 'lucide-react'
-import { Link, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useProgress } from '../../hooks/useProgress'
 import { StreakChip, XpChip } from '../gamification/StatChip'
 import { BottomNav } from '../navigation/BottomNav'
 import { Sidebar } from '../navigation/Sidebar'
 
 export function AppLayout() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [pathname])
   const { stats } = useProgress()
 
   return (
@@ -15,8 +18,8 @@ export function AppLayout() {
       </a>
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex flex-col items-start gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between md:justify-end md:px-8 md:py-5">
-          <Link to="/" className="font-display text-xl md:hidden">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line/60 px-4 py-3 mb-5 md:justify-end md:px-8 md:py-5">
+          <Link to="/" className="font-display text-lg md:hidden">
             Português <span className="text-terracotta">Quest</span>
           </Link>
           <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2 sm:justify-end">

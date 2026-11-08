@@ -20,7 +20,7 @@ body {
 }
 
 @theme {
-  --color-terracotta-dark: #b8654a;
+  --color-terracotta-dark: #984b35;
   --shadow-soft: 0 2px 12px -4px rgb(52 65 58 / 0.12);
 }
 
@@ -64,3 +64,12 @@ h1, h2, h3 { overflow-wrap: break-word; text-wrap: balance; }
 .lesson-body { min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
 .lesson-actions { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
 .lesson-feedback { max-height: 45dvh; }
+
+/* Shared rhythm and readable controls across the learning screens. */
+body { line-height: 1.6; }
+h1, h2, h3 { line-height: 1.2; }
+button:not(:disabled), summary { cursor: pointer; }
+input:not([type="checkbox"]):not([type="radio"]), textarea, select { min-height: 44px; }
+@media (max-width: 767px) {
+  #content > div > h1, #content > div > header > h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); }
+}
