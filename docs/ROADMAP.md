@@ -1,6 +1,6 @@
 # Roadmap
 
-Built in small sessions. Each step should be finishable in one sitting.
+Product milestones and planned improvements.
 
 ## Milestone 1 — MVP
 - [x] **1. Setup** — repo, Vite + React + TS, Tailwind theme, folder structure
@@ -65,7 +65,6 @@ Everything runs on free tiers: Groq (Whisper and the chat model) and the browser
 
 ### D. Habit and polish
 - [x] **9. Weekly challenge**: one gentle goal each week (e.g. 3 lessons and 1 chat) with a bonus badge
-- Step 10 (playtest and polish) moved to Later.
 
 ## Milestone 4 — Towards A2
 
@@ -88,7 +87,6 @@ Still free to run: Groq free tier + Supabase free tier.
 
 ### D. Milestones that mean something
 - [x] **9. A1 checkpoint**: a short mixed test after Braga and a shareable “A1 explorer” certificate page
-- Step 10 (installable app) moved to Later.
 
 ## Milestone 5 — Life in Portugal (A2)
 
@@ -113,20 +111,18 @@ Still free to run: Groq free tier + Supabase free tier.
 - [x] **9. Real-life texts**: signs, notices, a rental ad, an SMS from the doctor, a utility bill, each with questions
 - [x] **10. A2 checkpoint and certificate**
 
-Implementation notes: the user reported redeploying the `tutor` Edge Function on 4 November 2026 at [the existing tutor endpoint](https://embwiettleplfacmudzj.supabase.co/functions/v1/tutor). Live microphone/audio and hosted AI calls still need a device check; this is included in Milestone 6. Milestone 5 needs no new database migration.
-
 ## Milestone 6 — Portuguese in your pocket
 
 Goal: keep the website and add an installable iPhone app experience, with the same account and reliable progress sync between both. Use a PWA built from the existing React app and Supabase backend, with one curriculum and one release to maintain.
 
-The first release is installed from Safari onto the Home Screen. An App Store release is a separate future decision. Existing Supabase sync is the starting point: it currently pulls at sign-in and pushes local edits, so foreground refresh, conflict handling and reconnect recovery need work.
+Install from Safari onto the Home Screen and use the same account on the website and installed app. An App Store release is a separate future decision.
 
 ### A. Make it an iPhone app
 - [ ] **1. Phone baseline**: test the current deployed website in iPhone Safari and Home Screen mode; record login, navigation, lesson, reading and call issues before changing behaviour
 - [x] **2. Installable app**: manifest, app icons, Apple touch icon, standalone display, theme and launch screen; add a short Safari installation guide in Settings. Keep normal browser URLs and desktop use working
 
 ### B. One account, one learning journey
-- [ ] **3. Sign-in and account isolation**: test magic-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
+- [ ] **3. Sign-in and account isolation**: test email/password and optional email-link login in Safari and the installed app, persistent sessions, expired sessions and sign-out. Scope cached progress and pending changes to the account; never merge another account’s local data. Explain that the installed app may need its own sign-in
 - [x] **4. Cross-device sync**: pull and merge on foreground/reconnect, and refresh while both clients are open through account-scoped realtime updates with a fallback refresh. Prevent stale whole-profile writes from erasing newer progress. Preserve lesson completion, XP, streaks, word reviews, settings, mistakes and certificates; define how edits and deletions resolve
 - [x] **5. Durable offline progress**: persist pending learning activity per account and retry on reopening/reconnecting. Use stable activity IDs and server-side deduplication/merge so replayed events do not award XP twice and work completed on two devices is retained. Show “Saved on this device”, “Syncing”, “Synced” and a retry state
 
@@ -141,43 +137,19 @@ The first release is installed from Safari onto the Home Screen. An App Store re
 
 Done when: a learner can install the app, use the same account on iPhone and desktop, complete a lesson offline, reconnect and see that progress on the website, then continue on either surface without losing or duplicating learning activity. Certificates, saved words and settings must agree after sync. Call mode must work or provide a clear supported fallback on the tested iPhone. Record device/iOS/browser versions and evidence rather than assuming a desktop preview covers Safari.
 
-Suggested commits: (1) installable shell and installation guide; (2) account-safe sync and durable offline activity; (3) offline curriculum and safe updates; (4) iPhone layout and voice fixes; (5) release checks and docs. Update this checklist in each implementation commit. If activity deduplication requires a schema change, include the Supabase migration with the sync commit.
-
-Installation reference: [Apple’s guide to opening a website as an iPhone web app](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
-
-Implementation progress: installable shell and assets are implemented. Account isolation, copied-link sign-in, durable activity queues and revision/receipt sync are implemented; the user reported running the hosted migration. Concurrent-device, retry and local PostgreSQL RLS checks passed. Public-asset offline caching, saved lesson drafts and explicit cross-tab-safe updates are implemented and tested in the production preview. Mobile layout and voice recovery are implemented. Production Supabase settings are now configured in Vercel. After the user completed Vercel identity verification, the rebuilt release was confirmed Ready, the live bundle contained the project URL/public key, the account sign-in screen rendered, and manifest/worker requests returned HTTP 200. An additional identity-race test verifies that in-flight sync requests keep their original account token. Steps 1, 3, 9 and 10 remain open for physical iPhone, authenticated hosted sync and final release checks; see [release evidence](RELEASE-M6.md).
-
-Mobile overflow follow-up: the header now wraps its status chips and keeps Settings visible, shared buttons/badges wrap long labels, and grid/form children can shrink inside cards. Target device: the user’s iPhone 15 Pro Max. Lesson metadata, saved-word and correction actions now stack on phones; grammar/example text, speaking cards and certificate stats retain readable widths. Nine representative screens passed viewport checks at 430 × 932 and 932 × 430, with no page overflow or clipped buttons. Fourteen screens also passed at 320px and 390px. These are browser layout checks; physical iPhone validation remains open.
-
-Password sign-in follow-up: email/password is now the default, with new-account signup, one-time password setup/recovery for existing email-link accounts, and Set or change password in Settings. Sessions explicitly persist and refresh on-device. Passwords go only to Supabase Auth; existing progress and account IDs are retained. Optional email-link sign-in remains available. The browser forms were checked at the iPhone 15 Pro Max viewport; credential-service regression checks use mocks, not real user passwords.
-
-Question-screen follow-up (8 November 2026): the user clarified the issue was vertical visibility of the title and Check button on iPhone 15 Pro Max. The lesson fills the dynamic viewport; its question body scrolls while Check/Continue stays visible, including safe-area spacing. Long feedback scrolls independently of Continue, and each new exercise returns to the top. Shared question headings replace fieldset/legend sizing, reading passages use body text below the question, and answer labels/tiles wrap. Seventy-eight browser checks across seven exercise types and six reading texts passed unchecked/feedback states at 430 × 932, 430 × 740 and 932 × 430: title and action were in the viewport with no horizontal overflow.
-
 ## Milestone 7 — A clearer journey and deeper practice
 
 Goal: make the next learning step obvious, strengthen A2 skills, and introduce a small B1 chapter while keeping progress synced across phone and website.
 
 - [x] **1. Destination handoff**: after Lisboa, recommend Porto on the lesson result, dashboard and map. Follow the learning route through all eight destinations, retain completed lessons for revisits, and reset lesson state when continuing directly to another lesson.
-- [x] **2. Shared UX polish**: clearer navigation, accessible primary actions, readable spacing, consistent mobile layouts and a route list alongside the map.
+- [x] **2. Shared UX polish**: consistent layouts and line icons throughout the app, clear navigation and primary actions, Practice filters, vocabulary and grammar search, organised Settings, chat/call selection and a route list alongside the map.
 - [ ] **3. Focus review and writing**: prioritise corrections, due and saved words; add six short writing tasks with self-checks and synced drafts.
 - [ ] **4. Longer A2 listening**: four eight-turn dialogues with transcripts, glossary, slow device playback and comprehension checks. Recorded native audio remains separate.
 - [ ] **5. B1 starter chapter**: four introductory lessons and grammar bites; label this as a starter rather than a complete B1 course or certificate.
 - [ ] **6. Optional daily reminders**: per-device opt-in Web Push, secure scheduled delivery and an off switch. Verify hosted backend and installed iPhone delivery before marking complete.
 - [ ] **7. Release checks**: build, regression tests, mobile UI checks and deployment; keep physical device results separate from browser simulations.
 
-Suggested separate commits: journey handoff; shared UX; review and writing; dialogues; B1 starter; reminders and backend setup. Update this checklist with each delivered change.
-
-Journey verification (8 November 2026): automated progression checks passed through all eight stops, including Lisboa → Porto and a completed route. Browser fixtures confirmed the completed Lisboa page links to Porto, and Explore selects Porto after Lisboa is complete. No account progress was changed during these checks. Device reported by the user: iPhone 15 Pro Max, iOS 27.2. Sign-in/offline sync/call outcomes still await the user's physical checks.
-
-UX verification (8 November 2026): the dashboard puts Continue learning before secondary activities; Explore presents the selected destination before the map on phones and offers an ordered route list. Completed destinations link to the following stop. Shared primary buttons use a darker terracotta for readable white text, active navigation has a background and border, the header uses available horizontal space, and route changes reset page scroll. Map labels sit beside pins to avoid overlap and clipping. Fifteen dashboard/Explore/Practice browser geometry checks passed at 430 × 932, 430 × 740, 320 × 740, 932 × 430 and 1440 × 900, with no horizontal overflow or controls outside the page. Build and existing auth, content, voice lifecycle, sync and worker regressions passed. Physical Safari checks remain open.
-
-Full UX pass (8 November 2026): expanded the shared visual system across Home, destination and chapter pages, Practice, stories and real-life reading, Word Garden, Grammar, Mistake notebook, Tutor, Settings, sign-in/recovery, onboarding, lesson introductions, landing and certificates. Practice now filters by learning intent, vocabulary and grammar have search and empty states, Tutor separates Chat and Phone call with progressive disclosure for explanations/custom situations, Settings has section shortcuts, and lesson introductions/onboarding keep their primary actions outside the scroll area. Improved reading widths, chat bubbles, contrast, mobile actions and desktop navigation. Eighty-four fixture-based browser layout checks passed across 21 screens at 430 × 932, 320 × 740, 932 × 430 and 1440 × 900. Filters, search, mode selection and lesson start were exercised. Auth, curriculum, recorder lifecycle, sync, worker and journey regressions passed. Fixtures use sample account data; these checks do not establish physical iPhone, live authenticated sync or microphone success.
-
-Icon follow-up (8 November 2026): replaced native emoji glyphs across greetings, achievements, reward summaries, checkpoints, certificates, country comparisons and share text with Lucide line icons or explicit country labels. Achievement IDs and unlock rules are unchanged. A source scan found no remaining emoji in the bundled UI, and four iPhone-sized browser checks confirmed no rendered emoji or horizontal overflow on the dashboard, certificate, country comparison and lesson result.
-
 ## Later
-- Installable app (PWA), offline lessons and app updates moved to Milestone 6.
-- iPhone and desktop playtest/polish moved to Milestone 6.
 - [ ] Daily reminder notifications (needs the PWA + web push)
 - [ ] Recorded native audio
 - [ ] More A2 practice: targeted review, short writing tasks and longer listening dialogues
