@@ -8,6 +8,7 @@ import {
   Library,
   Mic,
   NotebookPen,
+  PenLine,
   Puzzle,
   Sprout,
   Zap,
@@ -35,6 +36,7 @@ export default function PracticePage() {
 
   const corners: Corner[] = [
     { to: '/lesson/practice-focus', icon: Zap, title: 'Focus review', text: 'Due words, tricky vocabulary and your own corrections in one gentle session.', badge: '5 min · +10 XP', tone: 'text-sage' },
+    { to: '/app/practice/writing', icon: PenLine, title: 'Writing desk', text: 'Write everyday messages, keep drafts and compare with friendly models.', badge: '6 tasks · A2', tone: 'text-terracotta' },
 
     {
       to: '/app/explore/vida',
@@ -129,7 +131,7 @@ export default function PracticePage() {
   const groups: Record<string, string[]> = {
     Review: ['Focus review', 'Quick Challenge', 'Word Garden', 'Mistake notebook', 'Build a Sentence'],
     'Listen & speak': ['Listening Nook', 'Speak out loud'],
-    'Read & learn': ['Vida em Portugal', 'Real-life texts', 'Histórias', 'Grammar bites', 'In Portugal, we say…'],
+    'Read & learn': ['Writing desk', 'Vida em Portugal', 'Real-life texts', 'Histórias', 'Grammar bites', 'In Portugal, we say…'],
   }
   const visible = category === 'All' ? corners : corners.filter((corner) => groups[category].includes(corner.title))
 

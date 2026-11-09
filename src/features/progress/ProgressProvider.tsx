@@ -96,6 +96,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const saveWritingDraft = useCallback((id: string, text: string) => {
+    setProgress((p) => ({ ...p, writingDrafts: { ...p.writingDrafts, [id]: { text: text.slice(0, 3000), updatedAt: new Date().toISOString() } } }))
+  }, [])
+
   const removeMistake = useCallback((id: string) => setProgress((p) => ({ ...p, mistakes: p.mistakes.filter((m) => m.id !== id) })), [])
 
   const passCheckpoint = useCallback(
@@ -119,6 +123,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       addCustomWord,
       addMistakes,
       removeMistake,
+      saveWritingDraft,
       passCheckpoint,
       updateProfile,
       toggleDifficult,
@@ -129,7 +134,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         learningStore.update({ progress: structuredClone(emptyProgress), profile: { ...defaultProfile } }, true)
       },
     }),
-    [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, passCheckpoint, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
+    [progress, profile, completeLesson, completeConversation, addCustomWord, addMistakes, removeMistake, saveWritingDraft, passCheckpoint, updateProfile, toggleDifficult, reviewWord, replaceAll, cloud],
   )
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>

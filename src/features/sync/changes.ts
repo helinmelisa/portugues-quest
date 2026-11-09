@@ -26,7 +26,7 @@ export function changesBetween(before: UserData, after: UserData): Change[] {
     if (b === undefined) { changes.push({ kind: 'remove', path }); return }
     if (path[0] === 'progress' && ['completedLessons', 'certificates'].includes(path[1]) && path.length === 3) {
       changes.push({ kind: 'first', path, value: b })
-    } else if (path[0] === 'progress' && path[1] === 'reviews' && path.length === 3) {
+    } else if (path[0] === 'progress' && ['reviews', 'writingDrafts'].includes(path[1]) && path.length === 3) {
       changes.push({ kind: 'set', path, value: b })
     } else if (typeof b === 'number' && additive(path)) {
       changes.push({ kind: 'add', path, value: b - (typeof a === 'number' ? a : 0) })
