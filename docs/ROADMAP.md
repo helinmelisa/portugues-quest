@@ -152,7 +152,7 @@ Goal: make the next step obvious, strengthen everyday A2 Portuguese, and introdu
 - [x] **5. Longer listening**: four eight-turn dialogues with normal/slow playback, optional transcripts, glossary and comprehension checks. Clearly label device-generated audio
 
 ### C. Introduce the next level
-- [ ] **6. B1 starter**: four lessons covering opinions, suggestions, future plans and hopes, with supporting grammar bites. Recommend this after A2 and clearly label it as the first chapter, without a full-course or proficiency claim
+- [x] **6. B1 starter**: four lessons covering opinions, suggestions, future plans and hopes, with supporting grammar bites. Recommend this after A2 and clearly label it as the first chapter, without a full-course or proficiency claim
 
 ### D. Support a gentle daily habit
 - [ ] **7. Optional reminders**: choose a time, enable notifications on each device and turn them off easily. Skip reminders when synced progress shows practice that day. Keep notification text free of account details and explain device/connection limits

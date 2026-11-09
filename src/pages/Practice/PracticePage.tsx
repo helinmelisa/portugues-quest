@@ -35,6 +35,7 @@ export default function PracticePage() {
   const { progress } = useProgress()
 
   const corners: Corner[] = [
+    { to: '/app/explore/b1', icon: BookOpen, title: 'The road to B1', text: 'Your first chapter: opinions, suggestions, future plans and hopes.', badge: '4 lessons · B1 starter', tone: 'text-terracotta' },
     { to: '/app/practice/dialogues', icon: Headphones, title: 'Listening dialogues', text: 'Longer conversations, optional transcripts and comprehension questions.', badge: '4 dialogues · A2', tone: 'text-sky' },
     { to: '/lesson/practice-focus', icon: Zap, title: 'Focus review', text: 'Due words, tricky vocabulary and your own corrections in one gentle session.', badge: '5 min · +10 XP', tone: 'text-sage' },
     { to: '/app/practice/writing', icon: PenLine, title: 'Writing desk', text: 'Write everyday messages, keep drafts and compare with friendly models.', badge: '6 tasks · A2', tone: 'text-terracotta' },
@@ -132,7 +133,7 @@ export default function PracticePage() {
   const groups: Record<string, string[]> = {
     Review: ['Focus review', 'Quick Challenge', 'Word Garden', 'Mistake notebook', 'Build a Sentence'],
     'Listen & speak': ['Listening dialogues', 'Listening Nook', 'Speak out loud'],
-    'Read & learn': ['Writing desk', 'Vida em Portugal', 'Real-life texts', 'Histórias', 'Grammar bites', 'In Portugal, we say…'],
+    'Read & learn': ['Writing desk', 'The road to B1', 'Vida em Portugal', 'Real-life texts', 'Histórias', 'Grammar bites', 'In Portugal, we say…'],
   }
   const visible = category === 'All' ? corners : corners.filter((corner) => groups[category].includes(corner.title))
 

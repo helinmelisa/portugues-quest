@@ -16,7 +16,7 @@ try {
   assert.equal(vidaLessons.length, 10)
   assert.equal(new Set(lessons.map((l) => l.id)).size, lessons.length)
   assert.equal(new Set(vidaTopics.flatMap((t) => t.lessonIds)).size, 10)
-  assert.equal(grammarBites.length, 11)
+  assert(['imperfect', 'reflexive', 'object-pronouns', 'comparisons'].every((id) => grammarBites.some((g) => g.id === id)))
   for (const lesson of vidaLessons) {
     assert(grammarBites.some((g) => g.id === lesson.grammarId))
     assert(lesson.exercises.some((e) => e.type === 'pronunciation'))

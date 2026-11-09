@@ -1,3 +1,4 @@
+import { b1Grammar } from './b1Grammar'
 export interface GrammarSection {
   text: string
   examples?: { pt: string; en: string }[]
@@ -138,6 +139,7 @@ export const grammarBites: GrammarBite[] = [
       { text: 'Bom → melhor; mau → pior. Do not add “mais” before melhor or pior.', examples: [{ pt: 'Este café é melhor do que o anterior.', en: 'This coffee is better than the previous one.' }] },
     ],
   },
+  ...b1Grammar,
 ]
 
 export const getGrammarBite = (id: string) => grammarBites.find((g) => g.id === id)

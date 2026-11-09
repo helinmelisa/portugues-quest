@@ -2,6 +2,7 @@ import WritingPage from './pages/Practice/WritingPage'
 import WritingTaskPage from './pages/Practice/WritingTaskPage'
 import DialoguesPage from './pages/Practice/DialoguesPage'
 import DialoguePage from './pages/Practice/DialoguePage'
+import B1Page from './pages/Explore/B1Page'
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { RecoveryRedirect } from './components/layout/RecoveryRedirect'
 import PasswordPage from './pages/Auth/PasswordPage'
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/app" element={<RequireAccount><AppLayout /></RequireAccount>}>
             <Route index element={<DashboardPage />} />
             <Route path="explore" element={<ExplorePage />} />
+            <Route path="explore/b1" element={<B1Page />} />
             <Route path="explore/vida" element={<VidaPage />} />
             <Route path="explore/:destinationId" element={<DestinationPage />} />
             <Route path="practice" element={<PracticePage />} />
