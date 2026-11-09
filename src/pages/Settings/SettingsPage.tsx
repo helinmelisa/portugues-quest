@@ -14,7 +14,7 @@ import { AccountCard } from './AccountCard'
 import { ResetProgress } from './ResetProgress'
 
 const goals: UserProfile['dailyGoalMinutes'][] = [5, 10, 15, 20]
-const levels: CefrLevel[] = ['A0', 'A1', 'A2', 'B1']
+const levels: CefrLevel[] = ['A0', 'A1', 'A2']
 const speeds = [
   { rate: 0.7, label: 'Slow' },
   { rate: 0.9, label: 'Normal' },

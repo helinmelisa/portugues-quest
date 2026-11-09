@@ -37,6 +37,7 @@ is a separate future step.
 - Vocabulary, listening, matching, translations, sentence building and optional speaking
 - Spaced repetition, Word Garden, stories, real-life reading and a mistake notebook
 - A1/A2 checkpoints and learning certificates, XP, achievements, quests and weekly challenges
+- Focus review, six A2 writing tasks with synced drafts, four listening dialogues and a B1 starter chapter
 - Inês: free chat, custom scenarios and hands-free phone role-plays with transcript-based feedback
 
 ## Progress and sync
@@ -70,6 +71,7 @@ npm run dev
 npm run build             # type-check, bundle and generate versioned offline worker
 npm run preview           # production PWA checks; dev mode does not register a worker
 npm run lint
+npm run test:milestone7
 npm run test:journey
 npm run test:auth
 npm run test:milestone5
@@ -95,3 +97,11 @@ Never put service-role keys or Groq secrets in Vite variables or Git.
 `supabase/tests/sync.sql` is a rollback-only fixture for an **empty local PostgreSQL database**. It
 mocks Auth, then tests revisions, duplicate receipts, RLS and privileges. Do not run the fixture on
 hosted Supabase; only the files in `supabase/migrations/` are deployment migrations.
+
+## Optional daily reminders
+
+Apply `20261108000000_reminders.sql` to the hosted database. From the project folder, run
+`node scripts/prepare-reminders.mjs` once and follow the printed commands to set function secrets,
+deploy the reminders function and run the private scheduler SQL in Supabase. Keep the generated
+files in the ignored `.local-reminders/` directory. Verify delivery and the off switch in the
+installed iPhone app before closing the roadmap item.
