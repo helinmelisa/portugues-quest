@@ -45,3 +45,21 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(caches.open(CACHE).then(async (cache) => (await cache.match(url.pathname)) ?? fetch(request)))
   }
 })
+
+self.addEventListener('push', (event) => {
+  let message = {}
+  try { message = event.data?.json() ?? {} } catch { /* Fall back to a generic reminder. */ }
+  event.waitUntil(self.registration.showNotification(typeof message.title === 'string' ? message.title.slice(0, 100) : 'A little Portuguese today?', {
+    body: typeof message.body === 'string' ? message.body.slice(0, 200) : 'Your next little adventure is ready.',
+    icon: '/icon-192.png', badge: '/icon-192.png', tag: 'pq-daily-reminder',
+  }))
+})
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  event.waitUntil((async () => {
+    const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    const client = clients.find((c) => new URL(c.url).origin === self.location.origin)
+    if (client) await client.focus()
+    else await self.clients.openWindow('/app')
+  })())
+})

@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { disableReminder } from '../reminders/client'
 import { cloud } from '../../services/cloud'
 import { initialPasswordRecovery, supabase } from '../../services/supabase'
 import { learningStore } from './learningStore'
@@ -126,6 +127,7 @@ export function useCloudSync(): CloudSync {
   }, [userId, known])
 
   const signOut = useCallback(async () => {
+    await disableReminder().catch(() => {})
     try { localStorage.removeItem('pq:v2:last-user') } catch { /* Still clear the active account. */ }
     learningStore.select(null)
     setUser(null)

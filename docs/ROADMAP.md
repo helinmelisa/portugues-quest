@@ -155,10 +155,10 @@ Goal: make the next step obvious, strengthen everyday A2 Portuguese, and introdu
 - [x] **6. B1 starter**: four lessons covering opinions, suggestions, future plans and hopes, with supporting grammar bites. Recommend this after A2 and clearly label it as the first chapter, without a full-course or proficiency claim
 
 ### D. Support a gentle daily habit
-- [ ] **7. Optional reminders**: choose a time, enable notifications on each device and turn them off easily. Skip reminders when synced progress shows practice that day. Keep notification text free of account details and explain device/connection limits
+- [ ] **7. Optional reminders (pending hosted setup and iPhone delivery check)**: choose a time, enable notifications on each device and turn them off easily. Skip reminders when synced progress shows practice that day. Keep notification text free of account details and explain device/connection limits
 
 ### E. Release reliably
-- [ ] **8. Learning checks**: valid questions and answers, suitable review priorities, no duplicate rewards on reconnect, and durable writing drafts
+- [x] **8. Learning checks**: valid questions and answers, suitable review priorities, no duplicate rewards on reconnect, and durable writing drafts
 - [ ] **9. Phone and website release**: verify new screens on iPhone and desktop, offline learning and draft sync, backend reminder setup and installed-app notification delivery
 
 Delivery order: Focus review → Writing desk → Longer listening → B1 starter → Optional reminders. Verify each part before releasing it.

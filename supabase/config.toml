@@ -1,0 +1,3 @@
+[functions.reminders]
+# User config requests validate their JWT in the handler; delivery requires a separate cron secret.
+verify_jwt = false

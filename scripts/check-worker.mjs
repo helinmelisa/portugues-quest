@@ -29,3 +29,18 @@ assert(skipped, 'activation follows explicit consent and idle clients')
 entries.delete('/index.html')
 assert((await request('/app')).includes('Reconnect'), 'evicted caches have a recovery message')
 console.log('Worker: offline routes, API/auth exclusions, cache eviction and cross-tab updates passed.')
+
+let notification
+self.registration = { showNotification: async (title, options) => { notification = {title,options} } }
+await lifecycle('push', {json:()=>({title:'Practice',body:'Five minutes',url:'https://untrusted.test'})})
+assert.equal(notification.title,'Practice')
+assert.equal(notification.options.tag,'pq-daily-reminder')
+let opened,closed=false
+self.clients.matchAll=async()=>[]
+self.clients.openWindow=async(path)=>{opened=path}
+let pending
+handlers.get('notificationclick')({notification:{close:()=>{closed=true},data:{url:'https://untrusted.test'}},waitUntil:(p)=>{pending=p}})
+await pending
+assert(closed)
+assert.equal(opened,'/app','notification clicks never navigate to payload URLs')
+console.log('Worker reminders: generic notification and same-origin click target passed.')
