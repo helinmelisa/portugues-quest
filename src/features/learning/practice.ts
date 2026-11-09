@@ -15,6 +15,7 @@ const modes = {
   difficult: { title: 'Tricky words', minutes: 3 },
   review: { title: 'Daily review', minutes: 4 },
   speak: { title: 'Speak out loud', minutes: 3 },
+  focus: { title: 'Focus review', minutes: 5 },
   mistakes: { title: 'Mistake notebook', minutes: 3 },
 }
 export type PracticeMode = keyof typeof modes
@@ -24,19 +25,19 @@ const availableLessons = (progress?: LearningProgress) =>
     const destination = destinations.find((d) => d.id === l.destinationId)
     return isLessonAvailable(l) && (!progress || (l.destinationId === 'vida' || (destination !== undefined && isDestinationUnlocked(destination, progress))))
   })
-export const allVocabulary = () => availableLessons().flatMap((l) => l.vocabulary)
+export const allVocabulary = (): VocabularyItem[] => [...availableLessons().flatMap((l) => l.vocabulary)]
 export const vocabularyFor = (progress: LearningProgress) => [...allVocabulary(), ...progress.customWords]
 export const spoken = (v: VocabularyItem) => v.pt.split(' / ')[0]
 
 function wordPool(progress: LearningProgress) {
   const learned = vocabularyFor(progress).filter((v) => progress.learnedWords.includes(v.id))
-  return learned.length >= 4 ? learned : allVocabulary()
+  return learned.length >= 4 ? learned : availableLessons(progress).flatMap((l) => l.vocabulary)
 }
 
 function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
   const all = allVocabulary()
   return items.map((v) => {
-    const options = shuffle([v.en, ...shuffle(all.filter((o) => o.id !== v.id)).slice(0, 2).map((o) => o.en)])
+    const options = shuffle([v.en, ...shuffle([...new Set(all.filter((o) => o.en !== v.en).map((o) => o.en))]).slice(0, 2)])
     return {
       id: `listen-${v.id}`,
       wordId: v.id,
@@ -51,7 +52,7 @@ function listeningExercises(items: VocabularyItem[]): ListeningExercise[] {
 }
 
 function meaningExercise(v: VocabularyItem): MultipleChoiceExercise {
-  const options = shuffle([v.en, ...shuffle(allVocabulary().filter((o) => o.id !== v.id)).slice(0, 2).map((o) => o.en)])
+  const options = shuffle([v.en, ...shuffle([...new Set(allVocabulary().filter((o) => o.en !== v.en).map((o) => o.en))]).slice(0, 2)])
   return { id: `meaning-${v.id}`, wordId: v.id, type: 'multiple-choice', prompt: `What does “${v.pt}” mean?`, options, answer: options.indexOf(v.en), explanation: `“${v.pt}” means “${v.en}”.` }
 }
 
@@ -72,7 +73,7 @@ function sentenceExercises(progress: LearningProgress): SentenceBuildExercise[] 
   const fromLessons = availableLessons(progress)
     .flatMap((l) => l.exercises)
     .filter((e): e is SentenceBuildExercise => e.type === 'sentence-build')
-  const fromExamples = allVocabulary().flatMap((v): SentenceBuildExercise[] => {
+  const fromExamples = availableLessons(progress).flatMap((lesson) => lesson.vocabulary).flatMap((v): SentenceBuildExercise[] => {
     if (!v.example) return []
     const words = v.example.pt.split(' ')
     const lower = words.map((w) => w.toLowerCase())
@@ -92,6 +93,20 @@ function sentenceExercises(progress: LearningProgress): SentenceBuildExercise[] 
 function buildPractice(mode: PracticeMode, progress: LearningProgress): Lesson {
   let exercises: Exercise[]
   switch (mode) {
+    case 'focus': {
+      const words = vocabularyFor(progress)
+      const due = new Set(dueWordIds(progress))
+      const priority = [
+        ...words.filter((w) => due.has(w.id) && progress.difficultWords.includes(w.id)),
+        ...words.filter((w) => due.has(w.id)),
+        ...words.filter((w) => progress.difficultWords.includes(w.id)),
+      ]
+      const unique = [...new Map(priority.map((w) => [w.id, w])).values()]
+      const corrections: Exercise[] = progress.mistakes.slice(-2).map((m) => ({ id: `focus-${m.id}`, type: 'sentence-build', prompt: 'Practise a correction from your notebook', translation: m.why, words: m.better.split(' '), distractors: [], explanation: `Instead of “${m.said}”, try “${m.better}”. ${m.why}` }))
+      const candidates = unique.length ? unique : shuffle(wordPool(progress))
+      exercises = [...corrections, ...candidates.slice(0, 8 - corrections.length).map((w, i) => i % 2 ? meaningExercise(w) : listeningExercises([w])[0])]
+      break
+    }
     case 'quick':
       exercises = shuffle(availableLessons(progress).flatMap((l) => l.exercises).filter((e) => e.type !== 'matching')).slice(0, 5)
       break

@@ -34,6 +34,8 @@ export default function PracticePage() {
   const { progress } = useProgress()
 
   const corners: Corner[] = [
+    { to: '/lesson/practice-focus', icon: Zap, title: 'Focus review', text: 'Due words, tricky vocabulary and your own corrections in one gentle session.', badge: '5 min · +10 XP', tone: 'text-sage' },
+
     {
       to: '/app/explore/vida',
       icon: BookOpen,
@@ -125,7 +127,7 @@ export default function PracticePage() {
   ]
 
   const groups: Record<string, string[]> = {
-    Review: ['Quick Challenge', 'Word Garden', 'Mistake notebook', 'Build a Sentence'],
+    Review: ['Focus review', 'Quick Challenge', 'Word Garden', 'Mistake notebook', 'Build a Sentence'],
     'Listen & speak': ['Listening Nook', 'Speak out loud'],
     'Read & learn': ['Vida em Portugal', 'Real-life texts', 'Histórias', 'Grammar bites', 'In Portugal, we say…'],
   }

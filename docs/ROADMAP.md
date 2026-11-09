@@ -147,7 +147,7 @@ Goal: make the next step obvious, strengthen everyday A2 Portuguese, and introdu
 - [x] **2. Consistent UX**: shared layouts and line icons, clear primary actions, Practice filters, vocabulary and grammar search, organised Settings and chat/call selection
 
 ### B. Strengthen A2 skills
-- [ ] **3. Focus review**: a short session prioritising recent corrections, due words and saved tricky words. Fall back to suitable learned material when there is nothing due
+- [x] **3. Focus review**: a short session prioritising recent corrections, due words and saved tricky words. Fall back to suitable learned material when there is nothing due
 - [ ] **4. Writing desk**: six everyday messages with a clear prompt, useful phrases, word guidance, a model answer and a self-checklist. Save drafts offline and sync them across devices. Explain that self-checking is not automatic grammar grading
 - [ ] **5. Longer listening**: four eight-turn dialogues with normal/slow playback, optional transcripts, glossary and comprehension checks. Clearly label device-generated audio
 
