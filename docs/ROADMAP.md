@@ -165,7 +165,26 @@ Delivery order: Focus review → Writing desk → Longer listening → B1 starte
 
 Done when: each new activity is easy to find, usable on the phone, and retains progress after reopening or reconnecting. Writing drafts agree across devices after sync. The B1 chapter has a clear starting point. Reminders are opt-in, can be disabled, and have been verified on the installed app.
 
+## Milestone 8 — Use Portuguese independently
+
+Goal: build on the B1 starter with longer, connected tasks that help learners handle everyday situations in Portugal.
+
+### A. Expand the B1 route
+- [ ] **1. Work and study** — four lessons on clarifying instructions, explaining a delay, writing a follow-up and discussing options
+- [ ] **2. Community and services** — four lessons on reporting a problem, negotiating a solution, making a complaint and confirming an agreement
+- [ ] **3. B1 grammar in context** — short guides and practice on linking ideas, reporting what someone said, and choosing between past tenses
+
+### B. Practise complete situations
+- [ ] **4. Listening with native speakers** — record four European Portuguese dialogues with permission to publish. Include transcripts, playback controls and comprehension questions
+- [ ] **5. Connected practice** — pair each dialogue with a writing or conversation task. Offer model responses and a self-checklist. Keep AI conversations optional so the activity can be completed offline after download
+
+### C. Check progress
+- [ ] **6. B1 checkpoint** — combine reading, listening and language use. Show results by skill and point learners to relevant review. Present the result as an in-app learning milestone
+- [ ] **7. Release verification** — check content with a European Portuguese reviewer. Verify audio controls, offline completion, progress sync and checkpoint results on the website and installed iPhone app
+
+Build the two chapters first, then add recorded listening and connected practice before assembling the checkpoint. Track reminder deployment and outstanding phone checks under Milestones 6 and 7.
+
+Done when: learners can continue from the B1 starter, practise complete situations, and finish the checkpoint with clear guidance on what to review next.
+
 ## Later
-- [ ] Recorded native audio
-- [ ] Full B1 curriculum and checkpoint
 - [ ] More interface languages
