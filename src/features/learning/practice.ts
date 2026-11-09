@@ -2,6 +2,7 @@ import { getLesson, isLessonAvailable, lessons } from '../../data/curriculum'
 import type { PronunciationExercise, Exercise, LearningProgress, Lesson, ListeningExercise, MultipleChoiceExercise, SentenceBuildExercise, VocabularyItem } from '../../types'
 import { dueWordIds } from '../vocabulary/srs'
 import { shuffle } from '../../utils/shuffle'
+import { dialogues, dialogueAudio, getDialogue } from '../../data/dialogues'
 import { getRealText } from '../../data/realTexts'
 import { vidaLessons } from '../../data/curriculum/vida'
 import { getStory } from '../../data/stories'
@@ -25,7 +26,7 @@ const availableLessons = (progress?: LearningProgress) =>
     const destination = destinations.find((d) => d.id === l.destinationId)
     return isLessonAvailable(l) && (!progress || (l.destinationId === 'vida' || (destination !== undefined && isDestinationUnlocked(destination, progress))))
   })
-export const allVocabulary = (): VocabularyItem[] => [...availableLessons().flatMap((l) => l.vocabulary)]
+export const allVocabulary = (): VocabularyItem[] => [...availableLessons().flatMap((l) => l.vocabulary), ...dialogues.flatMap((d) => d.vocabulary)]
 export const vocabularyFor = (progress: LearningProgress) => [...allVocabulary(), ...progress.customWords]
 export const spoken = (v: VocabularyItem) => v.pt.split(' / ')[0]
 
@@ -213,9 +214,16 @@ function textQuiz(id: string): Lesson | undefined {
   return { id: `text-${id}`, destinationId: 'practice', title: text.title, objective: '', intro: '', minutes: 3, xp: 15, skills: ['reading'], vocabulary: [], exercises: text.questions.map((q, i) => ({ id: `text-${id}-${i}`, type: 'multiple-choice', ...q, prompt: `${text.text}\n\n${q.prompt}` })) }
 }
 
+function dialogueQuiz(id: string): Lesson | undefined {
+  const dialogue = getDialogue(id)
+  if (!dialogue) return undefined
+  return { id: `dialogue-${id}`, destinationId: 'dialogues', title: dialogue.title, objective: dialogue.objective, intro: '', minutes: 6, xp: 20, skills: ['listening', 'reading'], vocabulary: dialogue.vocabulary, exercises: dialogue.questions.map((q, i) => ({ id: `dialogue-${id}-${i}`, type: 'listening', audioText: dialogueAudio(dialogue), ...q })) }
+}
+
 export function resolveLesson(id: string, progress: LearningProgress) {
   if (id === 'checkpoint-A1') return checkpointAvailable(progress) ? checkpoint() : undefined
   if (id === 'checkpoint-A2') return a2CheckpointAvailable(progress) ? a2Checkpoint() : undefined
+  if (id.startsWith('dialogue-')) return dialogueQuiz(id.slice('dialogue-'.length))
   if (id.startsWith('text-')) return textQuiz(id.slice('text-'.length))
   if (id.startsWith('story-')) return storyQuiz(id.slice('story-'.length))
   const mode = id.replace(/^practice-/, '')

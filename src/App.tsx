@@ -1,5 +1,7 @@
 import WritingPage from './pages/Practice/WritingPage'
 import WritingTaskPage from './pages/Practice/WritingTaskPage'
+import DialoguesPage from './pages/Practice/DialoguesPage'
+import DialoguePage from './pages/Practice/DialoguePage'
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { RecoveryRedirect } from './components/layout/RecoveryRedirect'
 import PasswordPage from './pages/Auth/PasswordPage'
@@ -52,6 +54,8 @@ export default function App() {
             <Route path="practice" element={<PracticePage />} />
             <Route path="practice/writing" element={<WritingPage />} />
             <Route path="practice/writing/:taskId" element={<WritingTaskPage />} />
+            <Route path="practice/dialogues" element={<DialoguesPage />} />
+            <Route path="practice/dialogues/:dialogueId" element={<DialoguePage />} />
             <Route path="practice/texts" element={<TextsPage />} />
             <Route path="practice/texts/:textId" element={<TextPage />} />
             <Route path="practice/words" element={<WordGardenPage />} />
